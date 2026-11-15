@@ -1,15 +1,24 @@
 # Verification record
 
-Local environment: Linux x86_64, Python 3.12.14, PySide6 6.8.3, pytest 8.3.5.
+## Windows build 1.0.0
 
-Executed from the project root on 2026-11-15:
+- Build commit: `6be40219576170706809a918692ddd05e2f0f3d3`.
+- Runner: GitHub windows-latest, Python 3.12.10, PySide6 6.8.3.
+- Automated tests: **12 passed in 4.37 seconds**.
+- PyInstaller Windows packaging: successful.
+- Packaged executable: launched with disposable data, navigated every page, verified sample tasks, and exited successfully through `--smoke-test` with Qt offscreen.
+- Workflow conclusion: **success**.
+- [Successful workflow and logs](https://github.com/Azrempp/construction-project-coordinator/actions/runs/43765753865)
+- [Download Windows artifact](https://github.com/Azrempp/construction-project-coordinator/actions/runs/43765753865/artifacts/14182108321)
+- Artifact size: 50,458,839 bytes; expires February 13, 2027.
+- Artifact SHA-256: `a73567c62208652a4d8b9d50c3525fb4ef95a5381914af9b82e47716be7a205e`.
 
-```
-python -m pytest -v --junitxml=test-results.xml
-```
+The JUnit results are separately downloadable under the workflow's test-results artifact. The application artifact contains documentation from the build commit; this record was added after its successful completion.
 
-Result: 12 tests passed, including headless Qt navigation and task editing, retained file versions and timeline task editing. The JUnit report is included. A test invocation initially made from outside the project root failed import collection; running from the documented project root resolved it.
+## Local checks
 
-Not performed: Windows runner tests, Windows PyInstaller build, Windows executable launch, printer hardware testing, GitHub artifact publication. GitHub authentication in this session is invalid and no target repository URL was supplied. The workflow is provided but no successful workflow or artifact URL is claimed.
+All 12 tests also passed on Linux with Python 3.12.14. A populated Qt dashboard was captured and a project report rendered to PDF successfully. An initial invocation outside the project root failed import collection; running from the documented project root resolved it.
 
-Additional manual scripted check: instantiated the populated Qt window, captured its dashboard, and rendered a project report to PDF successfully on Linux. This does not establish Windows printer compatibility.
+## Limits
+
+No manual physical Windows desktop walkthrough or printer hardware test was performed. The packaged launch check is headless, not a full interactive acceptance test. The app is unsigned. No real company data or credentials are included.

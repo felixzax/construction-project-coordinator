@@ -28,7 +28,7 @@ Remove-Item Env:QT_QPA_PLATFORM
 .\.venv\Scripts\python -m PyInstaller --noconfirm --clean --windowed --onedir --name ConstructionProjectCoordinator main.py
 ```
 
-The result is in `dist/ConstructionProjectCoordinator/`. PyInstaller must run on Windows to build a Windows executable. Builds are unsigned and may trigger Windows reputation prompts. This source package does not contain a verified Windows build; see VALIDATION.md.
+The result is in `dist/ConstructionProjectCoordinator/`. PyInstaller must run on Windows to build a Windows executable. Builds are unsigned and may trigger Windows reputation prompts. A verified Windows build is available: [download version 1.0.0](https://github.com/Azrempp/construction-project-coordinator/actions/runs/43765753865/artifacts/14182108321). Sign in to GitHub to download from this private repository. See VALIDATION.md for the build evidence.
 
 ## Usage
 
@@ -49,7 +49,7 @@ The result is in `dist/ConstructionProjectCoordinator/`. PyInstaller must run on
 
 ## Limitations
 
-Single-user, local app; no sync, encryption, access control, installer, automatic updater or notification reminders. Users with access to the Windows account can read local data. Do not enter passwords or sensitive financial data into free-text fields. Metadata revisions are append-only; changing their status requires another history entry. File backups are separate from database backups. Windows packaging and interactive Windows testing remain dependent on a successful Windows workflow.
+Single-user, local app; no sync, encryption, access control, installer, automatic updater or notification reminders. Users with access to the Windows account can read local data. Do not enter passwords or sensitive financial data into free-text fields. Metadata revisions are append-only; changing their status requires another history entry. File backups are separate from database backups. Windows tests, packaging and a headless packaged-executable check passed. Manual use on a physical Windows desktop and printer hardware testing have not been performed.
 
 ## Automated verification
 
