@@ -4,6 +4,8 @@ A local Windows desktop workspace for construction and property development coor
 
 ## Download and run
 
+**[Download the verified Windows 1.1.0 build](https://github.com/felixzax/construction-project-coordinator/actions/runs/43792352921/artifacts/14192793594)** · [Successful build and test logs](https://github.com/felixzax/construction-project-coordinator/actions/runs/43792352921). All 41 Windows tests and the packaged-executable check passed.
+
 Open [GitHub Actions](https://github.com/felixzax/construction-project-coordinator/actions/workflows/windows.yml), select a successful **Test and build Windows** run for version 1.1.0, and download the **ConstructionProjectCoordinator-1.1.0-Windows** artifact. Sign in to GitHub to access this private repository. Extract the artifact ZIP, then extract the contained application ZIP. Keep the entire `ConstructionProjectCoordinator` directory together and launch `ConstructionProjectCoordinator.exe`. Python is not required for packaged builds. The app is unsigned and Windows may show a reputation prompt. Workflow artifacts are retained for 90 days.
 
 ## Upgrade from 1.0.0
