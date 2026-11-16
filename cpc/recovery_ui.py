@@ -60,7 +60,7 @@ class RecoveryUI:
   from .development_ui import DISCIPLINE_PAGES,REGISTER_PAGES
   if row.get('_source_table'): return row['_source_table'],row['_source_id']
   if title=='Search': return row['type'],row['id']
-  mapping={'Projects':'projects','Tasks':'tasks','Contacts':'contacts','Communications':'communications','Documents':'documents','Meetings':'meetings','Bidding':'bid_packages','Bids':'bids'}
+  mapping={'Projects':'projects','Tasks':'tasks','Contacts':'contacts','Communications':'communications','Documents':'documents','Meetings':'meetings','Bidding':'bid_packages','Bids':'bids','Receipts':'receipts'}
   if title in DISCIPLINE_PAGES: return 'work_packages',row['id']
   if title in REGISTER_PAGES: return 'registers',row['id']
   if title=='Timeline':
@@ -84,7 +84,7 @@ class RecoveryUI:
   self.guard(action)
  def delete_application_data(self):
   def action():
-   text,ok=QInputDialog.getText(self,'Delete ALL application data','This removes every project, contact, task, document record, permit, meeting, bid and recovery draft across ALL projects. A database recovery snapshot is created first; attached files and snapshots are kept.\nType DELETE ALL to continue:')
+   text,ok=QInputDialog.getText(self,'Delete ALL application data','This removes every project, contact, task, document record, permit, meeting, bid, receipt and recovery draft across ALL projects. A database recovery snapshot is created first; attached files and snapshots are kept.\nType DELETE ALL to continue:')
    if ok and text=='DELETE ALL':
     path=self.store.delete_all_data(); self.refresh(); self.statusBar().showMessage('All application records deleted. Recovery snapshot: '+str(path),15000)
   self.guard(action)
@@ -130,7 +130,7 @@ class RecoveryUI:
    if table=='__versions__':
     fields=['revision','submitted','status','requirements','file_path']; choices={'status':['Draft','Submitted','Approved','Changes Required']}
    else:
-    fields=[key for key in FIELDS[table] if key!='completed_on']; choices=self.choices(table)
+    fields=[key for key in FIELDS[table] if key not in ('completed_on','attachment_path','attachment_name')]; choices=self.choices(table)
     if table=='bids': choices['package_id']=[(p['title'],p['id']) for p in self.store.all('bid_packages')]
     if table=='bid_items': choices['bid_id']=[(p['title'],p['id']) for p in self.store.all('bids')]
     if table=='permit_requirements': choices['register_id']=[(p['title'],p['id']) for p in self.store.all('registers') if p['record_type']=='Permit']

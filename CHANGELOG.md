@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.4.0 — 2026-11-15
+
+- Added Receipts workspace with supplier/company/contact, project, reference, receipt date, discipline, area and notes.
+- Added supplier estimated/actual totals, precise differences and over/under/on-estimate comparison, preserving unknown versus zero prices.
+- Added approval statuses, reviewer/date/notes and re-review when approved supplier/pricing/currency/attachment changes.
+- Added retained local receipt attachments, search, CSV/DOCX and department/project report coverage.
+- Integrated receipt deletion, draft recovery, backups and schema v5 upgrades with restoration of v1–v5 databases.
+- Added receipt-specific persistence, validation, pricing, approval, attachment, upgrade, export and UI tests.
+
 ## 1.3.0 — 2026-11-15
 
 - Added CSV and Word (.docx) exports for every department, including tagged related work, plan status, permit requirements, contacts and bid cost detail.

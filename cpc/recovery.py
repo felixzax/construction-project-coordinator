@@ -113,7 +113,7 @@ class RecoveryStore:
     self.db.execute(f'UPDATE tasks SET meeting_id=NULL WHERE meeting_id IN ({marks(batch)})',batch)
    for batch in chunks(plan.get('projects',())):
     self.db.execute(f'DELETE FROM project_contacts WHERE project_id IN ({marks(batch)})',batch)
-   order=['permit_requirements','bid_items','versions','tasks','communications','milestones','work_packages','registers','meetings','bids','bid_packages','documents','activity','projects','contacts']
+   order=['receipts','permit_requirements','bid_items','versions','tasks','communications','milestones','work_packages','registers','meetings','bids','bid_packages','documents','activity','projects','contacts']
    for table in order:
     for batch in chunks(plan.get(table,())): self.db.execute(f'DELETE FROM {table} WHERE id IN ({marks(batch)})',batch)
    # Existing discounts must still fit when deleting cost items. Failure rolls back the entire deletion.

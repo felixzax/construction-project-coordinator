@@ -1,29 +1,45 @@
-# Construction Project Coordinator 1.3.0
+# Construction Project Coordinator 1.4.0
 
 A local Windows desktop workspace for construction and property development coordination, consultant disciplines, drawing registers, meetings and detailed bid estimates. Python 3.12, PySide6 and SQLite. No cloud subscription, email connection or account is required to use the app.
 
 ## Download and run
 
-**[Download the verified Windows 1.3.0 build](https://github.com/felixzax/construction-project-coordinator/actions/runs/43797469360/artifacts/14194519768)** · [Successful build and test logs](https://github.com/felixzax/construction-project-coordinator/actions/runs/43797469360). All 100 Windows tests and the packaged-executable check passed, including actual CSV/DOCX generation.
 
 
 
-Open [GitHub Actions](https://github.com/felixzax/construction-project-coordinator/actions/workflows/windows.yml), select a successful **Test and build Windows** run for version 1.3.0, and download the **ConstructionProjectCoordinator-1.3.0-Windows** artifact. Sign in to GitHub to access this private repository. Extract the artifact ZIP, then extract the contained application ZIP. Keep the entire `ConstructionProjectCoordinator` directory together and launch `ConstructionProjectCoordinator.exe`. Python is not required for packaged builds. The app is unsigned and Windows may show a reputation prompt. Workflow artifacts are retained for 90 days.
+Open [GitHub Actions](https://github.com/felixzax/construction-project-coordinator/actions/workflows/windows.yml), select a successful **Test and build Windows** run for version 1.4.0, and download the **ConstructionProjectCoordinator-1.4.0-Windows** artifact. Sign in to GitHub to access this private repository. Extract the artifact ZIP, then extract the contained application ZIP. Keep the entire `ConstructionProjectCoordinator` directory together and launch `ConstructionProjectCoordinator.exe`. Python is not required for packaged builds. The app is unsigned and Windows may show a reputation prompt. Workflow artifacts are retained for 90 days.
 
-## Upgrade from 1.0.0, 1.1.0 or 1.2.0
+## Upgrade from 1.0.0, 1.1.0, 1.2.0 or 1.3.0
 
 1. In the old app, use Backup & Restore to back up your database. Also copy its adjacent `documents` folder to your backup location. Close all old app instances.
 2. Extract the new build into a new application folder. Keep the old executable until you verify the upgrade.
-3. Launch version 1.3.0 from the same Windows account. It uses the same Local AppData location, preserves existing projects, contacts, tasks and approved document revisions, and adds the new tables and fields automatically. It creates a `.before-v1.3.0.sqlite3` safety copy before upgrading a v1, v2 or v3 database.
+3. Launch version 1.4.0 from the same Windows account. It uses the same Local AppData location, preserves existing projects, contacts, tasks and approved document revisions, and adds the new tables and fields automatically. It creates a `.before-v1.4.0.sqlite3` safety copy before upgrading a v1, v2, v3 or v4 database.
 4. Existing work is not replaced with demonstration data. New sections begin empty for existing users. Fresh workspaces may load fictional examples at the welcome prompt.
 
-The upgrade is one way: the new schema is version 4. To roll back, close the new app and restore the matching pre-upgrade database before running an older app. Do not open the upgraded database with the old app. Version 1.3.0 can restore v1, v2, v3 and v4 backups; older backups are upgraded in a temporary copy before replacing live records.
+The upgrade is one way: the new schema is version 5. To roll back, close the new app and restore the matching pre-upgrade database before running an older app. Do not open the upgraded database with the old app. Version 1.4.0 can restore v1, v2, v3, v4 and v5 backups; older backups are upgraded in a temporary copy before replacing live records.
+
+## Supplier receipts, estimate versus actual, and approval
+
+Open **Receipts** in the sidebar. Create a receipt linked to a project and enter:
+
+- Description/title, supplier/company name or an existing supplier contact, receipt/reference number and date.
+- Discipline and building/floor/area for department reports.
+- Currency and the supplier's estimated and actual prices, entered as nonnegative totals. Compare prices on the same tax/shipping basis; the app does not add taxes or shipping automatically.
+- Approval status: **Pending Review**, **Approved**, **Rejected**, or **Needs Changes**, plus reviewer name, review date, approval notes and general notes.
+
+Prices are stored with two-decimal rounding using decimal arithmetic. **Difference = actual price − estimated price**: positive means over estimate, negative means under, zero means on estimate. A blank price means unknown; enter `0` for a known zero amount. The comparison remains unavailable until both prices are entered. Choose one currency per receipt; no conversion is performed.
+
+A non-pending review automatically gets today's date if none is entered. Changing the supplier/contact, currency, estimated/actual price or receipt attachment on an **Approved** record resets it to Pending Review, clears its reviewer/date, and records why. Save the changed price, review the updated receipt, then explicitly approve it again. Editing general notes alone preserves approval. This records your review decision; it does not authorize payment or contact the supplier.
+
+Save a new receipt first, select it, then use **Attach receipt file**. The chosen PDF, image or other file is copied under a unique name into the local `documents` folder. **Open receipt file** uses its default Windows application after confirmation. Replacing an attachment links the new copy; older copied files remain on disk. Back up the documents folder separately. Do not attach passwords, bank details or sensitive payment-card information.
+
+Receipts support supplier/status text filters, project filtering, standard copy and deletion, draft autosave, recovery snapshots, search, CSV and Word exports. They also appear in project status reports and department reports when their discipline matches. Deleting a supplier contact preserves its receipt and recorded supplier/company name; deleting a project removes its receipt records through the normal backed-up deletion flow. This is receipt and cost coordination, without OCR, supplier synchronization, payment processing or accounting reconciliation.
 
 ## CSV and Word exports by department
 
 Each department workspace — **Architecture, Engineering, Electrical, Plumbing, Mechanical / HVAC, Site & Civil, and Other Trades** — has **Export department report CSV** and **Export department report DOCX** buttons. These create actual CSV and Microsoft Word `.docx` files. Word does not need to be installed to generate them.
 
-Department reports include matching discipline-tagged coordination packages, tasks, latest plans/document status, development registers and permit requirements, linked contacts with that discipline, bid packages, bidder totals and detailed cost items. CSV uses a common Record Type column to distinguish these records and includes quantity, unit, material, labor rates/hours, cost components, currency and totals for bid items. Do not sum all Total cells indiscriminately: bid estimate rows and cost-item rows describe different levels, and excluded alternates are identified separately. Currencies are not converted.
+Department reports include matching discipline-tagged coordination packages, tasks, latest plans/document status, development registers and permit requirements, linked contacts with that discipline, bid packages, bidder totals, detailed cost items and supplier receipts with estimated/actual price differences. CSV uses a common Record Type column to distinguish these records and includes quantity, unit, material, labor rates/hours, cost components, currency and totals for bid items. Do not sum all Total cells indiscriminately: bid estimate rows and cost-item rows describe different levels, and excluded alternates are identified separately. Currencies are not converted.
 
 Choose a project at the top before exporting to limit the department report to that project. Its text filter also applies to exported records. Records without a matching discipline tag are not automatically assigned to a department; edit their discipline first. All projects includes archived projects, matching the coordination lists.
 

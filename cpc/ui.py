@@ -8,13 +8,14 @@ from PySide6.QtWidgets import (QApplication,QMainWindow,QWidget,QVBoxLayout,QHBo
 from PySide6.QtPrintSupport import QPrinter,QPrintPreviewDialog
 from .store import Store, FIELDS, TASK_STATUSES
 from .table import DataTable
+from .receipt_ui import ReceiptUI
 from .exports import ExportUI
 from .recovery_ui import RecoveryUI
 from .permit_ui import PermitUI
 from .development_ui import DevelopmentUI, NAVIGATION, EXTRA_OPTIONS
 from .development import line_totals
 
-VERSION='1.3.0'
+VERSION='1.4.0'
 OPTIONS={'phase':['Planning','Design','Permitting','Construction','Inspection','Closeout'],'priority':['Low','Normal','High','Urgent'],'category':['Architectural Plans','Engineering Drawings','Permit','Cut Sheet','Estimate','Approval','CAD File','BIM Model','Site Plan','Survey','Specification','Shop Drawing','As-Built','Other'],'role':['Architect','Engineer','Contractor','City Official','County Official','Business Owner','Electrical Engineer','Plumbing Engineer','Mechanical Engineer','Civil Engineer','Structural Engineer','Surveyor','Estimator','Supplier','Developer','Other']}
 class Form(QDialog):
  def __init__(self,parent,title,fields,record=None,choices=None):
@@ -36,7 +37,7 @@ class Form(QDialog):
    else:
     widget=QLineEdit(str(value or ''))
     if key in ('deadline','follow_up','occurred','submitted','received','valid_until','meeting_date'): widget.setPlaceholderText('YYYY-MM-DD (blank allowed except required dates)')
-   labels={'project_id':'Project','contact_id':'Responsible contact / bidder','designer_id':'Designer / consultant','meeting_id':'Related meeting','package_id':'Trade bid package','bid_id':'Bid estimate','labor_rate':'Labor hourly rate','material_unit_cost':'Material cost per unit','equipment_unit_cost':'Equipment cost per unit','subcontract_unit_cost':'Subcontract cost per unit','other_cost':'Other fixed cost','included':'Include in bid total','register_id':'Permit application','jurisdiction_name':'City / county name','requirements_url':'Application requirements link','application_url':'Application / portal link','requirements_reviewed':'Requirements page reviewed','source_url':'Requirement source link','completed':'Requirement ready','building_area':'Building / floor / area','tax_percent':'Material tax (%)','markup_percent':'Markup (%)','contingency_percent':'Contingency (%)','waste_percent':'Material waste (%)'}
+   labels={'project_id':'Project','contact_id':'Responsible contact / bidder','designer_id':'Designer / consultant','meeting_id':'Related meeting','package_id':'Trade bid package','bid_id':'Bid estimate','labor_rate':'Labor hourly rate','material_unit_cost':'Material cost per unit','equipment_unit_cost':'Equipment cost per unit','subcontract_unit_cost':'Subcontract cost per unit','other_cost':'Other fixed cost','included':'Include in bid total','estimated_amount':'Supplier estimated price','actual_amount':'Supplier actual price','status':'Status / approval','register_id':'Permit application','jurisdiction_name':'City / county name','requirements_url':'Application requirements link','application_url':'Application / portal link','requirements_reviewed':'Requirements page reviewed','source_url':'Requirement source link','completed':'Requirement ready','building_area':'Building / floor / area','tax_percent':'Material tax (%)','markup_percent':'Markup (%)','contingency_percent':'Contingency (%)','waste_percent':'Material waste (%)'}
    self.inputs[key]=widget; form.addRow(labels.get(key,key.replace('_',' ').title()),widget)
    if key=='file_path':
     browse=QPushButton('Choose document file…'); browse.clicked.connect(lambda _,w=widget:self.browse(w)); form.addRow('',browse)
@@ -136,14 +137,17 @@ class BaseWindow(QMainWindow):
   if query and query.text(): rows=[r for r in rows if query.text().lower() in ' '.join(str(v) for v in r.values()).lower()]
   self.data[title]=rows; table=self.tables[title]; keys=[k for k in rows[0] if k!='id' and not k.startswith('_') and not k.endswith('_id')] if rows else []
   preferred=['title','name','label','project','bidder','currency','total','status','discipline','building_area','deadline','responsible']
+  if title=='Receipts': preferred=['title','supplier_name','status','currency','estimated_amount','actual_amount','variance_amount','comparison','project','receipt_date','reference','reviewed_by','review_date']
   if title=='Permits': preferred=['title','project','jurisdiction_type','jurisdiction_name','department','status','checklist_progress','requirements_reviewed','requirements_url','application_url','reference','responsible','deadline']
   keys=[k for k in preferred if k in keys]+[k for k in keys if k not in preferred]
-  table.setColumnCount(len(keys)); table.setRowCount(len(rows)); table.setHorizontalHeaderLabels([k.replace('_',' ').title() for k in keys])
+  table.setColumnCount(len(keys)); table.setRowCount(len(rows)); table.setHorizontalHeaderLabels([({'supplier_name':'Supplier','status':'Approval','estimated_amount':'Estimated Price','actual_amount':'Actual Price','variance_amount':'Difference'}.get(k,k.replace('_',' ').title()) if title=='Receipts' else k.replace('_',' ').title()) for k in keys])
   for i,r in enumerate(rows):
    overdue=bool(r.get('deadline') and r['deadline']<date.today().isoformat() and r.get('status') not in ('Completed','Approved'))
    for j,key in enumerate(keys):
     value=('✓ Reviewed' if r[key] else 'Not reviewed') if key=='requirements_reviewed' else (r[key] if r[key] is not None else '')
     item=QTableWidgetItem(str(value)); table.setItem(i,j,item)
+    if title=='Receipts' and key=='status': item.setForeground(QColor('#237447' if r[key]=='Approved' else '#a52d2d' if r[key]=='Rejected' else '#8a6518'))
+    if title=='Receipts' and key=='variance_amount' and r.get('comparison')=='Over estimate': item.setBackground(QColor('#fff0d0')); item.setForeground(QColor('#815311'))
     if overdue: item.setBackground(QColor('#fde3df')); item.setForeground(QColor('#9b2525'))
   table.horizontalHeader().setSectionResizeMode(QHeaderView.Interactive); table.resizeColumnsToContents()
   for j in range(len(keys)): table.setColumnWidth(j,min(320,max(80,table.columnWidth(j))))
@@ -261,7 +265,7 @@ class BaseWindow(QMainWindow):
    if path and QMessageBox.question(self,'Replace local data?','Restore this backup and replace all current records? A safety backup will be created.')==QMessageBox.Yes: self.store.restore(path); self.refresh(); QMessageBox.information(self,'Restore complete','Database restored successfully.')
   self.guard(action)
 
-class Window(ExportUI,RecoveryUI,PermitUI,DevelopmentUI,BaseWindow):
+class Window(ExportUI,RecoveryUI,ReceiptUI,PermitUI,DevelopmentUI,BaseWindow):
  pass
 
 def main():

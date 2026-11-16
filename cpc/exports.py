@@ -32,19 +32,22 @@ def department_rows(store,disciplines,project_id=None,query=''):
   if pid is None: pid=row.get('project_id')
   if project_id and pid!=project_id: return
   record=dict(record_type=kind,title=row.get('title',row.get('name','')),project=projects.get(pid,''),discipline=row.get('discipline',''),building_area=row.get('building_area',''),responsible=contacts.get(row.get('contact_id',row.get('designer_id')),''),status=row.get('status',''),deadline=row.get('deadline',''),details=details,source_url=source_url,currency=currency,total=str(total))
-  record.update({key:'' for key in ['quantity','unit','material','material_unit_cost','labor_hours','labor_rate','material_cost','labor_cost','equipment_cost','subcontract_cost','included']}); record.update(cost or {})
+  record.update({key:'' for key in ['quantity','unit','material','material_unit_cost','labor_hours','labor_rate','material_cost','labor_cost','equipment_cost','subcontract_cost','included','estimated_amount','actual_amount','variance_amount']}); record.update(cost or {})
   if query and query.lower() not in ' '.join(str(v) for v in record.values()).lower(): return
   result.append(record)
- for table,kind in [('work_packages','Coordination'),('tasks','Task'),('documents','Plan / document'),('registers','Development register'),('bid_packages','Bid package')]:
+ for table,kind in [('work_packages','Coordination'),('tasks','Task'),('documents','Plan / document'),('registers','Development register'),('bid_packages','Bid package'),('receipts','Supplier receipt')]:
   for row in store.all(table):
    if row.get('discipline') not in disciplines: continue
-   details=' | '.join(f'{key.replace("_"," ")}: {row[key]}' for key in ('scope','requirements','notes','reference','jurisdiction_type','jurisdiction_name','department','sheet_number','drawing_type','scale','issue_purpose','response') if row.get(key))
+   details=' | '.join(f'{key.replace("_"," ")}: {row[key]}' for key in ('scope','requirements','notes','reference','jurisdiction_type','jurisdiction_name','department','sheet_number','drawing_type','scale','issue_purpose','response','supplier_name','approval_notes') if row.get(key))
    url=row.get('requirements_url','')
    if table=='documents':
     versions=store.versions(row['id'])
     if versions:
      latest=versions[0]; row=dict(row,status=latest['status']); details+=' | Revision: '+latest['revision']+' | Requirements: '+latest['requirements']+' | File: '+latest['file_path']
-   add(kind,row,details,url)
+   if table=='receipts':
+    from .receipts import receipt_variance
+    add(kind,row,details,url,currency=row['currency'],total=row['actual_amount'],cost={key:row.get(key,'') for key in ['estimated_amount','actual_amount']}|{'variance_amount':receipt_variance(row)})
+   else: add(kind,row,details,url)
    if table=='registers' and row['record_type']=='Permit':
     for item in store.permit_requirements(row['id']):
      add('Permit requirement',dict(row,title=item['title'],status='Ready' if item['completed'] else 'Outstanding'),item['notes'],item['source_url'] or url)

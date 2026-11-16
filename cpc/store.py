@@ -6,6 +6,7 @@ import shutil
 import uuid
 import tempfile
 from contextlib import closing
+from .receipts import ReceiptStore, RECEIPT_FIELDS
 from .recovery import RecoveryStore, RECOVERY_TABLES
 from .permits import PermitStore, PERMIT_COLUMNS, REQUIREMENT_FIELDS
 from .development import DevelopmentStore, NEW_FIELDS, ADDED_COLUMNS, validate_date
@@ -34,24 +35,26 @@ FIELDS = {
  'milestones': ['project_id','title','phase','deadline','status'],
 }
 FIELDS.update(NEW_FIELDS)
+FIELDS['receipts']=RECEIPT_FIELDS
 FIELDS['registers'].extend(PERMIT_COLUMNS)
 FIELDS['permit_requirements']=REQUIREMENT_FIELDS+['completed_on']
 for _table,_columns in ADDED_COLUMNS.items():
  FIELDS[_table].extend(_columns)
 
-class Store(RecoveryStore,PermitStore,DevelopmentStore):
+class Store(ReceiptStore,RecoveryStore,PermitStore,DevelopmentStore):
  def __init__(self, path):
   self.path=Path(path); self.path.parent.mkdir(parents=True,exist_ok=True)
   self.db=sqlite3.connect(self.path); self.db.row_factory=sqlite3.Row
   version=self.db.execute('PRAGMA user_version').fetchone()[0]
-  if version not in (0,1,2,3,4):
+  if version not in (0,1,2,3,4,5):
    self.db.close(); raise ValueError('This database requires a newer version of the application')
-  if version in (1,2,3):
-   self.backup(str(self.path)+'.before-v1.3.0.sqlite3')
+  if version in (1,2,3,4):
+   self.backup(str(self.path)+'.before-v1.4.0.sqlite3')
   self.db.execute('PRAGMA foreign_keys=ON'); self.db.executescript(SCHEMA)
   self.migrate_development()
   self.migrate_permits()
   self.migrate_recovery()
+  self.migrate_receipts()
   self.db.execute("PRAGMA journal_mode=WAL")
   self.db.execute("PRAGMA synchronous=FULL")
   self.db.execute("PRAGMA busy_timeout=5000")
@@ -72,6 +75,7 @@ class Store(RecoveryStore,PermitStore,DevelopmentStore):
    data={**{k:v for k,v in previous[0].items() if k in FIELDS[table]},**data}
   self.validate_development(table,data,row_id)
   self.validate_permit(table,data,row_id)
+  self.validate_receipt(table,data,row_id)
   for key in ('name','title','summary'):
    if key in FIELDS[table] and not str(data.get(key,'')).strip(): raise ValueError(f'{key.title()} is required')
   for key in ('deadline','follow_up','occurred'):
@@ -84,6 +88,7 @@ class Store(RecoveryStore,PermitStore,DevelopmentStore):
    else:
     row_id=self.db.execute(f'INSERT INTO {table} ('+','.join(data)+') VALUES ('+','.join('?' for _ in data)+')',list(data.values())).lastrowid
    pid=row_id if table=='projects' else self.project_for(table,data)
+   if table=='receipts' and pid: self.log(pid,f'Supplier receipt #{row_id}: {data["supplier_name"]}; estimate {data["estimated_amount"] or "unknown"}; actual {data["actual_amount"] or "unknown"} {data.get("currency","USD")}; {data.get("status","Pending Review")}')
    if pid: self.log(pid,f'{table.title()} #{row_id} saved: {data.get("name",data.get("title",data.get("summary","")))}')
   return row_id
  def associate(self,pid,cid):
@@ -131,9 +136,10 @@ class Store(RecoveryStore,PermitStore,DevelopmentStore):
    with closing(sqlite3.connect(f'{source.resolve().as_uri()}?mode=ro',uri=True)) as candidate:
     if candidate.execute('PRAGMA integrity_check').fetchone()[0]!='ok': raise ValueError('Invalid backup')
     version=candidate.execute('PRAGMA user_version').fetchone()[0]
-    if version not in (1,2,3,4): raise ValueError('Unsupported backup version')
+    if version not in (1,2,3,4,5): raise ValueError('Unsupported backup version')
     # Validate the original schema before any CREATE TABLE statement can mask missing tables.
     for table in list(FIELDS)+['versions','activity','project_contacts']+RECOVERY_TABLES:
+     if version<5 and table=='receipts': continue
      if version<4 and table in RECOVERY_TABLES: continue
      if version==1 and table in NEW_FIELDS: continue
      if version<=2 and table=='permit_requirements': continue
@@ -162,7 +168,7 @@ class Store(RecoveryStore,PermitStore,DevelopmentStore):
   for title,rows in [('Outstanding tasks',self.outstanding(pid)),('Documents',self.rows('SELECT d.title,v.revision,v.status,v.requirements,v.resubmission FROM documents d LEFT JOIN versions v ON v.id=(SELECT MAX(id) FROM versions WHERE document_id=d.id) WHERE d.project_id=?',(pid,))),('Milestones',self.rows('SELECT title,phase,deadline,status FROM milestones WHERE project_id=? ORDER BY deadline',(pid,))),('Communication',self.rows('SELECT occurred,summary,follow_up,status FROM communications WHERE project_id=? ORDER BY occurred DESC',(pid,)))]:
    out+=f'<h2>{title}</h2>'
    for r in rows: out+='<p>'+' | '.join(f'{e(k)}: {e(v)}' for k,v in r.items() if k not in ('id','project_id','contact_id'))+'</p>'
-  return out+self.development_report(pid)+self.permit_checklist_report(pid)
+  return out+self.development_report(pid)+self.permit_checklist_report(pid)+self.receipt_report(pid)
  def draft(self,comm):
   p=self.rows('SELECT name FROM projects WHERE id=?',(comm['project_id'],))[0]
   c=self.rows('SELECT name,email FROM contacts WHERE id=?',(comm['contact_id'],))
@@ -184,3 +190,5 @@ class Store(RecoveryStore,PermitStore,DevelopmentStore):
   permit=self.save('registers',dict(project_id=p,title='Tenant improvement permit',record_type='Permit',jurisdiction_type='City',jurisdiction_name='Example City (fictional)',department='Building & Safety',requirements_url='https://example.com/permit-requirements',application_url='https://example.com/permit-application',notes='Fictional links for demonstration; replace with your jurisdiction website.'))
   self.save('permit_requirements',dict(register_id=permit,title='Complete permit application',source_url='https://example.com/permit-requirements',completed=0))
   self.save('permit_requirements',dict(register_id=permit,title='Prepare coordinated plan set',completed=1))
+
+  self.save('receipts',dict(project_id=p,title='Example lighting materials receipt',supplier_name='Example Electrical Supply (fictional)',reference='DEMO-REC-001',discipline='Electrical',currency='USD',estimated_amount='1250.00',actual_amount='1295.50',status='Pending Review',notes='Fictional sample pricing; replace with supplier information.'))

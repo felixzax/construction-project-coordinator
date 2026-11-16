@@ -93,6 +93,21 @@ def smoke_test():
             store.export(csv_path, export_rows)
             if not csv_path.is_file() or not csv_path.stat().st_size:
                 raise RuntimeError('CSV export smoke check failed')
+            if window.tables['Receipts'].rowCount() != 1:
+                raise RuntimeError('Receipts workspace smoke check failed')
+            receipt = store.receipt_rows()[0]
+            if receipt['variance_amount'] != '45.50' or receipt['status'] != 'Pending Review':
+                raise RuntimeError('Receipt pricing smoke check failed')
+            store.save('receipts', {'status': 'Approved'}, receipt['id'])
+            if store.receipt_rows()[0]['status'] != 'Approved':
+                raise RuntimeError('Receipt approval smoke check failed')
+            store.save('receipts', {'actual_amount': '1300.00'}, receipt['id'])
+            if store.receipt_rows()[0]['status'] != 'Pending Review':
+                raise RuntimeError('Receipt re-review smoke check failed')
+            receipt_word = Path(folder) / 'receipt-export.docx'
+            write_docx(receipt_word, 'Supplier receipts', store.receipt_rows())
+            if not receipt_word.is_file():
+                raise RuntimeError('Receipt Word export smoke check failed')
             window.close()
             app.processEvents()
         finally:
