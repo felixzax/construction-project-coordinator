@@ -4,6 +4,8 @@ A local Windows desktop workspace for construction and property development coor
 
 ## Download and run
 
+**[Download the verified Windows 1.4.0 build](https://github.com/felixzax/construction-project-coordinator/actions/runs/43799355760/artifacts/14195962274)** · [Successful build and test logs](https://github.com/felixzax/construction-project-coordinator/actions/runs/43799355760). All 127 Windows tests and the packaged-executable check passed, including receipt pricing, approval/re-review and DOCX export.
+
 
 
 
