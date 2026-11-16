@@ -6,6 +6,7 @@ import shutil
 import uuid
 import tempfile
 from contextlib import closing
+from .recovery import RecoveryStore, RECOVERY_TABLES
 from .permits import PermitStore, PERMIT_COLUMNS, REQUIREMENT_FIELDS
 from .development import DevelopmentStore, NEW_FIELDS, ADDED_COLUMNS, validate_date
 from datetime import date, datetime, timedelta
@@ -38,18 +39,22 @@ FIELDS['permit_requirements']=REQUIREMENT_FIELDS+['completed_on']
 for _table,_columns in ADDED_COLUMNS.items():
  FIELDS[_table].extend(_columns)
 
-class Store(PermitStore,DevelopmentStore):
+class Store(RecoveryStore,PermitStore,DevelopmentStore):
  def __init__(self, path):
   self.path=Path(path); self.path.parent.mkdir(parents=True,exist_ok=True)
   self.db=sqlite3.connect(self.path); self.db.row_factory=sqlite3.Row
   version=self.db.execute('PRAGMA user_version').fetchone()[0]
-  if version not in (0,1,2,3):
+  if version not in (0,1,2,3,4):
    self.db.close(); raise ValueError('This database requires a newer version of the application')
-  if version in (1,2):
-   self.backup(str(self.path)+'.before-v1.2.0.sqlite3')
+  if version in (1,2,3):
+   self.backup(str(self.path)+'.before-v1.3.0.sqlite3')
   self.db.execute('PRAGMA foreign_keys=ON'); self.db.executescript(SCHEMA)
   self.migrate_development()
   self.migrate_permits()
+  self.migrate_recovery()
+  self.db.execute("PRAGMA journal_mode=WAL")
+  self.db.execute("PRAGMA synchronous=FULL")
+  self.db.execute("PRAGMA busy_timeout=5000")
  def rows(self,sql,args=()): return [dict(r) for r in self.db.execute(sql,args)]
  def all(self,table):
   if table not in FIELDS: raise ValueError('Unknown table')
@@ -126,9 +131,10 @@ class Store(PermitStore,DevelopmentStore):
    with closing(sqlite3.connect(f'{source.resolve().as_uri()}?mode=ro',uri=True)) as candidate:
     if candidate.execute('PRAGMA integrity_check').fetchone()[0]!='ok': raise ValueError('Invalid backup')
     version=candidate.execute('PRAGMA user_version').fetchone()[0]
-    if version not in (1,2,3): raise ValueError('Unsupported backup version')
+    if version not in (1,2,3,4): raise ValueError('Unsupported backup version')
     # Validate the original schema before any CREATE TABLE statement can mask missing tables.
-    for table in list(FIELDS)+['versions','activity','project_contacts']:
+    for table in list(FIELDS)+['versions','activity','project_contacts']+RECOVERY_TABLES:
+     if version<4 and table in RECOVERY_TABLES: continue
      if version==1 and table in NEW_FIELDS: continue
      if version<=2 and table=='permit_requirements': continue
      expected={r[1] for r in self.db.execute(f'PRAGMA table_info({table})')}

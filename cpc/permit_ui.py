@@ -5,6 +5,7 @@ from PySide6.QtWidgets import (QDialog,QVBoxLayout,QHBoxLayout,QLabel,QLineEdit,
  QTableWidget,QTableWidgetItem,QHeaderView,QAbstractItemView,QFileDialog)
 from .permits import JURISDICTIONS,PERMIT_COLUMNS,REQUIREMENT_FIELDS,validate_url
 from .store import FIELDS
+from .table import DataTable
 
 class PermitUI:
  def build_page(self,title):
@@ -31,6 +32,7 @@ class PermitUI:
    fields=primary+[key for key in FIELDS['registers'] if key not in primary]
    form=Form(self,'Edit permit application' if existing else 'New permit application',fields,row,choices)
    form.persist=lambda values:self.store.save('registers',values,row['id'] if existing else None)
+   form.enable_draft('registers',row['id'] if existing else None)
    if form.exec(): self.refresh()
   self.guard(action)
  def open_web_link(self,value):
@@ -55,7 +57,7 @@ class PermitUI:
     self.guard(perform)
    reviewed.toggled.connect(review_changed)
    bar=QHBoxLayout(); layout.addLayout(bar)
-   table=QTableWidget(); table.setColumnCount(5); table.setHorizontalHeaderLabels(['Ready','Requirement','Source link','Checked on','Notes']); table.setSelectionBehavior(QAbstractItemView.SelectRows); table.setSelectionMode(QAbstractItemView.SingleSelection); table.setEditTriggers(QAbstractItemView.NoEditTriggers); table.horizontalHeader().setSectionResizeMode(QHeaderView.Interactive); table.horizontalHeader().setStretchLastSection(True); layout.addWidget(table)
+   table=DataTable(); table.setColumnCount(5); table.setHorizontalHeaderLabels(['Ready','Requirement','Source link','Checked on','Notes']);  table.setEditTriggers(QAbstractItemView.NoEditTriggers); table.horizontalHeader().setSectionResizeMode(QHeaderView.Interactive); table.horizontalHeader().setStretchLastSection(True); layout.addWidget(table)
    progress=QLabel(); layout.addWidget(progress); items=[]
    def reload(selected_id=None):
     items[:]=self.store.permit_requirements(permit_id); table.blockSignals(True); table.setRowCount(len(items))
@@ -80,6 +82,7 @@ class PermitUI:
      choices={'register_id':[(permit['title'],permit_id)]}
      form=Form(dlg,'Edit application requirement' if existing else 'New application requirement',REQUIREMENT_FIELDS,record,choices)
      form.persist=lambda values:self.store.save('permit_requirements',values,record['id'] if existing else None)
+     form.enable_draft('permit_requirements',record['id'] if existing else None)
      if form.exec(): reload()
     self.guard(perform)
    def open_source():
@@ -95,6 +98,14 @@ class PermitUI:
       rows=[dict(permit=permit['title'],jurisdiction_type=permit['jurisdiction_type'],jurisdiction_name=permit['jurisdiction_name'],department=permit['department'],requirements_url=permit['requirements_url'],requirement=item['title'],source_url=item['source_url'],completed='Yes' if item['completed'] else 'No',completed_on=item['completed_on'],notes=item['notes']) for item in items]
       self.store.export(path,rows)
     self.guard(perform)
+   def remove_requirements(all_listed=False):
+    def perform():
+     indexes=range(len(items)) if all_listed else table.selected_record_rows()
+     if self.confirm_delete([('permit_requirements',items[i]['id']) for i in indexes],'permit requirements'): reload()
+    self.guard(perform)
+   table.delete_selected=lambda:remove_requirements(); table.delete_listed=lambda:remove_requirements(True)
+   self.button(bar,'Export DOCX',lambda:self.export_rows_dialog('Permit checklist',[dict(item,permit=permit['title'],jurisdiction=permit['jurisdiction_name'],requirements_url=permit['requirements_url']) for item in items],'docx'))
+   self.button(bar,'Delete selected',lambda:remove_requirements()); self.button(bar,'Delete all requirements',lambda:remove_requirements(True))
    self.button(bar,'+ Requirement',lambda:edit_requirement()); self.button(bar,'Edit selected',lambda:edit_requirement(True)); self.button(bar,'Open source link',open_source); self.button(bar,'Export checklist CSV',export); self.button(bar,'Close',dlg.accept)
    table.doubleClicked.connect(lambda _:edit_requirement(True)); reload(); dlg.exec(); self.refresh()
   self.guard(action)

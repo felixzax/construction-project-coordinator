@@ -6,6 +6,7 @@ from PySide6.QtWidgets import (QWidget,QVBoxLayout,QHBoxLayout,QLabel,QLineEdit,
  QTableWidget,QAbstractItemView,QHeaderView,QTableWidgetItem,QDialog,QFileDialog,QMessageBox)
 from .development import DISCIPLINES, NEW_FIELDS, REGISTER_TYPES, line_totals, STATUSES
 from .store import FIELDS, TASK_STATUSES
+from .table import DataTable
 from .permits import PERMIT_COLUMNS
 
 DISCIPLINE_PAGES={
@@ -18,7 +19,7 @@ DISCIPLINE_PAGES={
  'Other Trades':['General','Interiors','Roofing','Concrete','Masonry','Steel','Demolition'],
 }
 REGISTER_PAGES={'RFIs':'RFI','Submittals':'Submittal','Permits':'Permit','Inspections':'Inspection','Punch & Changes':None}
-NAVIGATION=['Dashboard','Projects','Tasks',*DISCIPLINE_PAGES,'Meetings','Contacts','Communications','Documents',*REGISTER_PAGES,'Bidding','Timeline','Search','Backup & Restore']
+NAVIGATION=['Dashboard','Projects','Tasks',*DISCIPLINE_PAGES,'Meetings','Contacts','Communications','Documents',*REGISTER_PAGES,'Bidding','Timeline','Search','Backup & Restore','Recovery & Data']
 
 STATUS_CHOICES=STATUSES
 EXTRA_OPTIONS={
@@ -69,7 +70,7 @@ class DevelopmentUI:
   if title=='Meetings': self.button(bar,'Create action task',self.meeting_task)
   if title=='Bidding':
    self.button(bar,'Compare bids',self.compare_bids); self.button(bar,'Export comparison CSV',self.export_comparison)
-  else: self.button(bar,'Export CSV',lambda _,t=title:self.export_page(t))
+  else: self.button(bar,'Export CSV',lambda _,t=title:self.export_section(t,'csv'))
   entry=QLineEdit(); entry.setPlaceholderText('Filter this list…'); entry.textChanged.connect(self.refresh); setattr(self,'filter_'+title,entry); layout.addWidget(entry)
   table=self.make_table(title); layout.addWidget(table)
   table.doubleClicked.connect(lambda _,t=title:self.edit(t,True))
@@ -82,7 +83,7 @@ class DevelopmentUI:
    self.bid_summary=QLabel('Select a package to view bidder estimates.'); self.bid_summary.setWordWrap(True); layout.addWidget(self.bid_summary)
   self.stack.addWidget(page)
  def make_table(self,title):
-  table=QTableWidget(); table.setSelectionBehavior(QAbstractItemView.SelectRows); table.setSelectionMode(QAbstractItemView.SingleSelection); table.setEditTriggers(QAbstractItemView.NoEditTriggers); table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents); table.horizontalHeader().setStretchLastSection(True); table.setAlternatingRowColors(True); self.tables[title]=table; return table
+  table=DataTable();  table.setEditTriggers(QAbstractItemView.NoEditTriggers); table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents); table.horizontalHeader().setStretchLastSection(True); table.setAlternatingRowColors(True); self.tables[title]=table; return table
  def refresh(self,*args):
   # Rebuild the project selector without losing its current selection or emitting a refresh loop.
   pid=self.project_filter.currentData(); self.project_filter.blockSignals(True); self.project_filter.clear(); self.project_filter.addItem('All projects',None)
@@ -116,12 +117,12 @@ class DevelopmentUI:
    for r in self.store.all(table):
     if r['project_id'] not in active or r['status'] in ('Completed','Approved','Closed','Cancelled','Awarded','Held'): continue
     deadline=r.get('deadline',r.get('meeting_date',''))
-    extra.append(dict(kind=label,project_id=r['project_id'],project=names.get(r['project_id'],''),item=r['title'],deadline=deadline,status=r['status'],responsible=people.get(r.get('contact_id'),'')))
+    extra.append(dict(_source_table=table,_source_id=r['id'],kind=label,project_id=r['project_id'],project=names.get(r['project_id'],''),item=r['title'],deadline=deadline,status=r['status'],responsible=people.get(r.get('contact_id'),'')))
   dash=self.data.get('Dashboard',[])+extra
   self.fill('Dashboard',sorted(dash,key=lambda r:r['deadline'] or '9999'))
   timeline=self.data.get('Timeline',[])
   for r in extra:
-   timeline.append(dict(id=None,project_id=r['project_id'],title=r['item'],phase='',deadline=r['deadline'],status=r['status'],project=r['project'],kind=r['kind']))
+   timeline.append(dict(_source_table=r['_source_table'],_source_id=r['_source_id'],id=None,project_id=r['project_id'],title=r['item'],phase='',deadline=r['deadline'],status=r['status'],project=r['project'],kind=r['kind']))
   self.fill('Timeline',sorted(timeline,key=lambda r:r['deadline'] or '9999'))
  def choices(self,table):
   choices=super().choices(table); choices.update(EXTRA_OPTIONS)
@@ -150,6 +151,7 @@ class DevelopmentUI:
    fields=[k for k in FIELDS[table] if table!='registers' or k not in PERMIT_COLUMNS]
    form=Form(self,('Edit ' if existing else 'New ')+title,fields,row,choices)
    form.persist=lambda data:self.store.save(table,data,row['id'] if existing else None)
+   form.enable_draft(table,row['id'] if existing else None)
    if form.exec(): self.refresh()
   self.guard(action)
  def refresh_bids(self):
@@ -171,6 +173,7 @@ class DevelopmentUI:
    choices=self.choices('bids'); choices['package_id']=[(package['title'],package['id'])]
    form=Form(self,'Edit bidder estimate' if existing else 'New bidder estimate',FIELDS['bids'],row,choices)
    form.persist=lambda data:self.store.save('bids',data,row['id'] if existing else None)
+   form.enable_draft('bids',row['id'] if existing else None)
    if form.exec(): self.refresh()
   self.guard(action)
  def meeting_task(self):
@@ -178,7 +181,7 @@ class DevelopmentUI:
   def action():
    meeting=self.selected('Meetings'); data=dict(project_id=meeting['project_id'],meeting_id=meeting['id'],title='Action: '+meeting['title'],contact_id=meeting['contact_id'],status='Not Started',priority='Normal',notes='Meeting decisions: '+meeting['decisions']+'\nMinutes: '+meeting['minutes'])
    choices=self.choices('tasks'); choices['project_id']=[(meeting['project'],meeting['project_id'])]; choices['meeting_id']=[(meeting['title'],meeting['id'])]
-   form=Form(self,'Create assigned meeting action',FIELDS['tasks'],data,choices); form.persist=lambda values:self.store.save('tasks',values)
+   form=Form(self,'Create assigned meeting action',FIELDS['tasks'],data,choices); form.persist=lambda values:self.store.save('tasks',values); form.enable_draft('tasks')
    if form.exec(): self.refresh()
   self.guard(action)
  def cost_items(self):
@@ -187,7 +190,7 @@ class DevelopmentUI:
    selected=self.selected('Bids'); bid_id=selected['id']
    dlg=QDialog(self); dlg.setWindowTitle('Cost items — '+selected['title']); dlg.resize(1200,720); layout=QVBoxLayout(dlg)
    hint=QLabel('Enter quantities or length × width in matching units. Waste applies to materials only. Labor = quantity × hours per unit × hourly rate. Unchecked alternates are excluded.'); hint.setWordWrap(True); layout.addWidget(hint)
-   buttons=QHBoxLayout(); layout.addLayout(buttons); table=QTableWidget(); table.setSelectionBehavior(QAbstractItemView.SelectRows); table.setSelectionMode(QAbstractItemView.SingleSelection); table.setEditTriggers(QAbstractItemView.NoEditTriggers); layout.addWidget(table); summary=QLabel(); summary.setWordWrap(True); summary.setTextInteractionFlags(Qt.TextSelectableByMouse); layout.addWidget(summary)
+   buttons=QHBoxLayout(); layout.addLayout(buttons); table=DataTable();  table.setEditTriggers(QAbstractItemView.NoEditTriggers); layout.addWidget(table); summary=QLabel(); summary.setWordWrap(True); summary.setTextInteractionFlags(Qt.TextSelectableByMouse); layout.addWidget(summary)
    items=[]
    def reload():
     items[:]=self.store.rows('SELECT * FROM bid_items WHERE bid_id=? ORDER BY id',(bid_id,)); display=[]
@@ -210,6 +213,7 @@ class DevelopmentUI:
      choices=self.choices('bid_items'); choices['bid_id']=[(selected['title'],bid_id)]
      form=Form(dlg,'Edit cost item' if existing else 'New cost item',FIELDS['bid_items'],record,choices)
      form.persist=lambda values:self.store.save('bid_items',values,record['id'] if existing else None)
+     form.enable_draft('bid_items',record['id'] if existing else None)
      if form.exec(): reload(); self.refresh_bids()
     self.guard(perform)
    def export_items():
@@ -220,6 +224,14 @@ class DevelopmentUI:
       for item in items: rows.append({**item,**{k:str(v) for k,v in line_totals(item).items()}})
       self.store.export(path,rows)
     self.guard(perform)
+   def delete_items(all_listed=False):
+    def perform():
+     indexes=range(len(items)) if all_listed else table.selected_record_rows()
+     if self.confirm_delete([('bid_items',items[i]['id']) for i in indexes],'estimate cost items'): reload(); self.refresh_bids()
+    self.guard(perform)
+   table.delete_selected=lambda:delete_items(); table.delete_listed=lambda:delete_items(True)
+   self.button(buttons,'Export DOCX',lambda:self.export_rows_dialog('Bid cost breakdown',[{**item,**{k:str(v) for k,v in line_totals(item).items()}} for item in items],'docx'))
+   self.button(buttons,'Delete selected',lambda:delete_items()); self.button(buttons,'Delete all items',lambda:delete_items(True))
    self.button(buttons,'+ Cost item',lambda:edit_item()); self.button(buttons,'Edit selected',lambda:edit_item(True)); self.button(buttons,'Duplicate selected',lambda:edit_item(duplicate=True)); self.button(buttons,'Export cost breakdown CSV',export_items); self.button(buttons,'Close',dlg.accept); table.doubleClicked.connect(lambda _:edit_item(True)); reload(); dlg.exec(); self.refresh()
   self.guard(action)
  def compare_bids(self):

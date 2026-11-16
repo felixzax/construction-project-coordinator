@@ -61,6 +61,38 @@ def smoke_test():
             permit = next(r for r in store.all('registers') if r['record_type'] == 'Permit')
             if store.permit_progress(permit['id']) != '2/2 checked':
                 raise RuntimeError('Permit checklist persistence smoke check failed')
+            # Verify packaged clipboard, refresh, draft storage and backed-up deletion.
+            task_table = window.tables['Tasks']
+            task_table.setCurrentCell(0, 0)
+            copied = task_table.copy_selection()
+            if not copied or copied == 'No':
+                raise RuntimeError('Clipboard smoke check failed')
+            count = len(store.all('tasks'))
+            window.refresh_from_disk()
+            if len(store.all('tasks')) != count:
+                raise RuntimeError('Refresh smoke check lost records')
+            store.save_draft('smoke-draft', 'tasks', None, {'title': 'Recoverable draft'})
+            if not store.drafts():
+                raise RuntimeError('Draft persistence smoke check failed')
+            task_id = store.all('tasks')[0]['id']
+            safety = store.delete_records([('tasks', task_id)])
+            if not safety or not safety.is_file():
+                raise RuntimeError('Backed-up deletion smoke check failed')
+            store.restore(safety)
+            if len(store.all('tasks')) != count:
+                raise RuntimeError('Deletion recovery smoke check failed')
+            from cpc.exports import write_docx, department_rows
+            word_path = Path(folder) / 'department-export.docx'
+            export_rows = department_rows(store, ['Electrical'])
+            write_docx(word_path, 'Electrical department', export_rows)
+            import zipfile
+            with zipfile.ZipFile(word_path) as archive:
+                if 'word/document.xml' not in archive.namelist():
+                    raise RuntimeError('Word export smoke check failed')
+            csv_path = Path(folder) / 'department-export.csv'
+            store.export(csv_path, export_rows)
+            if not csv_path.is_file() or not csv_path.stat().st_size:
+                raise RuntimeError('CSV export smoke check failed')
             window.close()
             app.processEvents()
         finally:

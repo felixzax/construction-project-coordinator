@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.3.0 — 2026-11-15
+
+- Added CSV and Word (.docx) exports for every department, including tagged related work, plan status, permit requirements, contacts and bid cost detail.
+- Added filtered CSV/DOCX section-list exports and Word exports for nested permit, estimate and revision lists.
+
+- Added selected/multiple/all-listed record deletion across sections and nested bid, permit and revision lists, plus a typed-confirmation application reset.
+- Added transactional child cleanup, contact/meeting unlinking, pre-delete recovery snapshots and protection against invalid remaining bid discounts.
+- Added Windows-style cell/multiple selection, Ctrl+C/Ctrl+A, Delete key and right-click table actions while preserving native text field editing.
+- Added F5 refresh and cache clearing without deleting saved data.
+- Added WAL/full-sync database durability, autosaved form drafts, draft recovery and periodic/startup/shutdown database snapshots with rotation.
+- Added recovery workspace, crash-session detection and single-instance data-folder lock.
+- Added schema v4 upgrades and restoration of v1–v4 backups.
+- Added actual abrupt-process-exit tests, clipboard/deletion tests, refresh preservation, snapshot/draft recovery and expanded packaged-executable checks.
+
 ## 1.2.0 — 2026-11-15
 
 - Added city/county jurisdiction type, name and department to permits.

@@ -2,20 +2,23 @@ import os
 import sys
 from datetime import date, timedelta
 from pathlib import Path
-from PySide6.QtCore import Qt, QStandardPaths
+from PySide6.QtCore import Qt, QStandardPaths, QTimer, QLockFile
 from PySide6.QtGui import QColor, QTextDocument
 from PySide6.QtWidgets import (QApplication,QMainWindow,QWidget,QVBoxLayout,QHBoxLayout,QLabel,QPushButton,QListWidget,QStackedWidget,QTableWidget,QTableWidgetItem,QHeaderView,QLineEdit,QDialog,QDialogButtonBox,QFormLayout,QComboBox,QTextEdit,QFileDialog,QMessageBox,QCheckBox,QAbstractItemView,QScrollArea)
 from PySide6.QtPrintSupport import QPrinter,QPrintPreviewDialog
 from .store import Store, FIELDS, TASK_STATUSES
+from .table import DataTable
+from .exports import ExportUI
+from .recovery_ui import RecoveryUI
 from .permit_ui import PermitUI
 from .development_ui import DevelopmentUI, NAVIGATION, EXTRA_OPTIONS
 from .development import line_totals
 
-VERSION='1.2.0'
+VERSION='1.3.0'
 OPTIONS={'phase':['Planning','Design','Permitting','Construction','Inspection','Closeout'],'priority':['Low','Normal','High','Urgent'],'category':['Architectural Plans','Engineering Drawings','Permit','Cut Sheet','Estimate','Approval','CAD File','BIM Model','Site Plan','Survey','Specification','Shop Drawing','As-Built','Other'],'role':['Architect','Engineer','Contractor','City Official','County Official','Business Owner','Electrical Engineer','Plumbing Engineer','Mechanical Engineer','Civil Engineer','Structural Engineer','Surveyor','Estimator','Supplier','Developer','Other']}
 class Form(QDialog):
  def __init__(self,parent,title,fields,record=None,choices=None):
-  super().__init__(parent); self.setWindowTitle(title); self.resize(670,720); self.inputs={}; self.persist=None; layout=QVBoxLayout(self)
+  super().__init__(parent); self.setWindowTitle(title); self.resize(670,720); self.inputs={}; self.persist=None; self.persisted=False; self._draft_context=None; self._draft_timer=QTimer(self); self._draft_timer.setSingleShot(True); self._draft_timer.setInterval(750); self._draft_timer.timeout.connect(self.save_recovery_draft); self._draft_max_timer=QTimer(self); self._draft_max_timer.setSingleShot(True); self._draft_max_timer.setInterval(10000); self._draft_max_timer.timeout.connect(self.save_recovery_draft); layout=QVBoxLayout(self)
   scroll=QScrollArea(); scroll.setWidgetResizable(True); body=QWidget(); form=QFormLayout(body); scroll.setWidget(body); layout.addWidget(scroll)
   for key in fields:
    value=(record or {}).get(key,''); opts=(choices or {}).get(key,OPTIONS.get(key))
@@ -47,10 +50,40 @@ class Form(QDialog):
   buttons=QDialogButtonBox(QDialogButtonBox.Save|QDialogButtonBox.Cancel); buttons.accepted.connect(self.accept); buttons.rejected.connect(self.reject); layout.addWidget(buttons)
  def accept(self):
   if self.persist is not None:
-   try: self.persist(self.values())
+   try: self.persist(self.values()); self.persisted=True
    except Exception as ex:
     QMessageBox.warning(self,'Please review this entry',str(ex)); return
+  self.clear_recovery_draft()
   super().accept()
+ def enable_draft(self,table,row_id=None,extra=None,key=None):
+  import uuid
+  parent=self.parentWidget()
+  while parent is not None and not hasattr(parent,'store'): parent=parent.parentWidget()
+  if parent is None: return
+  self._draft_store=parent.store
+  self._draft_context=(key or (f'{table}:{row_id}' if row_id else f'{table}:new:{uuid.uuid4().hex}'),table,row_id,extra or {})
+  for widget in self.inputs.values():
+   if isinstance(widget,QLineEdit): widget.textChanged.connect(self.schedule_draft)
+   elif isinstance(widget,QTextEdit): widget.textChanged.connect(self.schedule_draft)
+   elif isinstance(widget,QComboBox): widget.currentIndexChanged.connect(self.schedule_draft)
+   elif isinstance(widget,QCheckBox): widget.toggled.connect(self.schedule_draft)
+ def schedule_draft(self,*args):
+  if self._draft_context:
+   self._draft_timer.start()
+   if not self._draft_max_timer.isActive(): self._draft_max_timer.start()
+ def save_recovery_draft(self):
+  if not self._draft_context: return
+  key,table,row_id,extra=self._draft_context
+  try:
+   self._draft_store.save_draft(key,table,row_id,self.values(),extra)
+   self._draft_timer.stop(); self._draft_max_timer.stop()
+  except Exception as ex:
+   self.setWindowTitle('Draft autosave failed — '+str(ex))
+ def clear_recovery_draft(self):
+  self._draft_timer.stop(); self._draft_max_timer.stop()
+  if self._draft_context: self._draft_store.discard_draft(self._draft_context[0])
+ def reject(self):
+  self.clear_recovery_draft(); super().reject()
  def update_cost_preview(self,*args):
   try:
    result=line_totals(self.values()); self.preview.setText('Preview: '+ ' | '.join(f'{k.replace("_"," ")}: {v}' for k,v in result.items()))
@@ -65,7 +98,7 @@ class BaseWindow(QMainWindow):
  def __init__(self,store):
   super().__init__(); self.store=store; self.setWindowTitle(f'Construction Project Coordinator · {VERSION}'); self.resize(1280,800); self.tables={}; self.data={}; self.current='Dashboard'
   root=QWidget(); self.setCentralWidget(root); outer=QHBoxLayout(root)
-  self.nav=QListWidget(); self.nav.setFixedWidth(210); self.nav.addItems(NAVIGATION); self.nav.item(NAVIGATION.index('Documents')).setText('Plans & CAD'); outer.addWidget(self.nav)
+  self.nav=QListWidget(); self.nav.setFixedWidth(210); self.navigation=NAVIGATION; self.nav.addItems(NAVIGATION); self.nav.item(NAVIGATION.index('Documents')).setText('Plans & CAD'); outer.addWidget(self.nav)
   content=QWidget(); column=QVBoxLayout(content); outer.addWidget(content,1)
   project_bar=QHBoxLayout(); project_bar.addWidget(QLabel('Project workspace:')); self.project_filter=QComboBox(); self.project_filter.addItem('All projects',None); self.project_filter.setMinimumWidth(300); project_bar.addWidget(self.project_filter); project_bar.addStretch(); column.addLayout(project_bar)
   self.stack=QStackedWidget(); column.addWidget(self.stack,1)
@@ -94,7 +127,7 @@ class BaseWindow(QMainWindow):
    if title not in ('Dashboard','Search'):
     entry=QLineEdit(); entry.setPlaceholderText('Filter this list…'); entry.textChanged.connect(self.refresh); setattr(self,'filter_'+title,entry); layout.addWidget(entry)
    if title=='Dashboard': self.dashboard_summary=QLabel(); layout.addWidget(self.dashboard_summary)
-   table=QTableWidget(); table.setSelectionBehavior(QAbstractItemView.SelectRows); table.setSelectionMode(QAbstractItemView.SingleSelection); table.setEditTriggers(QAbstractItemView.NoEditTriggers); table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents); table.horizontalHeader().setStretchLastSection(True); table.setAlternatingRowColors(True); table.setWordWrap(False); layout.addWidget(table); self.tables[title]=table
+   table=DataTable();  table.setEditTriggers(QAbstractItemView.NoEditTriggers); table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents); table.horizontalHeader().setStretchLastSection(True); table.setAlternatingRowColors(True); table.setWordWrap(False); layout.addWidget(table); self.tables[title]=table
    if title in ['Projects','Tasks','Contacts','Communications','Documents','Timeline']: table.doubleClicked.connect(lambda _,t=title:self.edit(t,True))
   self.stack.addWidget(page)
  def change_page(self,index): self.stack.setCurrentIndex(index); self.current=self.nav.item(index).text(); self.refresh()
@@ -136,8 +169,8 @@ class BaseWindow(QMainWindow):
   summary_projects=[p for p in projects if not selected_project or p['id']==selected_project]
   recent=sorted([p for p in summary_projects if not p['archived']],key=lambda p:p['updated'] or '',reverse=True)[:5]
   self.dashboard_summary.setText(f'{sum(not p["archived"] for p in summary_projects)} active projects  ·  {len(tasks)} outstanding tasks  ·  {overdue} overdue  ·  {len(follow)} follow-ups due within 7 days\nRecently updated: '+', '.join(p['name'] for p in recent))
-  rows=[dict(kind='Task',project_id=t['project_id'],project=t['project'],item=t['title'],deadline=t['deadline'],status=t['status'],responsible=t['responsible']) for t in tasks]
-  rows += [dict(kind='Follow-up',project_id=c['project_id'],project=c['project'],item=c['summary'],deadline=c['follow_up'],status=c['status'],responsible=people.get(c['contact_id'],'')) for c in follow]
+  rows=[dict(_source_table='tasks',_source_id=t['id'],kind='Task',project_id=t['project_id'],project=t['project'],item=t['title'],deadline=t['deadline'],status=t['status'],responsible=t['responsible']) for t in tasks]
+  rows += [dict(_source_table='communications',_source_id=c['id'],kind='Follow-up',project_id=c['project_id'],project=c['project'],item=c['summary'],deadline=c['follow_up'],status=c['status'],responsible=people.get(c['contact_id'],'')) for c in follow]
   self.fill('Dashboard',sorted(rows,key=lambda r:r['deadline'] or '9999'))
   self.fill('Search',s.search(self.search_input.text()) if self.search_input.text().strip() else [])
  def selected(self,title):
@@ -160,8 +193,11 @@ class BaseWindow(QMainWindow):
    if 'project_id' in FIELDS[table] and not self.store.all('projects'): raise ValueError('Create a project first')
    if not existing and table=='communications': row['occurred']=date.today().isoformat()
    form=Form(self,('Edit ' if existing else 'New ')+table,FIELDS[table],row,self.choices(table))
+   form.persist=lambda data:self.store.save(table,data,row['id'] if existing else None)
+   form.enable_draft(table,row['id'] if existing else None)
    if form.exec():
-    self.store.save(table,form.values(),row['id'] if existing else None); self.refresh()
+    if not form.persisted: self.store.save(table,form.values(),row['id'] if existing else None)
+    self.refresh()
   self.guard(action)
  def archive(self):
   def action():
@@ -186,7 +222,11 @@ class BaseWindow(QMainWindow):
  def revision(self):
   def action():
    d=self.selected('Documents'); form=Form(self,'Record immutable document revision',['revision','submitted','status','requirements','file_path'],choices={'status':['Draft','Submitted','Approved','Changes Required']})
-   if form.exec(): self.store.add_version(d['id'],**form.values()); self.refresh()
+   form.persist=lambda data:self.store.add_version(d['id'],**data)
+   form.enable_draft('__versions__',extra={'document_id':d['id']})
+   if form.exec():
+    if not form.persisted: self.store.add_version(d['id'],**form.values())
+    self.refresh()
   self.guard(action)
  def history(self):
   def action():
@@ -221,14 +261,22 @@ class BaseWindow(QMainWindow):
    if path and QMessageBox.question(self,'Replace local data?','Restore this backup and replace all current records? A safety backup will be created.')==QMessageBox.Yes: self.store.restore(path); self.refresh(); QMessageBox.information(self,'Restore complete','Database restored successfully.')
   self.guard(action)
 
-class Window(PermitUI,DevelopmentUI,BaseWindow):
+class Window(ExportUI,RecoveryUI,PermitUI,DevelopmentUI,BaseWindow):
  pass
 
 def main():
  app=QApplication(sys.argv); app.setOrganizationName('Construction Project Coordinator'); app.setApplicationName('Construction Project Coordinator'); app.setStyle('Fusion')
  app.setStyleSheet('QWidget { font-family: Segoe UI; font-size: 10pt; } QMainWindow { background:#f3f5f8; } QListWidget { background:#17324d; color:white; border:0; padding:12px; } QListWidget::item { padding:13px 5px; } QListWidget::item:selected { background:#2b658b; border-radius:5px; } QLabel#heading { font-size:24pt; font-weight:600; color:#17324d; padding:12px 0; } QPushButton { padding:8px 12px; border:1px solid #bdcbd6; border-radius:4px; background:white; } QPushButton:hover { background:#e0eef8; } QTableWidget { background:white; border:1px solid #d9e1e8; gridline-color:#e9edf2; } QHeaderView::section { background:#e7eef4; padding:8px; border:0; } QLineEdit,QComboBox,QTextEdit { padding:6px; border:1px solid #b8c8d5; border-radius:3px; }')
  path=Path(os.environ.get('CPC_DATA_DIR') or QStandardPaths.writableLocation(QStandardPaths.AppLocalDataLocation))/'coordinator.sqlite3'
- store=Store(path)
+ lock=QLockFile(str(path)+'.lock'); path.parent.mkdir(parents=True,exist_ok=True); lock.setStaleLockTime(0)
+ if not lock.tryLock(0):
+  QMessageBox.information(None,'Application already open','Construction Project Coordinator is already using this data folder. Close the other instance first.'); return 1
+ try:
+  store=Store(path); crashed=store.start_session()
+ except Exception as ex:
+  QMessageBox.critical(None,'Unable to open local data',str(ex)); lock.unlock(); return 1
+ if crashed:
+  QMessageBox.information(None,'Previous session recovered','The previous session did not close normally. SQLite has reopened committed records. Open Recovery & Data to resume unfinished forms or restore a recovery snapshot.')
  if not store.all('projects'):
   if QMessageBox.question(None,'Welcome','Load fictional sample projects and contacts? Choose No to start with an empty workspace.')==QMessageBox.Yes: store.seed()
- window=Window(store); window.show(); result=app.exec(); store.db.close(); return result
+ window=Window(store); window.show(); result=app.exec(); store.db.close(); lock.unlock(); return result
