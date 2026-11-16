@@ -29,11 +29,11 @@ jobs:
         shell: pwsh
         run: |
           Copy-Item README.md, CHANGELOG.md -Destination dist/ConstructionProjectCoordinator/
-          Compress-Archive -Path dist/ConstructionProjectCoordinator -DestinationPath dist/ConstructionProjectCoordinator-1.1.0-Windows.zip
+          Compress-Archive -Path dist/ConstructionProjectCoordinator -DestinationPath dist/ConstructionProjectCoordinator-1.2.0-Windows.zip
       - uses: actions/upload-artifact@v4
         with:
-          name: ConstructionProjectCoordinator-1.1.0-Windows
-          path: dist/ConstructionProjectCoordinator-1.1.0-Windows.zip
+          name: ConstructionProjectCoordinator-1.2.0-Windows
+          path: dist/ConstructionProjectCoordinator-1.2.0-Windows.zip
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@v4

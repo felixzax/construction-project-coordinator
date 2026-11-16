@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.2.0 — 2026-11-15
+
+- Added city/county jurisdiction type, name and department to permits.
+- Added application and requirements website links with explicit browser buttons and a requirements-page-reviewed checkmark.
+- Added per-permit application requirement checklists, source links, saved ready checkmarks, completion dates and progress counts.
+- Added checklist CSV exports, search and project report coverage.
+- Preserved earlier data with schema v3 upgrades and v1/v2/v3 backup restoration.
+- Added permit-specific persistence, URL, migration, checklist UI and packaged-executable checks.
+
 ## 1.1.0 — 2026-11-15
 
 - Added dedicated architecture, engineering, electrical/fire, plumbing, mechanical/HVAC, site/civil and other-trade workspaces.

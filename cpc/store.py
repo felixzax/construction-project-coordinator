@@ -6,6 +6,7 @@ import shutil
 import uuid
 import tempfile
 from contextlib import closing
+from .permits import PermitStore, PERMIT_COLUMNS, REQUIREMENT_FIELDS
 from .development import DevelopmentStore, NEW_FIELDS, ADDED_COLUMNS, validate_date
 from datetime import date, datetime, timedelta
 from pathlib import Path
@@ -32,20 +33,23 @@ FIELDS = {
  'milestones': ['project_id','title','phase','deadline','status'],
 }
 FIELDS.update(NEW_FIELDS)
+FIELDS['registers'].extend(PERMIT_COLUMNS)
+FIELDS['permit_requirements']=REQUIREMENT_FIELDS+['completed_on']
 for _table,_columns in ADDED_COLUMNS.items():
  FIELDS[_table].extend(_columns)
 
-class Store(DevelopmentStore):
+class Store(PermitStore,DevelopmentStore):
  def __init__(self, path):
   self.path=Path(path); self.path.parent.mkdir(parents=True,exist_ok=True)
   self.db=sqlite3.connect(self.path); self.db.row_factory=sqlite3.Row
   version=self.db.execute('PRAGMA user_version').fetchone()[0]
-  if version not in (0,1,2):
+  if version not in (0,1,2,3):
    self.db.close(); raise ValueError('This database requires a newer version of the application')
-  if version==1:
-   self.backup(str(self.path)+'.before-v1.1.0.sqlite3')
+  if version in (1,2):
+   self.backup(str(self.path)+'.before-v1.2.0.sqlite3')
   self.db.execute('PRAGMA foreign_keys=ON'); self.db.executescript(SCHEMA)
   self.migrate_development()
+  self.migrate_permits()
  def rows(self,sql,args=()): return [dict(r) for r in self.db.execute(sql,args)]
  def all(self,table):
   if table not in FIELDS: raise ValueError('Unknown table')
@@ -62,6 +66,7 @@ class Store(DevelopmentStore):
    if not previous: raise ValueError('Record not found')
    data={**{k:v for k,v in previous[0].items() if k in FIELDS[table]},**data}
   self.validate_development(table,data,row_id)
+  self.validate_permit(table,data,row_id)
   for key in ('name','title','summary'):
    if key in FIELDS[table] and not str(data.get(key,'')).strip(): raise ValueError(f'{key.title()} is required')
   for key in ('deadline','follow_up','occurred'):
@@ -121,12 +126,14 @@ class Store(DevelopmentStore):
    with closing(sqlite3.connect(f'{source.resolve().as_uri()}?mode=ro',uri=True)) as candidate:
     if candidate.execute('PRAGMA integrity_check').fetchone()[0]!='ok': raise ValueError('Invalid backup')
     version=candidate.execute('PRAGMA user_version').fetchone()[0]
-    if version not in (1,2): raise ValueError('Unsupported backup version')
+    if version not in (1,2,3): raise ValueError('Unsupported backup version')
     # Validate the original schema before any CREATE TABLE statement can mask missing tables.
     for table in list(FIELDS)+['versions','activity','project_contacts']:
      if version==1 and table in NEW_FIELDS: continue
+     if version<=2 and table=='permit_requirements': continue
      expected={r[1] for r in self.db.execute(f'PRAGMA table_info({table})')}
      if version==1: expected-=set(ADDED_COLUMNS.get(table,{}))
+     if version<=2 and table=='registers': expected-=set(PERMIT_COLUMNS)
      actual={r[1] for r in candidate.execute(f'PRAGMA table_info({table})')}
      if not expected.issubset(actual): raise ValueError('Backup schema mismatch')
     if candidate.execute('PRAGMA foreign_key_check').fetchone(): raise ValueError('Backup has broken relationships')
@@ -149,7 +156,7 @@ class Store(DevelopmentStore):
   for title,rows in [('Outstanding tasks',self.outstanding(pid)),('Documents',self.rows('SELECT d.title,v.revision,v.status,v.requirements,v.resubmission FROM documents d LEFT JOIN versions v ON v.id=(SELECT MAX(id) FROM versions WHERE document_id=d.id) WHERE d.project_id=?',(pid,))),('Milestones',self.rows('SELECT title,phase,deadline,status FROM milestones WHERE project_id=? ORDER BY deadline',(pid,))),('Communication',self.rows('SELECT occurred,summary,follow_up,status FROM communications WHERE project_id=? ORDER BY occurred DESC',(pid,)))]:
    out+=f'<h2>{title}</h2>'
    for r in rows: out+='<p>'+' | '.join(f'{e(k)}: {e(v)}' for k,v in r.items() if k not in ('id','project_id','contact_id'))+'</p>'
-  return out+self.development_report(pid)
+  return out+self.development_report(pid)+self.permit_checklist_report(pid)
  def draft(self,comm):
   p=self.rows('SELECT name FROM projects WHERE id=?',(comm['project_id'],))[0]
   c=self.rows('SELECT name,email FROM contacts WHERE id=?',(comm['contact_id'],))
@@ -168,3 +175,6 @@ class Store(DevelopmentStore):
   self.save('milestones',dict(project_id=p,title='Permit decision',phase='Permitting',deadline=(date.today()+timedelta(days=21)).isoformat(),status='Planned'))
 
   self.seed_development(p,c)
+  permit=self.save('registers',dict(project_id=p,title='Tenant improvement permit',record_type='Permit',jurisdiction_type='City',jurisdiction_name='Example City (fictional)',department='Building & Safety',requirements_url='https://example.com/permit-requirements',application_url='https://example.com/permit-application',notes='Fictional links for demonstration; replace with your jurisdiction website.'))
+  self.save('permit_requirements',dict(register_id=permit,title='Complete permit application',source_url='https://example.com/permit-requirements',completed=0))
+  self.save('permit_requirements',dict(register_id=permit,title='Prepare coordinated plan set',completed=1))

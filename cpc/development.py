@@ -84,7 +84,7 @@ def line_totals(item):
 
 class DevelopmentStore:
  def migrate_development(self):
-  if self.db.execute('PRAGMA user_version').fetchone()[0]==2: return
+  if self.db.execute('PRAGMA user_version').fetchone()[0]>=2: return
   self.db.executescript('BEGIN IMMEDIATE;'+NEW_SCHEMA)
   with self.db:
    for table,cols in ADDED_COLUMNS.items():
@@ -94,6 +94,9 @@ class DevelopmentStore:
    self.db.execute("UPDATE documents SET discipline='Architecture' WHERE discipline='General' AND category='Architectural Plans'")
    self.db.execute('PRAGMA user_version=2')
  def project_for(self,table,data):
+  if table=='permit_requirements':
+   rows=self.rows('SELECT project_id FROM registers WHERE id=?',(data.get('register_id'),))
+   return rows[0]['project_id'] if rows else None
   if table=='projects': return data.get('id')
   if 'project_id' in data: return data['project_id']
   if table=='bids':

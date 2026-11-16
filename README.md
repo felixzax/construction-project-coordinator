@@ -1,21 +1,20 @@
-# Construction Project Coordinator 1.1.0
+# Construction Project Coordinator 1.2.0
 
 A local Windows desktop workspace for construction and property development coordination, consultant disciplines, drawing registers, meetings and detailed bid estimates. Python 3.12, PySide6 and SQLite. No cloud subscription, email connection or account is required to use the app.
 
 ## Download and run
 
-**[Download the verified Windows 1.1.0 build](https://github.com/felixzax/construction-project-coordinator/actions/runs/43792352921/artifacts/14192793594)** · [Successful build and test logs](https://github.com/felixzax/construction-project-coordinator/actions/runs/43792352921). All 41 Windows tests and the packaged-executable check passed.
 
-Open [GitHub Actions](https://github.com/felixzax/construction-project-coordinator/actions/workflows/windows.yml), select a successful **Test and build Windows** run for version 1.1.0, and download the **ConstructionProjectCoordinator-1.1.0-Windows** artifact. Sign in to GitHub to access this private repository. Extract the artifact ZIP, then extract the contained application ZIP. Keep the entire `ConstructionProjectCoordinator` directory together and launch `ConstructionProjectCoordinator.exe`. Python is not required for packaged builds. The app is unsigned and Windows may show a reputation prompt. Workflow artifacts are retained for 90 days.
+Open [GitHub Actions](https://github.com/felixzax/construction-project-coordinator/actions/workflows/windows.yml), select a successful **Test and build Windows** run for version 1.2.0, and download the **ConstructionProjectCoordinator-1.2.0-Windows** artifact. Sign in to GitHub to access this private repository. Extract the artifact ZIP, then extract the contained application ZIP. Keep the entire `ConstructionProjectCoordinator` directory together and launch `ConstructionProjectCoordinator.exe`. Python is not required for packaged builds. The app is unsigned and Windows may show a reputation prompt. Workflow artifacts are retained for 90 days.
 
-## Upgrade from 1.0.0
+## Upgrade from 1.0.0 or 1.1.0
 
 1. In the old app, use Backup & Restore to back up your database. Also copy its adjacent `documents` folder to your backup location. Close all old app instances.
 2. Extract the new build into a new application folder. Keep the old executable until you verify the upgrade.
-3. Launch version 1.1.0 from the same Windows account. It uses the same Local AppData location, preserves existing projects, contacts, tasks and approved document revisions, and adds the new tables and fields automatically. It creates a `.before-v1.1.0.sqlite3` safety copy before upgrading a v1 database.
+3. Launch version 1.2.0 from the same Windows account. It uses the same Local AppData location, preserves existing projects, contacts, tasks and approved document revisions, and adds the new tables and fields automatically. It creates a `.before-v1.2.0.sqlite3` safety copy before upgrading a v1 or v2 database.
 4. Existing work is not replaced with demonstration data. New sections begin empty for existing users. Fresh workspaces may load fictional examples at the welcome prompt.
 
-The upgrade is one way: the new schema is version 2. To roll back, close the new app and restore the pre-upgrade v1 database before running version 1.0.0. Do not open the upgraded database with the old app. Version 1.1.0 can restore both v1 and v2 backups; v1 backups are upgraded in a temporary copy before replacing live records.
+The upgrade is one way: the new schema is version 3. To roll back, close the new app and restore the matching pre-upgrade database before running an older app. Do not open the upgraded database with the old app. Version 1.2.0 can restore v1, v2 and v3 backups; older backups are upgraded in a temporary copy before replacing live records.
 
 ## Project workspaces
 
@@ -48,6 +47,21 @@ Once a document has a Submitted or Approved history entry, later revisions retai
 ## Development registers
 
 Dedicated sections cover **RFIs**, **Submittals**, **Permits**, **Inspections**, and **Punch & Changes** (punch items and change requests). Record the reference number, discipline, area, responsible contact, submission date, deadline, response, notes and status. These are local coordination logs; there are no automatic agency submissions, compliance determinations or contractual approvals.
+
+## City/county permits and application checklists
+
+Select **Permits** in the sidebar. Create or edit a permit and enter:
+
+- Jurisdiction type: City, County, City & County, State, or Other.
+- City/county name and the responsible department.
+- The official application/portal link and the application requirements link.
+- A **Requirements page reviewed** checkmark, plus the existing reference number, status, responsible contact, submission date and deadline.
+
+Select the permit → **Application checklist**. The dialog shows the jurisdiction and saved links with explicit Open buttons. Add each requirement with its description, optional source-page link and notes. Check the **Ready** box when an item is prepared; the checkmark saves immediately, records its completion date and updates progress such as **3/5 checked**. Unchecking clears the completion date. The separate review checkbox saves immediately too. Item edits save through the form's Save button; closing the checklist does not undo saved checkmarks.
+
+Use **Open source link** to visit a selected item's link, falling back to the permit's requirements page when its own link is blank. **Export checklist CSV** includes the city/county, department, requirement links, checkmarks and completion dates. Project status reports include the permit checklist. Permit jurisdiction names, links and requirement descriptions are searchable and checklists are included in database backups.
+
+Links are manually entered official website references and are opened in your browser only when you click Open. No page is fetched automatically and no live requirement list is imported. Demonstration links use example.com and must be replaced with the relevant agency links. Checkmarks track your preparation and review; they never submit the application or change its approval status. Keep the permit's status up to date separately.
 
 ## Bidding and estimating
 

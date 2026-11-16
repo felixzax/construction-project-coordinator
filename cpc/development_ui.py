@@ -6,6 +6,7 @@ from PySide6.QtWidgets import (QWidget,QVBoxLayout,QHBoxLayout,QLabel,QLineEdit,
  QTableWidget,QAbstractItemView,QHeaderView,QTableWidgetItem,QDialog,QFileDialog,QMessageBox)
 from .development import DISCIPLINES, NEW_FIELDS, REGISTER_TYPES, line_totals, STATUSES
 from .store import FIELDS, TASK_STATUSES
+from .permits import PERMIT_COLUMNS
 
 DISCIPLINE_PAGES={
  'Architecture':['Architecture'],
@@ -146,7 +147,8 @@ class DevelopmentUI:
     choices['discipline']=DISCIPLINE_PAGES[title]
    if title in REGISTER_PAGES:
     choices['record_type']=[REGISTER_PAGES[title]] if REGISTER_PAGES[title] else ['Punch Item','Change Request']
-   form=Form(self,('Edit ' if existing else 'New ')+title,FIELDS[table],row,choices)
+   fields=[k for k in FIELDS[table] if table!='registers' or k not in PERMIT_COLUMNS]
+   form=Form(self,('Edit ' if existing else 'New ')+title,fields,row,choices)
    form.persist=lambda data:self.store.save(table,data,row['id'] if existing else None)
    if form.exec(): self.refresh()
   self.guard(action)
