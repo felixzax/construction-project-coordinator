@@ -23,6 +23,18 @@ def smoke_test():
                     raise RuntimeError('Navigation smoke check failed')
             if window.tables['Tasks'].rowCount() != 2:
                 raise RuntimeError('Sample task smoke check failed')
+            for page in ('Architecture','Engineering','Electrical','Plumbing','Mechanical / HVAC','Meetings','Bidding'):
+                if window.tables[page].rowCount() < 1:
+                    raise RuntimeError(f'Empty seeded workspace: {page}')
+            window.tables['Bidding'].selectRow(0)
+            app.processEvents()
+            if window.tables['Bids'].rowCount() != 2:
+                raise RuntimeError('Bid comparison smoke check failed')
+            bid = store.all('bids')[0]
+            if store.bid_totals(bid['id'])['total'] <= 0:
+                raise RuntimeError('Bid calculation smoke check failed')
+            if 'Totals' not in store.bid_report(bid['id']):
+                raise RuntimeError('Bid report smoke check failed')
             window.close()
             app.processEvents()
         finally:

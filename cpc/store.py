@@ -4,6 +4,9 @@ import html
 import sqlite3
 import shutil
 import uuid
+import tempfile
+from contextlib import closing
+from .development import DevelopmentStore, NEW_FIELDS, ADDED_COLUMNS, validate_date
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
@@ -18,7 +21,7 @@ CREATE TABLE IF NOT EXISTS versions(id INTEGER PRIMARY KEY, document_id INTEGER 
 CREATE TABLE IF NOT EXISTS communications(id INTEGER PRIMARY KEY, project_id INTEGER NOT NULL REFERENCES projects(id), contact_id INTEGER REFERENCES contacts(id), occurred TEXT NOT NULL, summary TEXT NOT NULL, follow_up TEXT DEFAULT '', status TEXT DEFAULT 'Open');
 CREATE TABLE IF NOT EXISTS milestones(id INTEGER PRIMARY KEY, project_id INTEGER NOT NULL REFERENCES projects(id), title TEXT NOT NULL, phase TEXT DEFAULT '', deadline TEXT DEFAULT '', status TEXT DEFAULT 'Planned');
 CREATE TABLE IF NOT EXISTS activity(id INTEGER PRIMARY KEY, project_id INTEGER REFERENCES projects(id), occurred TEXT, description TEXT);
-PRAGMA user_version=1;
+
 '''
 FIELDS = {
  'projects': ['name','address','owner','description','phase','status','archived'],
@@ -28,11 +31,21 @@ FIELDS = {
  'communications': ['project_id','contact_id','occurred','summary','follow_up','status'],
  'milestones': ['project_id','title','phase','deadline','status'],
 }
-class Store:
+FIELDS.update(NEW_FIELDS)
+for _table,_columns in ADDED_COLUMNS.items():
+ FIELDS[_table].extend(_columns)
+
+class Store(DevelopmentStore):
  def __init__(self, path):
   self.path=Path(path); self.path.parent.mkdir(parents=True,exist_ok=True)
   self.db=sqlite3.connect(self.path); self.db.row_factory=sqlite3.Row
+  version=self.db.execute('PRAGMA user_version').fetchone()[0]
+  if version not in (0,1,2):
+   self.db.close(); raise ValueError('This database requires a newer version of the application')
+  if version==1:
+   self.backup(str(self.path)+'.before-v1.1.0.sqlite3')
   self.db.execute('PRAGMA foreign_keys=ON'); self.db.executescript(SCHEMA)
+  self.migrate_development()
  def rows(self,sql,args=()): return [dict(r) for r in self.db.execute(sql,args)]
  def all(self,table):
   if table not in FIELDS: raise ValueError('Unknown table')
@@ -44,10 +57,15 @@ class Store:
  def save(self,table,data,row_id=None):
   if table not in FIELDS: raise ValueError('Unknown table')
   data={k:v for k,v in data.items() if k in FIELDS[table]}
+  if row_id:
+   previous=self.rows(f'SELECT * FROM {table} WHERE id=?',(row_id,))
+   if not previous: raise ValueError('Record not found')
+   data={**{k:v for k,v in previous[0].items() if k in FIELDS[table]},**data}
+  self.validate_development(table,data,row_id)
   for key in ('name','title','summary'):
    if key in FIELDS[table] and not str(data.get(key,'')).strip(): raise ValueError(f'{key.title()} is required')
   for key in ('deadline','follow_up','occurred'):
-   if data.get(key): date.fromisoformat(data[key])
+   if data.get(key): validate_date(data[key])
   if table=='tasks' and data.get('status') not in TASK_STATUSES: raise ValueError('Invalid task status')
   with self.db:
    if row_id:
@@ -55,7 +73,7 @@ class Store:
     self.db.execute(f'UPDATE {table} SET '+','.join(f'{k}=?' for k in data)+' WHERE id=?',[*data.values(),row_id])
    else:
     row_id=self.db.execute(f'INSERT INTO {table} ('+','.join(data)+') VALUES ('+','.join('?' for _ in data)+')',list(data.values())).lastrowid
-   pid=row_id if table=='projects' else data.get('project_id')
+   pid=row_id if table=='projects' else self.project_for(table,data)
    if pid: self.log(pid,f'{table.title()} #{row_id} saved: {data.get("name",data.get("title",data.get("summary","")))}')
   return row_id
  def associate(self,pid,cid):
@@ -63,11 +81,13 @@ class Store:
    self.db.execute('INSERT OR IGNORE INTO project_contacts VALUES(?,?)',(pid,cid)); self.log(pid,f'Contact #{cid} associated')
  def add_version(self,did,revision,submitted='',status='Draft',requirements='',file_path=''):
   if not revision.strip(): raise ValueError('Revision is required')
-  if submitted: date.fromisoformat(submitted)
+  if self.rows('SELECT id FROM versions WHERE document_id=? AND revision=?',(did,revision)):
+   raise sqlite3.IntegrityError('This revision label already exists')
+  if submitted: validate_date(submitted)
   if status not in ['Draft','Submitted','Approved','Changes Required']: raise ValueError('Invalid approval status')
   doc=self.rows('SELECT * FROM documents WHERE id=?',(did,))
   if not doc: raise ValueError('Document not found')
-  previous=self.rows('SELECT status FROM versions WHERE document_id=? ORDER BY id DESC LIMIT 1',(did,))
+  previous=self.rows("SELECT status FROM versions WHERE document_id=? AND status IN ('Approved','Submitted') ORDER BY id DESC LIMIT 1",(did,))
   flag=int(bool(previous and previous[0]['status'] in ('Approved','Submitted')))
   if file_path:
    source=Path(file_path)
@@ -82,9 +102,9 @@ class Store:
  def search(self,query):
   result=[]
   for table,fields in FIELDS.items():
-   cols=[f for f in fields if f not in ('archived','project_id','contact_id')]
+   cols=[f for f in fields if not f.endswith('_id') and f not in ('archived','included')]
    for row in self.rows(f'SELECT * FROM {table} WHERE '+ ' OR '.join(f'{c} LIKE ?' for c in cols),['%'+query+'%']*len(cols)):
-    result.append({'type':table,'id':row['id'],'project_id':row.get('project_id',row['id'] if table=='projects' else ''),'label':row.get('name',row.get('title',row.get('summary','')))})
+    result.append({'type':table,'id':row['id'],'project_id':(row['id'] if table=='projects' else self.project_for(table,row)) or '','label':row.get('name',row.get('title',row.get('summary','')))})
   for row in self.rows('SELECT v.*,d.project_id,d.title FROM versions v JOIN documents d ON d.id=v.document_id WHERE v.revision LIKE ? OR v.requirements LIKE ?',('%'+query+'%','%'+query+'%')):
    result.append({'type':'versions','id':row['id'],'project_id':row['project_id'],'label':row['title']+' / '+row['revision']+': '+row['requirements']})
   return result
@@ -92,20 +112,31 @@ class Store:
   return self.rows("SELECT t.*,p.name AS project,c.name AS responsible FROM tasks t JOIN projects p ON p.id=t.project_id LEFT JOIN contacts c ON c.id=t.contact_id WHERE t.status != 'Completed' AND p.archived=0"+(' AND t.project_id=?' if pid else '')+' ORDER BY deadline', (pid,) if pid else ())
  def backup(self,path):
   if Path(path).resolve()==self.path.resolve(): raise ValueError('Choose a different backup path')
-  with sqlite3.connect(path) as dest: self.db.backup(dest)
+  with closing(sqlite3.connect(path)) as dest: self.db.backup(dest)
  def restore(self,path):
   source=Path(path)
   if source.resolve()==self.path.resolve(): raise ValueError('Choose a different backup file')
-  with sqlite3.connect(f'{source.resolve().as_uri()}?mode=ro',uri=True) as candidate:
-   if candidate.execute('PRAGMA integrity_check').fetchone()[0]!='ok': raise ValueError('Invalid backup')
-   if candidate.execute('PRAGMA user_version').fetchone()[0]!=1: raise ValueError('Unsupported backup version')
-   for table in list(FIELDS)+['versions','activity','project_contacts']:
-    expected={r[1] for r in self.db.execute(f'PRAGMA table_info({table})')}
-    actual={r[1] for r in candidate.execute(f'PRAGMA table_info({table})')}
-    if not expected.issubset(actual): raise ValueError('Backup schema mismatch')
-   if candidate.execute('PRAGMA foreign_key_check').fetchone(): raise ValueError('Backup has broken relationships')
-   self.backup(str(self.path)+'.before-restore.sqlite3')
-   candidate.backup(self.db)
+  with tempfile.TemporaryDirectory() as folder:
+   copy=Path(folder)/'restore.sqlite3'
+   with closing(sqlite3.connect(f'{source.resolve().as_uri()}?mode=ro',uri=True)) as candidate:
+    if candidate.execute('PRAGMA integrity_check').fetchone()[0]!='ok': raise ValueError('Invalid backup')
+    version=candidate.execute('PRAGMA user_version').fetchone()[0]
+    if version not in (1,2): raise ValueError('Unsupported backup version')
+    # Validate the original schema before any CREATE TABLE statement can mask missing tables.
+    for table in list(FIELDS)+['versions','activity','project_contacts']:
+     if version==1 and table in NEW_FIELDS: continue
+     expected={r[1] for r in self.db.execute(f'PRAGMA table_info({table})')}
+     if version==1: expected-=set(ADDED_COLUMNS.get(table,{}))
+     actual={r[1] for r in candidate.execute(f'PRAGMA table_info({table})')}
+     if not expected.issubset(actual): raise ValueError('Backup schema mismatch')
+    if candidate.execute('PRAGMA foreign_key_check').fetchone(): raise ValueError('Backup has broken relationships')
+    with closing(sqlite3.connect(copy)) as target: candidate.backup(target)
+   restored=Store(copy)
+   try:
+    if restored.db.execute('PRAGMA foreign_key_check').fetchone(): raise ValueError('Backup relationships are invalid')
+    self.backup(str(self.path)+'.before-restore.sqlite3')
+    restored.db.backup(self.db)
+   finally: restored.db.close()
  def export(self,path,rows):
   with open(path,'w',newline='',encoding='utf-8-sig') as f:
    if not rows: return
@@ -118,7 +149,7 @@ class Store:
   for title,rows in [('Outstanding tasks',self.outstanding(pid)),('Documents',self.rows('SELECT d.title,v.revision,v.status,v.requirements,v.resubmission FROM documents d LEFT JOIN versions v ON v.id=(SELECT MAX(id) FROM versions WHERE document_id=d.id) WHERE d.project_id=?',(pid,))),('Milestones',self.rows('SELECT title,phase,deadline,status FROM milestones WHERE project_id=? ORDER BY deadline',(pid,))),('Communication',self.rows('SELECT occurred,summary,follow_up,status FROM communications WHERE project_id=? ORDER BY occurred DESC',(pid,)))]:
    out+=f'<h2>{title}</h2>'
    for r in rows: out+='<p>'+' | '.join(f'{e(k)}: {e(v)}' for k,v in r.items() if k not in ('id','project_id','contact_id'))+'</p>'
-  return out
+  return out+self.development_report(pid)
  def draft(self,comm):
   p=self.rows('SELECT name FROM projects WHERE id=?',(comm['project_id'],))[0]
   c=self.rows('SELECT name,email FROM contacts WHERE id=?',(comm['contact_id'],))
@@ -135,3 +166,5 @@ class Store:
   self.add_version(d,'A','', 'Approved'); self.add_version(d,'B',requirements='Review accessibility revisions for resubmission')
   self.save('communications',dict(project_id=p,contact_id=c,occurred=date.today().isoformat(),summary='Requested revised accessibility sheets.',follow_up=(date.today()+timedelta(days=3)).isoformat(),status='Open'))
   self.save('milestones',dict(project_id=p,title='Permit decision',phase='Permitting',deadline=(date.today()+timedelta(days=21)).isoformat(),status='Planned'))
+
+  self.seed_development(p,c)

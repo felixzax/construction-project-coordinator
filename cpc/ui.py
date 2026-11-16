@@ -4,15 +4,18 @@ from datetime import date, timedelta
 from pathlib import Path
 from PySide6.QtCore import Qt, QStandardPaths
 from PySide6.QtGui import QColor, QTextDocument
-from PySide6.QtWidgets import (QApplication,QMainWindow,QWidget,QVBoxLayout,QHBoxLayout,QLabel,QPushButton,QListWidget,QStackedWidget,QTableWidget,QTableWidgetItem,QHeaderView,QLineEdit,QDialog,QDialogButtonBox,QFormLayout,QComboBox,QTextEdit,QFileDialog,QMessageBox,QCheckBox,QAbstractItemView)
+from PySide6.QtWidgets import (QApplication,QMainWindow,QWidget,QVBoxLayout,QHBoxLayout,QLabel,QPushButton,QListWidget,QStackedWidget,QTableWidget,QTableWidgetItem,QHeaderView,QLineEdit,QDialog,QDialogButtonBox,QFormLayout,QComboBox,QTextEdit,QFileDialog,QMessageBox,QCheckBox,QAbstractItemView,QScrollArea)
 from PySide6.QtPrintSupport import QPrinter,QPrintPreviewDialog
 from .store import Store, FIELDS, TASK_STATUSES
+from .development_ui import DevelopmentUI, NAVIGATION, EXTRA_OPTIONS
+from .development import line_totals
 
-VERSION='1.0.0'
-OPTIONS={'phase':['Planning','Design','Permitting','Construction','Inspection','Closeout'],'priority':['Low','Normal','High','Urgent'],'category':['Architectural Plans','Engineering Drawings','Permit','Cut Sheet','Estimate','Approval','Other'],'role':['Architect','Engineer','Contractor','City Official','County Official','Business Owner','Other']}
+VERSION='1.1.0'
+OPTIONS={'phase':['Planning','Design','Permitting','Construction','Inspection','Closeout'],'priority':['Low','Normal','High','Urgent'],'category':['Architectural Plans','Engineering Drawings','Permit','Cut Sheet','Estimate','Approval','CAD File','BIM Model','Site Plan','Survey','Specification','Shop Drawing','As-Built','Other'],'role':['Architect','Engineer','Contractor','City Official','County Official','Business Owner','Electrical Engineer','Plumbing Engineer','Mechanical Engineer','Civil Engineer','Structural Engineer','Surveyor','Estimator','Supplier','Developer','Other']}
 class Form(QDialog):
  def __init__(self,parent,title,fields,record=None,choices=None):
-  super().__init__(parent); self.setWindowTitle(title); self.resize(560,450); self.inputs={}; layout=QVBoxLayout(self); form=QFormLayout(); layout.addLayout(form)
+  super().__init__(parent); self.setWindowTitle(title); self.resize(670,720); self.inputs={}; self.persist=None; layout=QVBoxLayout(self)
+  scroll=QScrollArea(); scroll.setWidgetResizable(True); body=QWidget(); form=QFormLayout(body); scroll.setWidget(body); layout.addWidget(scroll)
   for key in fields:
    value=(record or {}).get(key,''); opts=(choices or {}).get(key,OPTIONS.get(key))
    if opts is not None:
@@ -22,35 +25,57 @@ class Form(QDialog):
      widget.addItem(str(label),val)
     ix=widget.findData(value)
     if ix>=0: widget.setCurrentIndex(ix)
-   elif key=='archived': widget=QCheckBox(); widget.setChecked(bool(value))
-   elif key in ('notes','description','summary','requirements'):
+    elif value not in ('',None): widget.addItem(str(value),value); widget.setCurrentIndex(widget.count()-1)
+   elif key in ('archived','included'): widget=QCheckBox(); widget.setChecked(bool(value))
+   elif key in ('notes','description','summary','requirements','scope','attendees','agenda','minutes','decisions','response','exclusions','schedule_notes'):
     widget=QTextEdit(); widget.setPlainText(str(value or '')); widget.setMaximumHeight(110)
    else:
     widget=QLineEdit(str(value or ''))
-    if key in ('deadline','follow_up','occurred','submitted'): widget.setPlaceholderText('YYYY-MM-DD (blank allowed except communication date)')
-   self.inputs[key]=widget; form.addRow(key.replace('_',' ').title(),widget)
+    if key in ('deadline','follow_up','occurred','submitted','received','valid_until','meeting_date'): widget.setPlaceholderText('YYYY-MM-DD (blank allowed except required dates)')
+   labels={'project_id':'Project','contact_id':'Responsible contact / bidder','designer_id':'Designer / consultant','meeting_id':'Related meeting','package_id':'Trade bid package','bid_id':'Bid estimate','labor_rate':'Labor hourly rate','material_unit_cost':'Material cost per unit','equipment_unit_cost':'Equipment cost per unit','subcontract_unit_cost':'Subcontract cost per unit','other_cost':'Other fixed cost','included':'Include in bid total','building_area':'Building / floor / area','tax_percent':'Material tax (%)','markup_percent':'Markup (%)','contingency_percent':'Contingency (%)','waste_percent':'Material waste (%)'}
+   self.inputs[key]=widget; form.addRow(labels.get(key,key.replace('_',' ').title()),widget)
    if key=='file_path':
     browse=QPushButton('Choose document file…'); browse.clicked.connect(lambda _,w=widget:self.browse(w)); form.addRow('',browse)
+  if 'material_unit_cost' in fields:
+   self.preview=QLabel(); self.preview.setWordWrap(True); layout.addWidget(self.preview)
+   for widget in self.inputs.values():
+    if isinstance(widget,QLineEdit): widget.textChanged.connect(self.update_cost_preview)
+    elif isinstance(widget,QComboBox): widget.currentIndexChanged.connect(self.update_cost_preview)
+    elif isinstance(widget,QCheckBox): widget.toggled.connect(self.update_cost_preview)
+   self.update_cost_preview()
   buttons=QDialogButtonBox(QDialogButtonBox.Save|QDialogButtonBox.Cancel); buttons.accepted.connect(self.accept); buttons.rejected.connect(self.reject); layout.addWidget(buttons)
+ def accept(self):
+  if self.persist is not None:
+   try: self.persist(self.values())
+   except Exception as ex:
+    QMessageBox.warning(self,'Please review this entry',str(ex)); return
+  super().accept()
+ def update_cost_preview(self,*args):
+  try:
+   result=line_totals(self.values()); self.preview.setText('Preview: '+ ' | '.join(f'{k.replace("_"," ")}: {v}' for k,v in result.items()))
+  except ValueError as ex: self.preview.setText(str(ex))
  def browse(self,widget):
   path,_=QFileDialog.getOpenFileName(self,'Document file')
   if path: widget.setText(path)
  def values(self):
   return {k:(w.currentData() if isinstance(w,QComboBox) else int(w.isChecked()) if isinstance(w,QCheckBox) else w.toPlainText() if isinstance(w,QTextEdit) else w.text().strip()) for k,w in self.inputs.items()}
 
-class Window(QMainWindow):
+class BaseWindow(QMainWindow):
  def __init__(self,store):
   super().__init__(); self.store=store; self.setWindowTitle(f'Construction Project Coordinator · {VERSION}'); self.resize(1280,800); self.tables={}; self.data={}; self.current='Dashboard'
   root=QWidget(); self.setCentralWidget(root); outer=QHBoxLayout(root)
-  self.nav=QListWidget(); self.nav.setFixedWidth(210); self.nav.addItems(['Dashboard','Projects','Tasks','Contacts','Communications','Documents','Timeline','Search','Backup & Restore']); outer.addWidget(self.nav)
-  self.stack=QStackedWidget(); outer.addWidget(self.stack,1)
-  for title in ['Dashboard','Projects','Tasks','Contacts','Communications','Documents','Timeline','Search','Backup & Restore']: self.build_page(title)
+  self.nav=QListWidget(); self.nav.setFixedWidth(210); self.nav.addItems(NAVIGATION); self.nav.item(NAVIGATION.index('Documents')).setText('Plans & CAD'); outer.addWidget(self.nav)
+  content=QWidget(); column=QVBoxLayout(content); outer.addWidget(content,1)
+  project_bar=QHBoxLayout(); project_bar.addWidget(QLabel('Project workspace:')); self.project_filter=QComboBox(); self.project_filter.addItem('All projects',None); self.project_filter.setMinimumWidth(300); project_bar.addWidget(self.project_filter); project_bar.addStretch(); column.addLayout(project_bar)
+  self.stack=QStackedWidget(); column.addWidget(self.stack,1)
+  for title in NAVIGATION: self.build_page(title)
   self.nav.currentRowChanged.connect(self.change_page); self.nav.setCurrentRow(0); self.refresh()
-  self.statusBar().showMessage(f'Local data: {store.path}')
+  self.project_filter.currentIndexChanged.connect(self.refresh)
+  self.statusBar().showMessage(f'Local data: {store.path} · Version {VERSION}')
  def button(self,layout,label,fn):
   b=QPushButton(label); b.clicked.connect(fn); layout.addWidget(b); return b
  def build_page(self,title):
-  page=QWidget(); layout=QVBoxLayout(page); heading=QLabel(title); heading.setObjectName('heading'); layout.addWidget(heading); bar=QHBoxLayout(); layout.addLayout(bar)
+  page=QWidget(); layout=QVBoxLayout(page); heading=QLabel('Plans, CAD & Documents' if title=='Documents' else title); heading.setObjectName('heading'); layout.addWidget(heading); bar=QHBoxLayout(); layout.addLayout(bar)
   if title in ['Projects','Tasks','Contacts','Communications','Documents','Timeline']:
    self.button(bar,'+ New',lambda _,t=title:self.edit(t)); self.button(bar,'Edit selected',lambda _,t=title:self.edit(t,True))
   if title=='Projects':
@@ -75,12 +100,17 @@ class Window(QMainWindow):
  def fill(self,title,rows):
   query=getattr(self,'filter_'+title,None)
   if query and query.text(): rows=[r for r in rows if query.text().lower() in ' '.join(str(v) for v in r.values()).lower()]
-  self.data[title]=rows; table=self.tables[title]; keys=list(rows[0]) if rows else []; table.setColumnCount(len(keys)); table.setRowCount(len(rows)); table.setHorizontalHeaderLabels([k.replace('_',' ').title() for k in keys])
+  self.data[title]=rows; table=self.tables[title]; keys=[k for k in rows[0] if k!='id' and not k.startswith('_') and not k.endswith('_id')] if rows else []
+  preferred=['title','name','label','project','bidder','currency','total','status','discipline','building_area','deadline','responsible']
+  keys=[k for k in preferred if k in keys]+[k for k in keys if k not in preferred]
+  table.setColumnCount(len(keys)); table.setRowCount(len(rows)); table.setHorizontalHeaderLabels([k.replace('_',' ').title() for k in keys])
   for i,r in enumerate(rows):
    overdue=bool(r.get('deadline') and r['deadline']<date.today().isoformat() and r.get('status') not in ('Completed','Approved'))
    for j,key in enumerate(keys):
     item=QTableWidgetItem(str(r[key] if r[key] is not None else '')); table.setItem(i,j,item)
     if overdue: item.setBackground(QColor('#fde3df')); item.setForeground(QColor('#9b2525'))
+  table.horizontalHeader().setSectionResizeMode(QHeaderView.Interactive); table.resizeColumnsToContents()
+  for j in range(len(keys)): table.setColumnWidth(j,min(320,max(80,table.columnWidth(j))))
  def refresh(self,*args):
   s=self.store; projects=s.all('projects'); contacts=s.all('contacts'); names={p['id']:p['name'] for p in projects}; people={p['id']:p['name'] for p in contacts}
   self.fill('Projects',projects); self.fill('Contacts',contacts)
@@ -96,12 +126,15 @@ class Window(QMainWindow):
     for t in s.all('tasks'): rows.append(dict(id=t['id'],project_id=t['project_id'],title='Task: '+t['title'],phase=names.get(t['project_id'],''),deadline=t['deadline'],status=t['status'],project=names.get(t['project_id'],''),kind='Task'))
     rows=[dict(r,kind=r.get('kind','Milestone')) for r in rows]; rows.sort(key=lambda r:r['deadline'] or '9999')
    self.fill(title,rows)
-  tasks=s.outstanding(); today=date.today().isoformat(); upcoming=(date.today()+timedelta(days=7)).isoformat(); overdue=sum(bool(t['deadline'] and t['deadline']<today) for t in tasks)
+  selected_project=self.project_filter.currentData()
+  tasks=s.outstanding(selected_project); today=date.today().isoformat(); upcoming=(date.today()+timedelta(days=7)).isoformat(); overdue=sum(bool(t['deadline'] and t['deadline']<today) for t in tasks)
   follow=s.rows("SELECT c.*,p.name AS project FROM communications c JOIN projects p ON p.id=c.project_id WHERE c.status='Open' AND c.follow_up != '' AND c.follow_up<=? AND p.archived=0",(upcoming,))
-  recent=sorted([p for p in projects if not p['archived']],key=lambda p:p['updated'] or '',reverse=True)[:5]
-  self.dashboard_summary.setText(f'{sum(not p["archived"] for p in projects)} active projects  ·  {len(tasks)} outstanding tasks  ·  {overdue} overdue  ·  {len(follow)} follow-ups due within 7 days\nRecently updated: '+', '.join(p['name'] for p in recent))
-  rows=[dict(kind='Task',project=t['project'],item=t['title'],deadline=t['deadline'],status=t['status'],responsible=t['responsible']) for t in tasks]
-  rows += [dict(kind='Follow-up',project=c['project'],item=c['summary'],deadline=c['follow_up'],status=c['status'],responsible=people.get(c['contact_id'],'')) for c in follow]
+  if selected_project: follow=[c for c in follow if c['project_id']==selected_project]
+  summary_projects=[p for p in projects if not selected_project or p['id']==selected_project]
+  recent=sorted([p for p in summary_projects if not p['archived']],key=lambda p:p['updated'] or '',reverse=True)[:5]
+  self.dashboard_summary.setText(f'{sum(not p["archived"] for p in summary_projects)} active projects  ·  {len(tasks)} outstanding tasks  ·  {overdue} overdue  ·  {len(follow)} follow-ups due within 7 days\nRecently updated: '+', '.join(p['name'] for p in recent))
+  rows=[dict(kind='Task',project_id=t['project_id'],project=t['project'],item=t['title'],deadline=t['deadline'],status=t['status'],responsible=t['responsible']) for t in tasks]
+  rows += [dict(kind='Follow-up',project_id=c['project_id'],project=c['project'],item=c['summary'],deadline=c['follow_up'],status=c['status'],responsible=people.get(c['contact_id'],'')) for c in follow]
   self.fill('Dashboard',sorted(rows,key=lambda r:r['deadline'] or '9999'))
   self.fill('Search',s.search(self.search_input.text()) if self.search_input.text().strip() else [])
  def selected(self,title):
@@ -118,11 +151,11 @@ class Window(QMainWindow):
  def edit(self,title,existing=False):
   def action():
    table={'Projects':'projects','Tasks':'tasks','Contacts':'contacts','Communications':'communications','Documents':'documents','Timeline':'milestones'}[title]
-   row=self.selected(title) if existing else None
+   row=self.selected(title) if existing else {'project_id':self.project_filter.currentData()}
    if title=='Timeline' and row and row.get('kind')=='Task':
     table='tasks'; row=self.store.rows('SELECT * FROM tasks WHERE id=?',(row['id'],))[0]
    if 'project_id' in FIELDS[table] and not self.store.all('projects'): raise ValueError('Create a project first')
-   if row is None and table=='communications': row={'occurred':date.today().isoformat()}
+   if not existing and table=='communications': row['occurred']=date.today().isoformat()
    form=Form(self,('Edit ' if existing else 'New ')+table,FIELDS[table],row,self.choices(table))
    if form.exec():
     self.store.save(table,form.values(),row['id'] if existing else None); self.refresh()
@@ -184,6 +217,9 @@ class Window(QMainWindow):
    path,_=QFileDialog.getOpenFileName(self,'Restore database','','SQLite (*.sqlite3)')
    if path and QMessageBox.question(self,'Replace local data?','Restore this backup and replace all current records? A safety backup will be created.')==QMessageBox.Yes: self.store.restore(path); self.refresh(); QMessageBox.information(self,'Restore complete','Database restored successfully.')
   self.guard(action)
+
+class Window(DevelopmentUI,BaseWindow):
+ pass
 
 def main():
  app=QApplication(sys.argv); app.setOrganizationName('Construction Project Coordinator'); app.setApplicationName('Construction Project Coordinator'); app.setStyle('Fusion')
