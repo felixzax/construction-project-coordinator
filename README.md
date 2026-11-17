@@ -1,24 +1,42 @@
-# Construction Project Coordinator 1.4.0
+# Construction Project Coordinator 1.5.0
 
 A local Windows desktop workspace for construction and property development coordination, consultant disciplines, drawing registers, meetings and detailed bid estimates. Python 3.12, PySide6 and SQLite. No cloud subscription, email connection or account is required to use the app.
 
 ## Download and run
 
-**[Download the verified Windows 1.4.0 build](https://github.com/felixzax/construction-project-coordinator/actions/runs/43799355760/artifacts/14195962274)** · [Successful build and test logs](https://github.com/felixzax/construction-project-coordinator/actions/runs/43799355760). All 127 Windows tests and the packaged-executable check passed, including receipt pricing, approval/re-review and DOCX export.
 
 
 
 
-Open [GitHub Actions](https://github.com/felixzax/construction-project-coordinator/actions/workflows/windows.yml), select a successful **Test and build Windows** run for version 1.4.0, and download the **ConstructionProjectCoordinator-1.4.0-Windows** artifact. Sign in to GitHub to access this private repository. Extract the artifact ZIP, then extract the contained application ZIP. Keep the entire `ConstructionProjectCoordinator` directory together and launch `ConstructionProjectCoordinator.exe`. Python is not required for packaged builds. The app is unsigned and Windows may show a reputation prompt. Workflow artifacts are retained for 90 days.
+Open [GitHub Actions](https://github.com/felixzax/construction-project-coordinator/actions/workflows/windows.yml), select a successful **Test and build Windows** run for version 1.5.0, and download the **ConstructionProjectCoordinator-1.5.0-Windows** artifact. Sign in to GitHub to access this private repository. Extract the artifact ZIP, then extract the contained application ZIP. Keep the entire `ConstructionProjectCoordinator` directory together and launch `ConstructionProjectCoordinator.exe`. Python is not required for packaged builds. The app is unsigned and Windows may show a reputation prompt. Workflow artifacts are retained for 90 days.
 
-## Upgrade from 1.0.0, 1.1.0, 1.2.0 or 1.3.0
+## Upgrade from 1.0.0 through 1.4.0
 
 1. In the old app, use Backup & Restore to back up your database. Also copy its adjacent `documents` folder to your backup location. Close all old app instances.
 2. Extract the new build into a new application folder. Keep the old executable until you verify the upgrade.
-3. Launch version 1.4.0 from the same Windows account. It uses the same Local AppData location, preserves existing projects, contacts, tasks and approved document revisions, and adds the new tables and fields automatically. It creates a `.before-v1.4.0.sqlite3` safety copy before upgrading a v1, v2, v3 or v4 database.
+3. Launch version 1.5.0 from the same Windows account. It uses the same Local AppData location, preserves existing projects, contacts, tasks and approved document revisions, and adds the new tables and fields automatically. It creates a `.before-v1.5.0.sqlite3` safety copy before upgrading a v1–v5 database.
 4. Existing work is not replaced with demonstration data. New sections begin empty for existing users. Fresh workspaces may load fictional examples at the welcome prompt.
 
-The upgrade is one way: the new schema is version 5. To roll back, close the new app and restore the matching pre-upgrade database before running an older app. Do not open the upgraded database with the old app. Version 1.4.0 can restore v1, v2, v3, v4 and v5 backups; older backups are upgraded in a temporary copy before replacing live records.
+The upgrade is one way: the new schema is version 6. To roll back, close the new app and restore the matching pre-upgrade database before running an older app. Do not open the upgraded database with the old app. Version 1.5.0 can restore v1–v6 backups; older backups are upgraded in a temporary copy before replacing live records.
+
+## Project corrections, addresses and violations to fix
+
+Use **Projects → Edit selected → Address** to maintain the project's address. The new **Corrections** and **Violations** sections each let you record issues against that project. Select a project in the workspace filter or choose it on the issue form. Projects also has **View corrections** and **View violations** buttons to open the selected project's records directly.
+
+Each record includes:
+
+- Title and issue type, the **site address**, and an **exact spot / floor / room** such as "second floor, electrical room, rear wall."
+- The **required fix / action**, description, notice/reference number, plan sheet and code references.
+- City/county/inspector or other issuing authority, optional related permit, discipline, responsible contact and priority.
+- Reported date, deadline, status, resolution date and resolution notes.
+
+The address defaults from the chosen project. Changing the selected project updates the default address unless you have entered a custom address. Saved custom addresses are preserved. If the project's main address is changed later, an existing issue keeps its recorded site address until you edit it. A related permit must belong to the same project; deleting that permit leaves the issue and clears its permit link.
+
+Use statuses **Open**, **Assigned**, **In Progress**, **Ready for Review**, **Resolved**, **Closed** or **Cancelled**. Open work remains on the dashboard and timeline, with overdue highlights when a deadline has passed. Ready for Review is still outstanding. Resolved and Closed automatically get today's resolution date if none is entered; reopening clears that date. Resolved, Closed and Cancelled records stop appearing as outstanding. These are your locally entered progress states, not an agency verification or code-compliance determination.
+
+Save the record first, then use **Attach notice / photo** to copy a correction letter, violation notice, photograph or other evidence into the local documents folder. **Open evidence** opens its default Windows application after confirmation. Replacing evidence keeps old copied files on disk; document files require separate backup.
+
+Both sections support project/text filters, search, CSV/DOCX exports, saved form drafts, recovery snapshots and backed-up deletion. Department reports include discipline-tagged corrections/violations with their address and required fix; project status reports include all of that project's issues. Deleting a project includes its issues. Deleting a responsible contact keeps the issue and unassigns the person. No inspector, city or county is contacted automatically.
 
 ## Supplier receipts, estimate versus actual, and approval
 

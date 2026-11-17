@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.5.0 — 2026-11-16
+
+- Added project Corrections and Violations workspaces with address, precise location, required corrective action and notice/code/sheet references.
+- Added authority, related permit, responsible contact, priority, deadlines, progress states and resolution dates/notes.
+- Added address autofill with preserved custom addresses and project shortcuts to filtered issue lists.
+- Added unresolved issue coverage in dashboard/timeline, overdue highlights, retained notice/photo attachments, search and CSV/DOCX exports.
+- Integrated department/project reports, draft recovery, backed-up deletion and schema v6 upgrades with v1–v6 restore support.
+- Added issue-specific tests and Windows packaged-application checks.
+
 ## 1.4.0 — 2026-11-15
 
 - Added Receipts workspace with supplier/company/contact, project, reference, receipt date, discipline, area and notes.

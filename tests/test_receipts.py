@@ -107,17 +107,17 @@ def v4_database(path):
 def test_v4_upgrade_preserves_existing_data_and_recovery_schema(tmp_path):
  path=tmp_path/'v4.sqlite3';v4_database(path);s=Store(path)
  try:
-  assert s.db.execute('PRAGMA user_version').fetchone()[0]==5
+  assert s.db.execute('PRAGMA user_version').fetchone()[0]==6
   assert len(s.all('bids'))==2 and len(s.all('permit_requirements'))==2
   assert s.all('receipts')==[] and s.drafts()==[]
-  with closing(sqlite3.connect(str(path)+'.before-v1.4.0.sqlite3')) as backup:assert backup.execute('PRAGMA user_version').fetchone()[0]==4
+  with closing(sqlite3.connect(str(path)+'.before-v1.5.0.sqlite3')) as backup:assert backup.execute('PRAGMA user_version').fetchone()[0]==4
  finally:s.db.close()
 
 
 def test_v4_backup_restore_into_v5(store,receipt,tmp_path):
  path=tmp_path/'v4.sqlite3';v4_database(path);store.restore(path)
  assert store.all('receipts')==[] and len(store.all('bids'))==2
- assert store.db.execute('PRAGMA user_version').fetchone()[0]==5
+ assert store.db.execute('PRAGMA user_version').fetchone()[0]==6
 
 @pytest.fixture
 def app():

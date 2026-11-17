@@ -108,6 +108,21 @@ def smoke_test():
             write_docx(receipt_word, 'Supplier receipts', store.receipt_rows())
             if not receipt_word.is_file():
                 raise RuntimeError('Receipt Word export smoke check failed')
+            if window.tables['Corrections'].rowCount() != 1 or window.tables['Violations'].rowCount() != 1:
+                raise RuntimeError('Corrections/violations workspace smoke check failed')
+            violation = store.issue_rows('Violation')[0]
+            if violation['site_address'] != '120 Example Avenue' or not violation['required_fix']:
+                raise RuntimeError('Issue address/required-fix smoke check failed')
+            store.save('issues', {'status': 'Resolved'}, violation['id'])
+            window.refresh()
+            if any(row.get('_source_table') == 'issues' and row.get('_source_id') == violation['id'] for row in window.data['Dashboard']):
+                raise RuntimeError('Resolved violation remained on outstanding dashboard')
+            if not store.issue_rows('Violation')[0]['resolved_date']:
+                raise RuntimeError('Issue resolution date smoke check failed')
+            issue_word = Path(folder) / 'violations-export.docx'
+            write_docx(issue_word, 'Project violations', store.issue_rows('Violation'))
+            if not issue_word.is_file():
+                raise RuntimeError('Issue Word export smoke check failed')
             window.close()
             app.processEvents()
         finally:

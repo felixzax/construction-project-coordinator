@@ -49,6 +49,10 @@ class PermitStore:
    if row_id and data.get('record_type')!='Permit':
     if self.rows('SELECT id FROM permit_requirements WHERE register_id=? LIMIT 1',(row_id,)):
      raise ValueError('A permit with a checklist cannot be changed into a different register type')
+   if row_id:
+    linked=self.rows('SELECT project_id FROM issues WHERE permit_id=?',(row_id,))
+    if linked and data.get('record_type')!='Permit':raise ValueError('A permit linked to corrections or violations must remain a permit')
+    if any(row['project_id']!=data.get('project_id') for row in linked):raise ValueError('Unlink related corrections or violations before moving the permit to another project')
   if table=='permit_requirements':
    parent=self.rows('SELECT project_id,record_type FROM registers WHERE id=?',(data.get('register_id'),))
    if not parent or parent[0]['record_type']!='Permit': raise ValueError('Requirements must belong to a permit')

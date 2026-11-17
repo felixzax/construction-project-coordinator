@@ -60,7 +60,7 @@ class RecoveryUI:
   from .development_ui import DISCIPLINE_PAGES,REGISTER_PAGES
   if row.get('_source_table'): return row['_source_table'],row['_source_id']
   if title=='Search': return row['type'],row['id']
-  mapping={'Projects':'projects','Tasks':'tasks','Contacts':'contacts','Communications':'communications','Documents':'documents','Meetings':'meetings','Bidding':'bid_packages','Bids':'bids','Receipts':'receipts'}
+  mapping={'Projects':'projects','Tasks':'tasks','Contacts':'contacts','Communications':'communications','Documents':'documents','Meetings':'meetings','Bidding':'bid_packages','Bids':'bids','Receipts':'receipts','Corrections':'issues','Violations':'issues'}
   if title in DISCIPLINE_PAGES: return 'work_packages',row['id']
   if title in REGISTER_PAGES: return 'registers',row['id']
   if title=='Timeline':
@@ -84,7 +84,7 @@ class RecoveryUI:
   self.guard(action)
  def delete_application_data(self):
   def action():
-   text,ok=QInputDialog.getText(self,'Delete ALL application data','This removes every project, contact, task, document record, permit, meeting, bid, receipt and recovery draft across ALL projects. A database recovery snapshot is created first; attached files and snapshots are kept.\nType DELETE ALL to continue:')
+   text,ok=QInputDialog.getText(self,'Delete ALL application data','This removes every project, contact, task, document record, permit, meeting, bid, receipt, correction, violation and recovery draft across ALL projects. A database recovery snapshot is created first; attached files and snapshots are kept.\nType DELETE ALL to continue:')
    if ok and text=='DELETE ALL':
     path=self.store.delete_all_data(); self.refresh(); self.statusBar().showMessage('All application records deleted. Recovery snapshot: '+str(path),15000)
   self.guard(action)

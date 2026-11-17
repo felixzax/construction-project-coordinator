@@ -153,9 +153,9 @@ def test_v3_upgrade_preserves_permits_and_creates_pre_upgrade_backup(tmp_path):
  with closing(sqlite3.connect(path)) as db: db.executescript((Path(__file__).parent/'fixtures/v3_database.sql').read_text())
  s=Store(path)
  try:
-  assert s.db.execute('PRAGMA user_version').fetchone()[0]==5
+  assert s.db.execute('PRAGMA user_version').fetchone()[0]==6
   assert len(s.all('bids'))==2 and len(s.all('permit_requirements'))==2
-  with closing(sqlite3.connect(str(path)+'.before-v1.4.0.sqlite3')) as backup: assert backup.execute('PRAGMA user_version').fetchone()[0]==3
+  with closing(sqlite3.connect(str(path)+'.before-v1.5.0.sqlite3')) as backup: assert backup.execute('PRAGMA user_version').fetchone()[0]==3
  finally: s.db.close()
 
 
@@ -163,7 +163,7 @@ def test_v3_backup_can_be_restored_with_current_recovery_schema(store,tmp_path):
  path=tmp_path/'v3.sqlite3'
  with closing(sqlite3.connect(path)) as db: db.executescript((Path(__file__).parent/'fixtures/v3_database.sql').read_text())
  store.restore(path)
- assert store.db.execute('PRAGMA user_version').fetchone()[0]==5
+ assert store.db.execute('PRAGMA user_version').fetchone()[0]==6
  assert store.drafts()==[] and len(store.all('permit_requirements'))==2
 
 

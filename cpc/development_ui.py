@@ -19,7 +19,7 @@ DISCIPLINE_PAGES={
  'Other Trades':['General','Interiors','Roofing','Concrete','Masonry','Steel','Demolition'],
 }
 REGISTER_PAGES={'RFIs':'RFI','Submittals':'Submittal','Permits':'Permit','Inspections':'Inspection','Punch & Changes':None}
-NAVIGATION=['Dashboard','Projects','Tasks',*DISCIPLINE_PAGES,'Meetings','Contacts','Communications','Documents',*REGISTER_PAGES,'Bidding','Receipts','Timeline','Search','Backup & Restore','Recovery & Data']
+NAVIGATION=['Dashboard','Projects','Corrections','Violations','Tasks',*DISCIPLINE_PAGES,'Meetings','Contacts','Communications','Documents',*REGISTER_PAGES,'Bidding','Receipts','Timeline','Search','Backup & Restore','Recovery & Data']
 
 STATUS_CHOICES=STATUSES
 EXTRA_OPTIONS={
@@ -136,7 +136,7 @@ class DevelopmentUI:
    if title=='Timeline' and existing:
     try:
      if self.selected(title).get('id') is None:
-      QMessageBox.information(self,'Edit schedule','Edit this item in its discipline, meeting, register or bidding section.'); return
+      QMessageBox.information(self,'Edit schedule','Edit this item in its discipline, meeting, register, bidding, corrections or violations section.'); return
     except ValueError: pass
    return super().edit(title,existing)
   def action():
