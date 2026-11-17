@@ -1,25 +1,32 @@
-# Construction Project Coordinator 1.5.0
+# Construction Project Coordinator 1.5.1
 
 A local Windows desktop workspace for construction and property development coordination, consultant disciplines, drawing registers, meetings and detailed bid estimates. Python 3.12, PySide6 and SQLite. No cloud subscription, email connection or account is required to use the app.
 
 ## Download and run
 
-**[Download the verified Windows 1.5.0 build](https://github.com/felixzax/construction-project-coordinator/actions/runs/44035589933/artifacts/14307312064)** · [Successful build and test logs](https://github.com/felixzax/construction-project-coordinator/actions/runs/44035589933). All 147 Windows tests and the packaged-executable check passed, including project corrections/violations, address, required fix, resolution behavior and Word output.
 
 
 
 
 
-Open [GitHub Actions](https://github.com/felixzax/construction-project-coordinator/actions/workflows/windows.yml), select a successful **Test and build Windows** run for version 1.5.0, and download the **ConstructionProjectCoordinator-1.5.0-Windows** artifact. Sign in to GitHub to access this private repository. Extract the artifact ZIP, then extract the contained application ZIP. Keep the entire `ConstructionProjectCoordinator` directory together and launch `ConstructionProjectCoordinator.exe`. Python is not required for packaged builds. The app is unsigned and Windows may show a reputation prompt. Workflow artifacts are retained for 90 days.
+Open [GitHub Actions](https://github.com/felixzax/construction-project-coordinator/actions/workflows/windows.yml), select a successful **Test and build Windows** run for version 1.5.1, and download **ConstructionProjectCoordinator-1.5.1-Windows**. GitHub may require sign-in for Actions downloads. Extract the downloaded ZIP **once** into a fresh folder and run `ConstructionProjectCoordinator.exe`. Version 1.5.1 is a standalone, single-file executable: Python and a companion `_internal` folder are not required. The ZIP also contains README, changelog and file checksums. Do not mix its files into an older application folder. The app is unsigned and Windows may show a reputation prompt. Artifacts are retained for 90 days.
+
+## Fix for the Shiboken startup error
+
+If an older folder build reports `shiboken6\libshiboken does not exist`, use the new standalone 1.5.1 build above. The published 1.5.0 archive contains `_internal/shiboken6`, but the error occurs if that package folder is missing from the extracted copy. Do not create an empty libshiboken folder or install Python to work around it. The standalone build bundles its Qt/Shiboken runtime and extracts it automatically to a temporary directory when it starts.
+
+Close the old app, extract the new ZIP into a fresh folder and launch the new executable. Project data stays in the same local data directory. **Upgrading from 1.5.0 to 1.5.1 does not change the database schema.** All project features remain available.
+
+If a runtime cannot load, the app gives a clear pre-Qt startup message and records `startup-error.txt` under `%LOCALAPPDATA%/Construction Project Coordinator/`. It does not alter project records in that failure path.
 
 ## Upgrade from 1.0.0 through 1.4.0
 
 1. In the old app, use Backup & Restore to back up your database. Also copy its adjacent `documents` folder to your backup location. Close all old app instances.
 2. Extract the new build into a new application folder. Keep the old executable until you verify the upgrade.
-3. Launch version 1.5.0 from the same Windows account. It uses the same Local AppData location, preserves existing projects, contacts, tasks and approved document revisions, and adds the new tables and fields automatically. It creates a `.before-v1.5.0.sqlite3` safety copy before upgrading a v1–v5 database.
+3. Launch version 1.5.1 from the same Windows account. It uses the same Local AppData location, preserves existing projects, contacts, tasks and approved document revisions, and adds the new tables and fields automatically. It creates a `.before-v1.5.0.sqlite3` safety copy before upgrading a v1–v5 database.
 4. Existing work is not replaced with demonstration data. New sections begin empty for existing users. Fresh workspaces may load fictional examples at the welcome prompt.
 
-The upgrade is one way: the new schema is version 6. To roll back, close the new app and restore the matching pre-upgrade database before running an older app. Do not open the upgraded database with the old app. Version 1.5.0 can restore v1–v6 backups; older backups are upgraded in a temporary copy before replacing live records.
+The upgrade is one way: the new schema is version 6. To roll back, close the new app and restore the matching pre-upgrade database before running an older app. Do not open the upgraded database with the old app. Version 1.5.1 can restore v1–v6 backups; older backups are upgraded in a temporary copy before replacing live records.
 
 ## Project corrections, addresses and violations to fix
 
@@ -209,7 +216,7 @@ For a separate sample workspace in PowerShell, set `$env:CPC_DATA_DIR = "$PWD\sa
 $env:QT_QPA_PLATFORM = "offscreen"
 .\.venv\Scripts\python -m pytest -v
 Remove-Item Env:QT_QPA_PLATFORM
-.\.venv\Scripts\python -m PyInstaller --noconfirm --clean --windowed --onedir --name ConstructionProjectCoordinator main.py
+.\.venv\Scripts\python -m PyInstaller --noconfirm --clean --windowed --onefile --collect-all shiboken6 --name ConstructionProjectCoordinator main.py
 ```
 
-PyInstaller must run on Windows to produce the Windows executable. The included Windows Actions workflow runs the full tests first, builds with PyInstaller, exercises the packaged executable with disposable data via `--smoke-test`, and uploads an application ZIP plus JUnit results. See VALIDATION.md for actual run evidence. A successful headless check does not replace manual desktop/printer acceptance testing.
+PyInstaller must run on Windows to produce the Windows executable. The Windows Actions workflow runs the full tests, builds a single-file executable, stages checksums, creates and extracts a test ZIP in a clean path containing spaces/Unicode, and launches it with Python/Qt build paths removed. After uploading the flat artifact, it downloads those exact files, verifies their checksums and launches the executable with both offscreen and native Windows Qt platforms. The disposable `--smoke-test` exercises the full app and exports. The release executable appears at `dist/ConstructionProjectCoordinator.exe`. JUnit results are uploaded separately. See VALIDATION.md for actual run evidence. A successful headless check does not replace manual desktop/printer acceptance testing.

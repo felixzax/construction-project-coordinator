@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.5.1 — 2026-11-17
+
+- Changed Windows delivery to a standalone single-file executable with explicit Shiboken collection, preventing loss of a companion runtime folder during copying/extraction.
+- Removed the nested application ZIP: the Actions artifact contains the executable directly.
+- Added pre-Qt runtime checks and a useful startup diagnostic instead of an unhandled Shiboken import traceback.
+- Added file checksums, isolated ZIP round-trip launch, actual downloaded-artifact verification, and native Windows Qt launch with Python/Qt build paths removed.
+- No database schema or business-feature changes.
+
 ## 1.5.0 — 2026-11-16
 
 - Added project Corrections and Violations workspaces with address, precise location, required corrective action and notice/code/sheet references.

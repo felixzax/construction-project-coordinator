@@ -19,23 +19,27 @@ jobs:
         run: python -m pytest -v --junitxml=test-results.xml
         env:
           QT_QPA_PLATFORM: offscreen
-      - name: Package Windows desktop app
-        run: python -m PyInstaller --noconfirm --clean --windowed --onedir --name ConstructionProjectCoordinator main.py
-      - name: Verify packaged executable launches
-        run: python -c "import subprocess; subprocess.run([r'dist/ConstructionProjectCoordinator/ConstructionProjectCoordinator.exe', '--smoke-test'], check=True, timeout=60)"
-        env:
-          QT_QPA_PLATFORM: offscreen
-      - name: Include user documentation
-        shell: pwsh
-        run: |
-          Copy-Item README.md, CHANGELOG.md -Destination dist/ConstructionProjectCoordinator/
-          Compress-Archive -Path dist/ConstructionProjectCoordinator -DestinationPath dist/ConstructionProjectCoordinator-1.5.0-Windows.zip
+      - name: Build standalone Windows executable
+        run: python -m PyInstaller --noconfirm --clean --windowed --onefile --collect-all shiboken6 --name ConstructionProjectCoordinator main.py
+      - name: Stage standalone executable and checksums
+        run: python scripts/portable_build.py stage release
+      - name: Verify ZIP extraction in isolated directory
+        run: python scripts/portable_build.py zip-check release
       - uses: actions/upload-artifact@v4
+        id: application
         with:
-          name: ConstructionProjectCoordinator-1.5.0-Windows
-          path: dist/ConstructionProjectCoordinator-1.5.0-Windows.zip
+          name: ConstructionProjectCoordinator-1.5.1-Windows
+          path: release/*
           if-no-files-found: error
           retention-days: 90
+      - name: Download exact published artifact
+        uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ steps.application.outputs.artifact-id }}
+          path: downloaded-artifact
+          merge-multiple: true
+      - name: Verify downloaded artifact without Python or Qt paths
+        run: python scripts/portable_build.py verify downloaded-artifact
       - uses: actions/upload-artifact@v4
         if: always()
         with:

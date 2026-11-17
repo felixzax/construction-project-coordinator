@@ -130,8 +130,34 @@ def smoke_test():
     return 0
 
 
+def launch():
+    # This guard uses only the standard library and runs before importing PySide6.
+    from cpc.runtime import check_frozen_runtime, report_startup_failure
+    quiet = '--smoke-test' in sys.argv
+    missing = check_frozen_runtime()
+    if missing:
+        report_startup_failure(
+            'The application runtime is incomplete.\n\n'
+            + '\n'.join(missing)
+            + '\n\nDownload the latest standalone Windows executable from the project build. '
+              'For older folder builds, extract the complete ZIP including _internal. '
+              'Do not move only the executable out of an older folder build. '
+              'Your project database and documents are not changed.', quiet=quiet)
+        return 2
+    try:
+        if quiet:
+            return smoke_test()
+        from cpc.ui import main
+        return main()
+    except ImportError as error:
+        report_startup_failure(
+            'The application could not load its bundled runtime.\n\n'
+            + str(error)
+            + '\n\nDownload a fresh copy of the standalone build and extract the ZIP. '
+              'Do not copy files over an older installation. '
+              'Your project data remains in its local data folder.', quiet=quiet)
+        return 2
+
+
 if __name__ == '__main__':
-    if '--smoke-test' in sys.argv:
-        raise SystemExit(smoke_test())
-    from cpc.ui import main
-    raise SystemExit(main())
+    raise SystemExit(launch())
