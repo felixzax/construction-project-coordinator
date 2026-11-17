@@ -4,6 +4,8 @@ A local Windows desktop workspace for construction and property development coor
 
 ## Download and run
 
+**[Download the standalone Windows 1.5.1 build](https://github.com/felixzax/construction-project-coordinator/actions/runs/44194649007/artifacts/14378148252)** · [Successful build and test logs](https://github.com/felixzax/construction-project-coordinator/actions/runs/44194649007). All 156 Windows tests passed. The exact downloaded artifact passed checksum and isolated offscreen/native-Windows launch checks.
+
 
 
 
