@@ -4,6 +4,7 @@ from PySide6.QtGui import QDesktopServices
 from PySide6.QtWidgets import QWidget,QVBoxLayout,QHBoxLayout,QLabel,QLineEdit,QFileDialog,QMessageBox,QAbstractItemView
 from .table import DataTable
 from .receipts import RECEIPT_STATUSES,RECEIPT_FORM_FIELDS
+from .finance import RECEIPT_FINANCE_COLUMNS
 
 class ReceiptUI:
  def build_page(self,title):
@@ -25,8 +26,8 @@ class ReceiptUI:
   from .ui import Form
   def action():
    if not self.store.all('projects'): raise ValueError('Create a project first')
-   row=self.selected('Receipts') if existing else dict(project_id=self.project_filter.currentData(),currency='USD',status='Pending Review')
-   form=Form(self,'Edit supplier receipt' if existing else 'New supplier receipt',RECEIPT_FORM_FIELDS,row,self.choices('receipts'))
+   row=self.selected('Receipts') if existing else dict(project_id=self.project_filter.currentData(),currency='USD',status='Pending Review',include_in_budget=1)
+   form=Form(self,'Edit supplier receipt' if existing else 'New supplier receipt',RECEIPT_FORM_FIELDS+list(RECEIPT_FINANCE_COLUMNS),row,self.choices('receipts'))
    form.persist=lambda values:self.store.save('receipts',values,row['id'] if existing else None); form.enable_draft('receipts',row['id'] if existing else None)
    if form.exec(): self.refresh()
   self.guard(action)

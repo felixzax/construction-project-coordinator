@@ -6,6 +6,7 @@ import shutil
 import uuid
 import tempfile
 from contextlib import closing
+from .finance import FinanceStore, FINANCE_FIELDS, RECEIPT_FINANCE_COLUMNS
 from .issues import IssueStore, ISSUE_FIELDS
 from .receipts import ReceiptStore, RECEIPT_FIELDS
 from .recovery import RecoveryStore, RECOVERY_TABLES
@@ -38,26 +39,29 @@ FIELDS = {
 FIELDS.update(NEW_FIELDS)
 FIELDS['receipts']=RECEIPT_FIELDS
 FIELDS['issues']=ISSUE_FIELDS
+FIELDS.update(FINANCE_FIELDS)
+FIELDS['receipts'].extend(RECEIPT_FINANCE_COLUMNS)
 FIELDS['registers'].extend(PERMIT_COLUMNS)
 FIELDS['permit_requirements']=REQUIREMENT_FIELDS+['completed_on']
 for _table,_columns in ADDED_COLUMNS.items():
  FIELDS[_table].extend(_columns)
 
-class Store(IssueStore,ReceiptStore,RecoveryStore,PermitStore,DevelopmentStore):
+class Store(FinanceStore,IssueStore,ReceiptStore,RecoveryStore,PermitStore,DevelopmentStore):
  def __init__(self, path):
   self.path=Path(path); self.path.parent.mkdir(parents=True,exist_ok=True)
   self.db=sqlite3.connect(self.path); self.db.row_factory=sqlite3.Row
   version=self.db.execute('PRAGMA user_version').fetchone()[0]
-  if version not in (0,1,2,3,4,5,6):
+  if version not in (0,1,2,3,4,5,6,7):
    self.db.close(); raise ValueError('This database requires a newer version of the application')
-  if version in (1,2,3,4,5):
-   self.backup(str(self.path)+'.before-v1.5.0.sqlite3')
+  if version in (1,2,3,4,5,6):
+   self.backup(str(self.path)+'.before-v1.6.0.sqlite3')
   self.db.execute('PRAGMA foreign_keys=ON'); self.db.executescript(SCHEMA)
   self.migrate_development()
   self.migrate_permits()
   self.migrate_recovery()
   self.migrate_receipts()
   self.migrate_issues()
+  self.migrate_finance()
   self.db.execute("PRAGMA journal_mode=WAL")
   self.db.execute("PRAGMA synchronous=FULL")
   self.db.execute("PRAGMA busy_timeout=5000")
@@ -80,6 +84,7 @@ class Store(IssueStore,ReceiptStore,RecoveryStore,PermitStore,DevelopmentStore):
   self.validate_permit(table,data,row_id)
   self.validate_receipt(table,data,row_id)
   self.validate_issue(table,data,row_id)
+  self.validate_finance(table,data,row_id)
   for key in ('name','title','summary'):
    if key in FIELDS[table] and not str(data.get(key,'')).strip(): raise ValueError(f'{key.title()} is required')
   for key in ('deadline','follow_up','occurred'):
@@ -141,15 +146,17 @@ class Store(IssueStore,ReceiptStore,RecoveryStore,PermitStore,DevelopmentStore):
    with closing(sqlite3.connect(f'{source.resolve().as_uri()}?mode=ro',uri=True)) as candidate:
     if candidate.execute('PRAGMA integrity_check').fetchone()[0]!='ok': raise ValueError('Invalid backup')
     version=candidate.execute('PRAGMA user_version').fetchone()[0]
-    if version not in (1,2,3,4,5,6): raise ValueError('Unsupported backup version')
+    if version not in (1,2,3,4,5,6,7): raise ValueError('Unsupported backup version')
     # Validate the original schema before any CREATE TABLE statement can mask missing tables.
     for table in list(FIELDS)+['versions','activity','project_contacts']+RECOVERY_TABLES:
+     if version<7 and table in FINANCE_FIELDS:continue
      if version<6 and table=='issues':continue
      if version<5 and table=='receipts': continue
      if version<4 and table in RECOVERY_TABLES: continue
      if version==1 and table in NEW_FIELDS: continue
      if version<=2 and table=='permit_requirements': continue
      expected={r[1] for r in self.db.execute(f'PRAGMA table_info({table})')}
+     if version<7 and table=='receipts':expected-=set(RECEIPT_FINANCE_COLUMNS)
      if version==1: expected-=set(ADDED_COLUMNS.get(table,{}))
      if version<=2 and table=='registers': expected-=set(PERMIT_COLUMNS)
      actual={r[1] for r in candidate.execute(f'PRAGMA table_info({table})')}
@@ -174,7 +181,7 @@ class Store(IssueStore,ReceiptStore,RecoveryStore,PermitStore,DevelopmentStore):
   for title,rows in [('Outstanding tasks',self.outstanding(pid)),('Documents',self.rows('SELECT d.title,v.revision,v.status,v.requirements,v.resubmission FROM documents d LEFT JOIN versions v ON v.id=(SELECT MAX(id) FROM versions WHERE document_id=d.id) WHERE d.project_id=?',(pid,))),('Milestones',self.rows('SELECT title,phase,deadline,status FROM milestones WHERE project_id=? ORDER BY deadline',(pid,))),('Communication',self.rows('SELECT occurred,summary,follow_up,status FROM communications WHERE project_id=? ORDER BY occurred DESC',(pid,)))]:
    out+=f'<h2>{title}</h2>'
    for r in rows: out+='<p>'+' | '.join(f'{e(k)}: {e(v)}' for k,v in r.items() if k not in ('id','project_id','contact_id'))+'</p>'
-  return out+self.development_report(pid)+self.permit_checklist_report(pid)+self.receipt_report(pid)+self.issue_report(pid)
+  return out+self.development_report(pid)+self.permit_checklist_report(pid)+self.receipt_report(pid)+self.issue_report(pid)+self.finance_report(pid)
  def draft(self,comm):
   p=self.rows('SELECT name FROM projects WHERE id=?',(comm['project_id'],))[0]
   c=self.rows('SELECT name,email FROM contacts WHERE id=?',(comm['contact_id'],))
@@ -201,3 +208,6 @@ class Store(IssueStore,ReceiptStore,RecoveryStore,PermitStore,DevelopmentStore):
 
   self.save('issues',dict(project_id=p,title='Accessibility plan correction',issue_type='Correction',required_fix='Revise accessible counter detail on sheet A-102',location='Sales counter',discipline='Architecture',contact_id=c,deadline=(date.today()+timedelta(days=7)).isoformat(),authority='Example City plan review (fictional)',status='Open'))
   self.save('issues',dict(project_id=p,title='Electrical panel clearance violation',issue_type='Violation',required_fix='Remove stored materials from the panel working clearance',location='Rear electrical room',discipline='Electrical',contact_id=c,priority='High',deadline=(date.today()-timedelta(days=1)).isoformat(),authority='Example inspector (fictional)',status='Open'))
+
+  budget=self.save('budgets',dict(project_id=p,title='Electrical budget',discipline='Electrical',currency='USD',base_amount='10000',contingency_amount='1000'))
+  self.save('contracts',dict(project_id=p,title='Electrical installation agreement',contractor_name='Example Electrical A (fictional)',budget_id=budget,discipline='Electrical',currency='USD',original_amount='7500',scope='Fictional installation scope',status='Active'))

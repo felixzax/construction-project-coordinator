@@ -8,6 +8,7 @@ from PySide6.QtWidgets import (QApplication,QMainWindow,QWidget,QVBoxLayout,QHBo
 from PySide6.QtPrintSupport import QPrinter,QPrintPreviewDialog
 from .store import Store, FIELDS, TASK_STATUSES
 from .table import DataTable
+from .finance_ui import FinanceUI
 from .issue_ui import IssueUI
 from .receipt_ui import ReceiptUI
 from .exports import ExportUI
@@ -16,7 +17,7 @@ from .permit_ui import PermitUI
 from .development_ui import DevelopmentUI, NAVIGATION, EXTRA_OPTIONS
 from .development import line_totals
 
-VERSION='1.5.1'
+VERSION='1.6.0'
 OPTIONS={'phase':['Planning','Design','Permitting','Construction','Inspection','Closeout'],'priority':['Low','Normal','High','Urgent'],'category':['Architectural Plans','Engineering Drawings','Permit','Cut Sheet','Estimate','Approval','CAD File','BIM Model','Site Plan','Survey','Specification','Shop Drawing','As-Built','Other'],'role':['Architect','Engineer','Contractor','City Official','County Official','Business Owner','Electrical Engineer','Plumbing Engineer','Mechanical Engineer','Civil Engineer','Structural Engineer','Surveyor','Estimator','Supplier','Developer','Other']}
 class Form(QDialog):
  def __init__(self,parent,title,fields,record=None,choices=None):
@@ -32,13 +33,13 @@ class Form(QDialog):
     ix=widget.findData(value)
     if ix>=0: widget.setCurrentIndex(ix)
     elif value not in ('',None): widget.addItem(str(value),value); widget.setCurrentIndex(widget.count()-1)
-   elif key in ('archived','included','completed','requirements_reviewed'): widget=QCheckBox(); widget.setChecked(bool(value))
+   elif key in ('archived','included','completed','requirements_reviewed','include_in_budget'): widget=QCheckBox(); widget.setChecked(bool(value))
    elif key in ('notes','description','summary','requirements','scope','attendees','agenda','minutes','decisions','response','exclusions','schedule_notes','required_fix','resolution_notes','approval_notes'):
     widget=QTextEdit(); widget.setPlainText(str(value or '')); widget.setMaximumHeight(110)
    else:
     widget=QLineEdit(str(value or ''))
-    if key in ('deadline','follow_up','occurred','submitted','received','valid_until','meeting_date','receipt_date','review_date','reported_date','resolved_date'): widget.setPlaceholderText('YYYY-MM-DD (blank allowed except required dates)')
-   labels={'project_id':'Project','contact_id':'Responsible contact / bidder','designer_id':'Designer / consultant','meeting_id':'Related meeting','package_id':'Trade bid package','bid_id':'Bid estimate','labor_rate':'Labor hourly rate','material_unit_cost':'Material cost per unit','equipment_unit_cost':'Equipment cost per unit','subcontract_unit_cost':'Subcontract cost per unit','other_cost':'Other fixed cost','included':'Include in bid total','site_address':'Site address','location':'Exact spot / floor / room','required_fix':'Required fix / action','authority':'City / county / inspector','permit_id':'Related permit','estimated_amount':'Supplier estimated price','actual_amount':'Supplier actual price','status':'Status / approval','register_id':'Permit application','jurisdiction_name':'City / county name','requirements_url':'Application requirements link','application_url':'Application / portal link','requirements_reviewed':'Requirements page reviewed','source_url':'Requirement source link','completed':'Requirement ready','building_area':'Building / floor / area','tax_percent':'Material tax (%)','markup_percent':'Markup (%)','contingency_percent':'Contingency (%)','waste_percent':'Material waste (%)'}
+    if key in ('deadline','follow_up','occurred','submitted','received','valid_until','meeting_date','receipt_date','review_date','reported_date','resolved_date','signed_date','start_date','end_date','approved_date'): widget.setPlaceholderText('YYYY-MM-DD (blank allowed except required dates)')
+   labels={'project_id':'Project','contact_id':'Responsible contact / bidder','designer_id':'Designer / consultant','meeting_id':'Related meeting','package_id':'Trade bid package','bid_id':'Bid estimate','labor_rate':'Labor hourly rate','material_unit_cost':'Material cost per unit','equipment_unit_cost':'Equipment cost per unit','subcontract_unit_cost':'Subcontract cost per unit','other_cost':'Other fixed cost','included':'Include in bid total','budget_id':'Budget category','contract_id':'Related contract','bid_id':'Source awarded bid','original_amount':'Original contract amount','base_amount':'Base budget allocation','contingency_amount':'Contingency allowance','include_in_budget':'Include actual price in budget costs','site_address':'Site address','location':'Exact spot / floor / room','required_fix':'Required fix / action','authority':'City / county / inspector','permit_id':'Related permit','estimated_amount':'Supplier estimated price','actual_amount':'Supplier actual price','status':'Status / approval','register_id':'Permit application','jurisdiction_name':'City / county name','requirements_url':'Application requirements link','application_url':'Application / portal link','requirements_reviewed':'Requirements page reviewed','source_url':'Requirement source link','completed':'Requirement ready','building_area':'Building / floor / area','tax_percent':'Material tax (%)','markup_percent':'Markup (%)','contingency_percent':'Contingency (%)','waste_percent':'Material waste (%)'}
    self.inputs[key]=widget; form.addRow(labels.get(key,key.replace('_',' ').title()),widget)
    if key=='file_path':
     browse=QPushButton('Choose document file…'); browse.clicked.connect(lambda _,w=widget:self.browse(w)); form.addRow('',browse)
@@ -138,6 +139,8 @@ class BaseWindow(QMainWindow):
   if query and query.text(): rows=[r for r in rows if query.text().lower() in ' '.join(str(v) for v in r.values()).lower()]
   self.data[title]=rows; table=self.tables[title]; keys=[k for k in rows[0] if k!='id' and not k.startswith('_') and not k.endswith('_id')] if rows else []
   preferred=['title','name','label','project','bidder','currency','total','status','discipline','building_area','deadline','responsible']
+  if title=='Budgets':preferred=['title','project','currency','total_budget','actual_amount','projected_total','remaining_funds','budget_alert']
+  if title=='Contracts':preferred=['title','contractor_name','status','currency','original_amount','adjusted_amount','actual_amount','remaining_commitment','budget','project']
   if title in ('Corrections','Violations'):preferred=['title','site_address','status','deadline','location','required_fix','responsible','project','priority','authority']
   if title=='Receipts': preferred=['title','supplier_name','status','currency','estimated_amount','actual_amount','variance_amount','comparison','project','receipt_date','reference','reviewed_by','review_date']
   if title=='Permits': preferred=['title','project','jurisdiction_type','jurisdiction_name','department','status','checklist_progress','requirements_reviewed','requirements_url','application_url','reference','responsible','deadline']
@@ -148,6 +151,7 @@ class BaseWindow(QMainWindow):
    for j,key in enumerate(keys):
     value=('✓ Reviewed' if r[key] else 'Not reviewed') if key=='requirements_reviewed' else (r[key] if r[key] is not None else '')
     item=QTableWidgetItem(str(value)); table.setItem(i,j,item)
+    if title=='Budgets' and r.get('budget_alert')=='OVER BUDGET':item.setBackground(QColor('#fde3df'));item.setForeground(QColor('#9b2525'))
     if title=='Receipts' and key=='status': item.setForeground(QColor('#237447' if r[key]=='Approved' else '#a52d2d' if r[key]=='Rejected' else '#8a6518'))
     if title=='Receipts' and key=='variance_amount' and r.get('comparison')=='Over estimate': item.setBackground(QColor('#fff0d0')); item.setForeground(QColor('#815311'))
     if overdue: item.setBackground(QColor('#fde3df')); item.setForeground(QColor('#9b2525'))
@@ -267,7 +271,7 @@ class BaseWindow(QMainWindow):
    if path and QMessageBox.question(self,'Replace local data?','Restore this backup and replace all current records? A safety backup will be created.')==QMessageBox.Yes: self.store.restore(path); self.refresh(); QMessageBox.information(self,'Restore complete','Database restored successfully.')
   self.guard(action)
 
-class Window(ExportUI,RecoveryUI,IssueUI,ReceiptUI,PermitUI,DevelopmentUI,BaseWindow):
+class Window(ExportUI,RecoveryUI,FinanceUI,IssueUI,ReceiptUI,PermitUI,DevelopmentUI,BaseWindow):
  pass
 
 def main():

@@ -94,6 +94,7 @@ class DevelopmentStore:
    self.db.execute("UPDATE documents SET discipline='Architecture' WHERE discipline='General' AND category='Architectural Plans'")
    self.db.execute('PRAGMA user_version=2')
  def project_for(self,table,data):
+  if table in ('contract_changes','finance_files'):return self.finance_project(table,data)
   if table=='versions':
    rows=self.rows('SELECT project_id FROM documents WHERE id=?',(data.get('document_id'),))
    return rows[0]['project_id'] if rows else None

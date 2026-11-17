@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.6.0 — 2026-11-17
+
+- Added contracts, awarded-bid snapshots, approved change orders and budgets with receipt allocation and non-double-counted projections.
+- Added multiple original attachments, integrity-checked downloads, ZIP manifests and external working-copy/reimport editing.
+- Added basic TXT/CSV/DOCX/XLSX editing, versioned saves, ten-second editor autosaves and guarded format conversion including PDF reports.
+- Added schema 7 migration/restore, finance search, deletion, recovery and project/department reports.
+- Preserved standalone Windows runtime packaging and downloaded-artifact launch checks.
+
 ## 1.5.1 — 2026-11-17
 
 - Changed Windows delivery to a standalone single-file executable with explicit Shiboken collection, preventing loss of a companion runtime folder during copying/extraction.

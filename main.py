@@ -123,6 +123,33 @@ def smoke_test():
             write_docx(issue_word, 'Project violations', store.issue_rows('Violation'))
             if not issue_word.is_file():
                 raise RuntimeError('Issue Word export smoke check failed')
+            if window.tables['Contracts'].rowCount() != 1 or window.tables['Budgets'].rowCount() != 1:
+                raise RuntimeError('Contracts/budgets workspace smoke check failed')
+            budget = store.save('budgets', dict(project_id=store.all('projects')[0]['id'], title='Smoke budget', currency='USD', base_amount='1000'))
+            contract = store.save('contracts', dict(project_id=store.all('projects')[0]['id'], title='Smoke contract', contractor_name='Example company', budget_id=budget, currency='USD', original_amount='1000', status='Active'))
+            store.save('receipts', dict(project_id=store.all('projects')[0]['id'], title='Contract actual', supplier_name='Example company', contract_id=contract, currency='USD', actual_amount='200'))
+            if str(store.budget_totals(budget)['projected_total']) != '1000.00':
+                raise RuntimeError('Budget double-count prevention smoke check failed')
+            original = Path(folder) / 'contract-notes.txt'
+            original.write_text('Original contract terms', encoding='utf-8')
+            attachment = store.import_finance_files('contracts', contract, [original])[0]
+            downloaded = Path(folder) / 'downloaded-original.txt'
+            store.save_finance_copy(attachment, downloaded)
+            if downloaded.read_bytes() != original.read_bytes():
+                raise RuntimeError('Original attachment download smoke check failed')
+            from cpc.file_editor import EditableFile
+            editor = EditableFile(original); editor.text = 'Edited contract terms'
+            edited_word = Path(folder) / 'edited-contract.docx'; editor.save(edited_word)
+            word_editor = EditableFile(edited_word); word_editor.set_cell(0, 1, 'Final contract terms')
+            word_editor.save(Path(folder) / 'final-contract.docx')
+            csv_source = Path(folder) / 'budget-table.csv'; csv_source.write_text('Item,Cost\nMaterials,100\n', encoding='utf-8')
+            sheet_editor = EditableFile(csv_source); workbook = Path(folder) / 'budget-table.xlsx'; sheet_editor.save(workbook)
+            workbook_editor = EditableFile(workbook); workbook_editor.set_cell(1, 1, '125')
+            workbook_editor.save(Path(folder) / 'updated-budget.xlsx')
+            workbook_editor.save(Path(folder) / 'updated-budget.csv')
+            workbook_editor.save(Path(folder) / 'updated-budget.pdf')
+            store.import_finance_files('budgets', budget, [workbook])
+            store.export_finance_zip('budgets', budget, Path(folder) / 'budget-files.zip')
             window.close()
             app.processEvents()
         finally:

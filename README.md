@@ -1,34 +1,47 @@
-# Construction Project Coordinator 1.5.1
+# Construction Project Coordinator 1.6.0
 
 A local Windows desktop workspace for construction and property development coordination, consultant disciplines, drawing registers, meetings and detailed bid estimates. Python 3.12, PySide6 and SQLite. No cloud subscription, email connection or account is required to use the app.
 
 ## Download and run
 
-**[Download the standalone Windows 1.5.1 build](https://github.com/felixzax/construction-project-coordinator/actions/runs/44194649007/artifacts/14378148252)** · [Successful build and test logs](https://github.com/felixzax/construction-project-coordinator/actions/runs/44194649007). All 156 Windows tests passed. The exact downloaded artifact passed checksum and isolated offscreen/native-Windows launch checks.
+Version 1.6.0 Windows build verification is pending. Use only a successful run linked below.
 
-
-
-
-
-
-Open [GitHub Actions](https://github.com/felixzax/construction-project-coordinator/actions/workflows/windows.yml), select a successful **Test and build Windows** run for version 1.5.1, and download **ConstructionProjectCoordinator-1.5.1-Windows**. GitHub may require sign-in for Actions downloads. Extract the downloaded ZIP **once** into a fresh folder and run `ConstructionProjectCoordinator.exe`. Version 1.5.1 is a standalone, single-file executable: Python and a companion `_internal` folder are not required. The ZIP also contains README, changelog and file checksums. Do not mix its files into an older application folder. The app is unsigned and Windows may show a reputation prompt. Artifacts are retained for 90 days.
+Open [GitHub Actions](https://github.com/felixzax/construction-project-coordinator/actions/workflows/windows.yml), select a successful **Test and build Windows** run for version 1.6.0, and download **ConstructionProjectCoordinator-1.6.0-Windows**. GitHub may require sign-in for Actions downloads. Extract the downloaded ZIP **once** into a fresh folder and run `ConstructionProjectCoordinator.exe`. Version 1.6.0 is a standalone, single-file executable: Python and a companion `_internal` folder are not required. The ZIP also contains README, changelog and file checksums. Do not mix its files into an older application folder. The app is unsigned and Windows may show a reputation prompt. Artifacts are retained for 90 days.
 
 ## Fix for the Shiboken startup error
 
-If an older folder build reports `shiboken6\libshiboken does not exist`, use the new standalone 1.5.1 build above. The published 1.5.0 archive contains `_internal/shiboken6`, but the error occurs if that package folder is missing from the extracted copy. Do not create an empty libshiboken folder or install Python to work around it. The standalone build bundles its Qt/Shiboken runtime and extracts it automatically to a temporary directory when it starts.
+If an older folder build reports `shiboken6\libshiboken does not exist`, use the new standalone 1.6.0 build above. The published 1.5.0 archive contains `_internal/shiboken6`, but the error occurs if that package folder is missing from the extracted copy. Do not create an empty libshiboken folder or install Python to work around it. The standalone build bundles its Qt/Shiboken runtime and extracts it automatically to a temporary directory when it starts.
 
-Close the old app, extract the new ZIP into a fresh folder and launch the new executable. Project data stays in the same local data directory. **Upgrading from 1.5.0 to 1.5.1 does not change the database schema.** All project features remain available.
+Close the old app, extract the new ZIP into a fresh folder and launch the new executable. Project data stays in the same local data directory. Upgrading to 1.6.0 adds schema 7 with a pre-upgrade safety copy. All project features remain available.
 
 If a runtime cannot load, the app gives a clear pre-Qt startup message and records `startup-error.txt` under `%LOCALAPPDATA%/Construction Project Coordinator/`. It does not alter project records in that failure path.
 
-## Upgrade from 1.0.0 through 1.4.0
+## Upgrade from 1.0.0 through 1.5.1
 
 1. In the old app, use Backup & Restore to back up your database. Also copy its adjacent `documents` folder to your backup location. Close all old app instances.
 2. Extract the new build into a new application folder. Keep the old executable until you verify the upgrade.
-3. Launch version 1.5.1 from the same Windows account. It uses the same Local AppData location, preserves existing projects, contacts, tasks and approved document revisions, and adds the new tables and fields automatically. It creates a `.before-v1.5.0.sqlite3` safety copy before upgrading a v1–v5 database.
+3. Launch version 1.6.0 from the same Windows account. It uses the same Local AppData location, preserves existing projects, contacts, tasks and approved document revisions, and adds the new tables and fields automatically. It creates a `.before-v1.6.0.sqlite3` safety copy before upgrading a v1–v6 database.
 4. Existing work is not replaced with demonstration data. New sections begin empty for existing users. Fresh workspaces may load fictional examples at the welcome prompt.
 
-The upgrade is one way: the new schema is version 6. To roll back, close the new app and restore the matching pre-upgrade database before running an older app. Do not open the upgraded database with the old app. Version 1.5.1 can restore v1–v6 backups; older backups are upgraded in a temporary copy before replacing live records.
+The upgrade is one way: the new schema is version 7. To roll back, close the new app and restore the matching pre-upgrade database before running an older app. Do not open the upgraded database with the old app. Version 1.6.0 can restore v1–v7 backups; older backups are upgraded in a temporary copy before replacing live records.
+
+## Contracts, budgets and change orders
+
+Use **Contracts** for scope, contractor, dates, status, currency and original contract total. **From awarded bid** creates a Draft contract snapshot; later bid changes do not silently change it. Add approved positive or negative change orders to adjust the commitment. A contract can be assigned to a project budget in the same currency. Budgets record base allowance and contingency. There is no currency conversion, accounting, payment processing or electronic signing.
+
+In Receipts, choose a budget or contract and use **Include in budget** for known actual costs. Actuals count independently of receipt approval: uncheck this flag to exclude a rejected or otherwise inapplicable cost. Active, On Hold and Completed contracts count as commitments; Draft/Pending Signature/Cancelled do not. Cancelling a contract removes future commitment but retains its actual costs.
+
+Projected cost = included actual receipts + each committed contract's remaining amount (adjusted contract minus its linked actuals, minimum zero). For example, a $1,000 contract with $200 of linked receipts and $50 of direct budget receipts projects $1,050, avoiding double-counting the $200. Remaining funds subtract this projection from base plus contingency. Over-budget totals are highlighted. Project and department reports include these records.
+
+## Contract and budget files: add, edit and export
+
+Save a contract or budget, then open **Files**. Add multiple standard documents: PDF, Word, Excel, CSV, TXT, RTF/OpenDocument, images, CAD/BIM, presentations, email files and archives. Files are copied locally; this does not upload them to a server or automatically import their amounts into budget fields. **Save a copy** returns the original bytes, verified with SHA-256. **Save all as ZIP** includes originals and a manifest. Delete removes selected metadata after confirmation; retained copies remain available for recovery.
+
+**Edit/convert** supports UTF text, CSV, basic DOCX paragraphs/simple tables, and ordinary XLSX workbooks. Save an edited version to keep the original. Edited drafts autosave as additional versions every ten seconds while the editor is open; unsaved work since the last autosave may be lost in a crash. Choose Save as/export to select an available format and save a copy outside the app as well.
+
+Supported conversions: TXT to DOCX/PDF; CSV to XLSX/DOCX/PDF; simple text DOCX to TXT/PDF; plain XLSX sheets to CSV/DOCX/PDF. Native formats remain available. Complex Word features are rejected for in-app editing. Word tables/lists and Excel formulas/merged cells restrict conversion to their native format. CSV exports one selected sheet. PDF output is a content report, not a reproduction of Office page layout. Conversion cannot guarantee identical appearance across formats.
+
+For PDF, CAD/BIM, legacy Office and complex files, use **Open working copy** in the default installed application, save there, then **Import external edits**. The retained original is protected. The app does not edit PDF/CAD internally or provide those external programs. Back up the adjacent `documents` directory (including `documents/finance`) along with the database; database backups do not contain file bytes. External `workfiles` are temporary working copies, not the retained attachment history.
 
 ## Project corrections, addresses and violations to fix
 

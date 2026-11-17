@@ -120,12 +120,12 @@ def create_v1(path):
 def test_v1_upgrade_preserves_records_and_takes_snapshot(tmp_path):
  path=tmp_path/'v1.sqlite3'; create_v1(path); upgraded=Store(path)
  try:
-  assert upgraded.db.execute('PRAGMA user_version').fetchone()[0]==6
+  assert upgraded.db.execute('PRAGMA user_version').fetchone()[0]==7
   assert upgraded.all('projects')[0]['name']=='Existing v1 Project'
   assert upgraded.all('tasks')[0]['discipline']=='General'
   assert upgraded.versions(1)[0]['status']=='Approved'
   assert upgraded.all('documents')[0]['discipline']=='Architecture'
-  with closing(sqlite3.connect(str(path)+'.before-v1.5.0.sqlite3')) as db: assert db.execute('PRAGMA user_version').fetchone()[0]==1
+  with closing(sqlite3.connect(str(path)+'.before-v1.6.0.sqlite3')) as db: assert db.execute('PRAGMA user_version').fetchone()[0]==1
  finally: upgraded.db.close()
  reopened=Store(path); assert len(reopened.all('projects'))==1; reopened.db.close()
 
@@ -134,7 +134,7 @@ def test_v1_backup_restores_and_upgrades_without_losing_current_safety_copy(stor
  assert store.all('projects')[0]['name']=='Existing v1 Project'
  assert store.all('bids')==[]
  assert store.versions(1)[0]['status']=='Approved'
- assert store.db.execute('PRAGMA user_version').fetchone()[0]==6
+ assert store.db.execute('PRAGMA user_version').fetchone()[0]==7
  with closing(sqlite3.connect(str(store.path)+'.before-restore.sqlite3')) as db:
   assert db.execute('SELECT count(*) FROM bids').fetchone()[0]==2
 

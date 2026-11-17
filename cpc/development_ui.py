@@ -19,7 +19,7 @@ DISCIPLINE_PAGES={
  'Other Trades':['General','Interiors','Roofing','Concrete','Masonry','Steel','Demolition'],
 }
 REGISTER_PAGES={'RFIs':'RFI','Submittals':'Submittal','Permits':'Permit','Inspections':'Inspection','Punch & Changes':None}
-NAVIGATION=['Dashboard','Projects','Corrections','Violations','Tasks',*DISCIPLINE_PAGES,'Meetings','Contacts','Communications','Documents',*REGISTER_PAGES,'Bidding','Receipts','Timeline','Search','Backup & Restore','Recovery & Data']
+NAVIGATION=['Dashboard','Projects','Corrections','Violations','Tasks',*DISCIPLINE_PAGES,'Meetings','Contacts','Communications','Documents',*REGISTER_PAGES,'Bidding','Contracts','Budgets','Receipts','Timeline','Search','Backup & Restore','Recovery & Data']
 
 STATUS_CHOICES=STATUSES
 EXTRA_OPTIONS={

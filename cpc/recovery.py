@@ -77,7 +77,7 @@ class RecoveryStore:
    if table not in allowed: raise ValueError('Unknown record type')
    if not isinstance(row_id,int): raise ValueError('Select a saved record')
    if self.db.execute(f'SELECT 1 FROM {table} WHERE id=?',(row_id,)).fetchone(): plan.setdefault(table,set()).add(row_id)
-  links=[('documents','versions','document_id'),('registers','permit_requirements','register_id'),('bid_packages','bids','package_id'),('bids','bid_items','bid_id')]
+  links=[('contracts','contract_changes','contract_id'),('contracts','finance_files','contract_id'),('budgets','finance_files','budget_id'),('documents','versions','document_id'),('registers','permit_requirements','register_id'),('bid_packages','bids','package_id'),('bids','bid_items','bid_id')]
   for table,fields in FIELDS.items():
    if 'project_id' in fields: links.append(('projects',table,'project_id'))
   links.append(('projects','activity','project_id'))
@@ -104,6 +104,11 @@ class RecoveryStore:
      pid=row['id'] if table=='projects' else self.project_for(table,row)
      if pid: affected.add(pid)
   with self.db:
+   for batch in chunks(plan.get('bids',())):self.db.execute(f'UPDATE contracts SET bid_id=NULL WHERE bid_id IN ({marks(batch)})',batch)
+   for batch in chunks(plan.get('contracts',())):self.db.execute(f'UPDATE receipts SET contract_id=NULL WHERE contract_id IN ({marks(batch)})',batch)
+   for batch in chunks(plan.get('budgets',())):
+    self.db.execute(f'UPDATE contracts SET budget_id=NULL WHERE budget_id IN ({marks(batch)})',batch)
+    self.db.execute(f'UPDATE receipts SET budget_id=NULL WHERE budget_id IN ({marks(batch)})',batch)
    for batch in chunks(plan.get('contacts',())):
     for table,fields in FIELDS.items():
      for fk in ('contact_id','designer_id'):
@@ -115,12 +120,14 @@ class RecoveryStore:
     self.db.execute(f'UPDATE tasks SET meeting_id=NULL WHERE meeting_id IN ({marks(batch)})',batch)
    for batch in chunks(plan.get('projects',())):
     self.db.execute(f'DELETE FROM project_contacts WHERE project_id IN ({marks(batch)})',batch)
-   order=['issues','receipts','permit_requirements','bid_items','versions','tasks','communications','milestones','work_packages','registers','meetings','bids','bid_packages','documents','activity','projects','contacts']
+   order=['finance_files','contract_changes','issues','receipts','permit_requirements','bid_items','versions','tasks','communications','milestones','work_packages','registers','meetings','bids','bid_packages','documents','contracts','budgets','activity','projects','contacts']
    for table in order:
     for batch in chunks(plan.get(table,())): self.db.execute(f'DELETE FROM {table} WHERE id IN ({marks(batch)})',batch)
    # Existing discounts must still fit when deleting cost items. Failure rolls back the entire deletion.
    if plan.get('bid_items'):
     for bid in self.all('bids'): self.bid_totals(bid['id'])
+   if plan.get('contract_changes'):
+    for contract in self.all('contracts'):self.contract_totals(contract['id'])
    if all_data: self.db.execute('DELETE FROM form_drafts')
    else:
     for table,ids in plan.items():
