@@ -1,4 +1,5 @@
 """Discipline workspaces, meeting actions and bid estimating user interface."""
+from .workspace_ui import compact_dialog
 from datetime import date
 from decimal import Decimal
 from PySide6.QtCore import Qt
@@ -19,7 +20,7 @@ DISCIPLINE_PAGES={
  'Other Trades':['General','Interiors','Roofing','Concrete','Masonry','Steel','Demolition'],
 }
 REGISTER_PAGES={'RFIs':'RFI','Submittals':'Submittal','Permits':'Permit','Inspections':'Inspection','Punch & Changes':None}
-NAVIGATION=['Dashboard','Projects','Project Profile','Scope & Systems','Custom Information','Rebates & Incentives','Corrections','Violations','Tasks',*DISCIPLINE_PAGES,'Meetings','Contacts','Communications','Documents',*REGISTER_PAGES,'Bidding','Contracts','Change Orders','Budgets','Receipts','Timeline','Search','Backup & Restore','Recovery & Data']
+NAVIGATION=['Dashboard','Projects','Hidden sections','Project Profile','Scope & Systems','Custom Information','Rebates & Incentives','Corrections','Violations','Tasks',*DISCIPLINE_PAGES,'Meetings','Contacts','Communications','Documents',*REGISTER_PAGES,'Bidding','Contracts','Change Orders','Budgets','Receipts','Timeline','Search','Backup & Restore','Recovery & Data']
 
 STATUS_CHOICES=STATUSES
 EXTRA_OPTIONS={
@@ -232,7 +233,7 @@ class DevelopmentUI:
    table.delete_selected=lambda:delete_items(); table.delete_listed=lambda:delete_items(True)
    self.button(buttons,'Export DOCX',lambda:self.export_rows_dialog('Bid cost breakdown',[{**item,**{k:str(v) for k,v in line_totals(item).items()}} for item in items],'docx'))
    self.button(buttons,'Delete selected',lambda:delete_items()); self.button(buttons,'Delete all items',lambda:delete_items(True))
-   self.button(buttons,'+ Cost item',lambda:edit_item()); self.button(buttons,'Edit selected',lambda:edit_item(True)); self.button(buttons,'Duplicate selected',lambda:edit_item(duplicate=True)); self.button(buttons,'Export cost breakdown CSV',export_items); self.button(buttons,'Close',dlg.accept); table.doubleClicked.connect(lambda _:edit_item(True)); reload(); dlg.exec(); self.refresh()
+   self.button(buttons,'+ Cost item',lambda:edit_item()); self.button(buttons,'Edit selected',lambda:edit_item(True)); self.button(buttons,'Duplicate selected',lambda:edit_item(duplicate=True)); self.button(buttons,'Export cost breakdown CSV',export_items); self.button(buttons,'Close',dlg.accept); table.doubleClicked.connect(lambda _:edit_item(True)); reload(); compact_dialog(dlg,{'+ Cost item','Edit selected'}); dlg.exec(); self.refresh()
   self.guard(action)
  def compare_bids(self):
   import html

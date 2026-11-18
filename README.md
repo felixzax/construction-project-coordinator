@@ -1,35 +1,41 @@
-# Construction Project Coordinator 1.7.1
+# Construction Project Coordinator 1.8.0
 
 A local Windows desktop workspace for construction and property development coordination, consultant disciplines, drawing registers, meetings and detailed bid estimates. Python 3.12, PySide6 and SQLite. No cloud subscription, email connection or account is required to use the app.
 
 ## Download and run
 
-**[Download Windows 1.7.1](https://github.com/felixzax/construction-project-coordinator/actions/runs/44389381885/artifacts/14467831342)** · [Successful build and test logs](https://github.com/felixzax/construction-project-coordinator/actions/runs/44389381885). All 228 Windows tests passed; the downloaded artifact passed checksum and isolated offscreen/native Windows launch checks.
+Version 1.8.0 Windows verification is pending. A verified download link will be added after a successful run.
 
-Open [GitHub Actions](https://github.com/felixzax/construction-project-coordinator/actions/workflows/windows.yml), select a successful **Test and build Windows** run for version 1.7.1, and download **ConstructionProjectCoordinator-1.7.1-Windows**. GitHub may require sign-in for Actions downloads. Extract the downloaded ZIP **once** into a fresh folder and run `ConstructionProjectCoordinator.exe`. Version 1.7.1 is a standalone, single-file executable: Python and a companion `_internal` folder are not required. The ZIP also contains README, changelog and file checksums. Do not mix its files into an older application folder. The app is unsigned and Windows may show a reputation prompt. Artifacts are retained for 90 days.
+Open [GitHub Actions](https://github.com/felixzax/construction-project-coordinator/actions/workflows/windows.yml), select a successful **Test and build Windows** run for version 1.8.0, and download **ConstructionProjectCoordinator-1.8.0-Windows**. GitHub may require sign-in for Actions downloads. Extract the downloaded ZIP **once** into a fresh folder and run `ConstructionProjectCoordinator.exe`. Version 1.8.0 is a standalone, single-file executable: Python and a companion `_internal` folder are not required. The ZIP also contains README, changelog and file checksums. Do not mix its files into an older application folder. The app is unsigned and Windows may show a reputation prompt. Artifacts are retained for 90 days.
+
+## Cleaner commands and navigation
+
+Main record pages keep **New**, **Edit** and **Files** in one compact header. Secondary commands are under **More**; CSV/DOCX and other reports are under **Export**. Delete/discard commands are grouped in their own submenu and still require the same confirmations and recovery snapshots. Context menus, Ctrl+C/Ctrl+A and F5 remain available. Some pages have fewer primary actions because their record type does not need all three.
+
+File, plan-revision, permit-checklist, bid-cost and contract-change dialogs also group secondary commands into More and Export menus. Original uploads/downloads, revision history, external editing and conversion options remain available. When the instructions below name an action that is not shown directly, look under More or Export. Global section controls are beside the project selector; repeated toolbars and bottom rows of action buttons have been removed.
 
 ## Dark mode and appearance
 
-Version 1.7.1 starts in **Dark mode** unless you previously selected Light. Toggle **Dark mode** on the toolbar, or use **View → Appearance → Dark / Light**. The choice applies immediately to dashboards, tables, forms, menus, supporting-file dialogs and the text/spreadsheet editor. Overdue, approval, warning and budget alerts use colors chosen for the active theme.
+The app starts in **Dark mode** unless you previously selected Light. The button next to the project selector says **Switch to Light mode** while dark is active, and **Switch to Dark mode** while light is active. Click it to change themes, or use **View → Appearance → Dark / Light**. The choice applies immediately to dashboards, tables, forms, menus, supporting-file dialogs and the text/spreadsheet editor. Overdue, approval, warning and budget alerts use colors chosen for the active theme.
 
 The setting is remembered in `appearance.ini` beside the database, separately for each local data folder. It does not change project records or the database schema. Database-only backup/restore does not include this small appearance preference file. Printed and exported reports retain their normal document appearance; Windows-owned native dialogs and window decorations may follow Windows appearance settings.
 
 ## Fix for the Shiboken startup error
 
-If an older folder build reports `shiboken6\libshiboken does not exist`, use the new standalone 1.7.1 build above. The published 1.5.0 archive contains `_internal/shiboken6`, but the error occurs if that package folder is missing from the extracted copy. Do not create an empty libshiboken folder or install Python to work around it. The standalone build bundles its Qt/Shiboken runtime and extracts it automatically to a temporary directory when it starts.
+If an older folder build reports `shiboken6\libshiboken does not exist`, use the new standalone 1.8.0 build above. The published 1.5.0 archive contains `_internal/shiboken6`, but the error occurs if that package folder is missing from the extracted copy. Do not create an empty libshiboken folder or install Python to work around it. The standalone build bundles its Qt/Shiboken runtime and extracts it automatically to a temporary directory when it starts.
 
-Close the old app, extract the new ZIP into a fresh folder and launch the new executable. Project data stays in the same local data directory. Version 1.7.1 uses schema 8, unchanged from 1.7.0. Older databases get a pre-upgrade safety copy. All project features remain available.
+Close the old app, extract the new ZIP into a fresh folder and launch the new executable. Project data stays in the same local data directory. Version 1.8.0 uses schema 8, unchanged from 1.7.0. Older databases get a pre-upgrade safety copy. All project features remain available.
 
 If a runtime cannot load, the app gives a clear pre-Qt startup message and records `startup-error.txt` under `%LOCALAPPDATA%/Construction Project Coordinator/`. It does not alter project records in that failure path.
 
-## Upgrade from 1.0.0 through 1.7.0
+## Upgrade from 1.0.0 through 1.7.1
 
 1. In the old app, use Backup & Restore to back up your database. Also copy its adjacent `documents` folder to your backup location. Close all old app instances.
 2. Extract the new build into a new application folder. Keep the old executable until you verify the upgrade.
-3. Launch version 1.7.1 from the same Windows account. It uses the same Local AppData location, preserves existing projects, contacts, tasks and approved document revisions, and adds the new tables and fields automatically. It creates a `.before-v1.7.0.sqlite3` safety copy before upgrading a v1–v7 database.
+3. Launch version 1.8.0 from the same Windows account. It uses the same Local AppData location, preserves existing projects, contacts, tasks and approved document revisions, and adds the new tables and fields automatically. It creates a `.before-v1.7.0.sqlite3` safety copy before upgrading a v1–v7 database.
 4. Existing work is not replaced with demonstration data. New sections begin empty for existing users. Fresh workspaces may load fictional examples at the welcome prompt.
 
-The upgrade is one way: the new schema is version 8. To roll back, close the new app and restore the matching pre-upgrade database before running an older app. Do not open the upgraded database with the old app. Version 1.7.1 can restore v1–v8 backups; older backups are upgraded in a temporary copy before replacing live records.
+The upgrade is one way: the new schema is version 8. To roll back, close the new app and restore the matching pre-upgrade database before running an older app. Do not open the upgraded database with the old app. Version 1.8.0 can restore v1–v8 backups; older backups are upgraded in a temporary copy before replacing live records.
 
 ## Project-specific scope and a simpler workspace
 
@@ -41,11 +47,17 @@ Use **Scope & Systems** for individual installations, building features and requ
 
 Choose **Add custom field** for a selected system or use **Custom Information** to create project-wide or system-specific information. Fields have a title, type (Text, Number, Yes / No, Date or URL), value, unit and Required flag. Required fields may remain blank while collecting information and are visibly marked Missing required value. Custom Yes/No values use the explicit answer names; dates use YYYY-MM-DD and URLs must use http(s). System types, categories and units support custom entries. Custom categories appear in the category filter.
 
-## Hide sections without losing anything
+## Hide sections with the sidebar eye
 
-Choose a project in **Project workspace**, then use **Customize project sections** on the toolbar. Checked sections appear for that project. **Minimal view** offers a smaller set; **Show all** or **Show all project sections** brings sections back. Save applies the preference only to that project, and All projects shows all sidebar sections. Dashboard, Projects, Search, Backup & Restore and Recovery & Data always remain available.
+Click the crossed-eye icon on the **right of any sidebar category** to move it into the single **Hidden sections** tab near the top. Open that tab and click the open-eye icon, double-click a category, or select it and press Ctrl+H to restore it to its original place in the sidebar. You can also right-click a sidebar category to hide it, or a hidden category to restore it. Ctrl+H works while the corresponding list has keyboard focus.
 
-Within Scope & Systems, **Hide / show selected items** removes unused items from the normal list. Check **Include hidden items** to reveal and restore them. Hiding is not deletion: records, attachments, search results and full project/department reports remain available. Applicable outstanding systems and rebate deadlines still appear on the dashboard/timeline even if their section or system row is hidden. Set applicability to No/Not Applicable or complete an item to remove its outstanding deadline.
+Every category except Hidden sections itself can be hidden. Hidden sections always remains available, even if everything else is hidden. The sidebar scrolls vertically, with more compact rows and no horizontal scrolling. If the currently open category is hidden, the app safely opens an available category.
+
+Hiding uses the current project from **Project workspace**. Each project keeps its own hidden categories in the database, preserving earlier version 1.7 preferences. **All projects** now has its own separate local preference in appearance.ini; hiding there does not hide categories in individual project views. Database backups include project preferences; appearance.ini must be copied separately if you want to preserve the All projects preference on another computer.
+
+For bulk choices, use **Sections → Customize visible sections**, including the Minimal view preset. **Sections → Restore all hidden sections**, or **Hidden sections → More → Restore all sections**, brings them back for the active view. Hiding only changes navigation: records, attachments, search results, reports, outstanding deadlines and exports remain available.
+
+Within Scope & Systems, **More → Hide / show selected items** separately hides individual system rows. Check **Include hidden items** to reveal them. Set applicability to No/Not Applicable or complete an item when its deadline should stop being outstanding.
 
 ## Rebates and incentives
 

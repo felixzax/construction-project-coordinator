@@ -1,4 +1,5 @@
 """Contracts/budgets, change orders and upload/download/edit file management."""
+from .workspace_ui import compact_dialog
 from pathlib import Path
 from PySide6.QtCore import Qt,QUrl
 from PySide6.QtGui import QDesktopServices
@@ -75,7 +76,7 @@ class FinanceUI:
      self.finance_file_manager('Change order','contract_changes',rows[i])
     self.guard(perform)
    self.button(bar,'Files',files)
-   self.button(bar,'+ Change order',lambda:edit());self.button(bar,'Edit selected',lambda:edit(True));self.button(bar,'Delete selected',lambda:delete());self.button(bar,'Export DOCX',lambda:self.export_rows_dialog('Change orders',rows,'docx'));self.button(bar,'Export CSV',lambda:self.export_rows_dialog('Change orders',rows,'csv'));self.button(bar,'Close',dlg.accept);reload();dlg.exec();self.refresh()
+   self.button(bar,'+ Change order',lambda:edit());self.button(bar,'Edit selected',lambda:edit(True));self.button(bar,'Delete selected',lambda:delete());self.button(bar,'Export DOCX',lambda:self.export_rows_dialog('Change orders',rows,'docx'));self.button(bar,'Export CSV',lambda:self.export_rows_dialog('Change orders',rows,'csv'));self.button(bar,'Close',dlg.accept);reload();compact_dialog(dlg,{'+ Change order','Edit selected','Files'});dlg.exec();self.refresh()
   self.guard(action)
  def finance_file_manager(self,title,parent_table=None,record=None):
   def action():
@@ -128,5 +129,5 @@ class FinanceUI:
    table.delete_selected=lambda:delete();table.delete_listed=lambda:delete(True)
    for label,callback in [('Add files…',upload),('Edit / convert…',edit_file),('Save a copy…',download),('Save all as ZIP…',zip_all),('Delete selected',lambda:delete()),('Close',dlg.accept)]:self.button(bar,label,callback)
    external=QHBoxLayout();layout.addLayout(external);self.button(external,'Open working copy',open_file);self.button(external,'Import external edits',import_external);working_path=QLineEdit();working_path.setReadOnly(True);working_path.setPlaceholderText('External working-copy path appears here');external.addWidget(working_path)
-   reload();dlg.exec();self.refresh()
+   reload();compact_dialog(dlg,{'Add files…','Edit / convert…','Save a copy…'});dlg.exec();self.refresh()
   self.guard(action)

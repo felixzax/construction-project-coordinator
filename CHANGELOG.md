@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.8.0 — 2026-11-18
+
+- Consolidated workspace commands into compact New/Edit/Files headers with More and Export menus; grouped secondary document/checklist/bid/change-order dialog commands.
+- Replaced ambiguous Dark mode text with Switch to Light mode / Switch to Dark mode, synchronized with the active theme.
+- Added sidebar eye controls and one Hidden sections tab, eye/double-click/keyboard restoration, separate per-project and All projects preferences, and compact scrolling navigation.
+- Preserved all record/file/export workflows, confirmation-backed deletion and existing project visibility preferences without changing schema 8.
+- Fixed heterogeneous timeline rows with missing fields and retained submenu ownership; added real click, menu, export, deletion and visibility regression tests.
+
 ## 1.7.1 — 2026-11-18
 
 - Added a default dark theme and immediate Dark/Light switching from the toolbar or View → Appearance.

@@ -1,4 +1,5 @@
 """Refresh, recovery, drafts and explicit, backed-up delete controls."""
+from .workspace_ui import compact_dialog
 from pathlib import Path
 from PySide6.QtCore import Qt,QTimer
 from PySide6.QtGui import QAction,QKeySequence,QPixmapCache
@@ -163,7 +164,7 @@ class RecoveryUI:
      if path:self.store.save_revision_copy(row['id'],path)
     self.guard(perform)
    self.button(bar,'Save selected original file…',save_original)
-   self.button(bar,'Export CSV',lambda:self.export_rows_dialog('Document revisions',rows,'csv')); self.button(bar,'Export DOCX',lambda:self.export_rows_dialog('Document revisions',rows,'docx')); self.button(bar,'Copy selected cells',table.copy_selection); self.button(bar,'Delete selected revisions',lambda:remove()); self.button(bar,'Delete all revisions',lambda:remove(True)); self.button(bar,'Close',dlg.accept); reload(); dlg.exec(); self.refresh()
+   self.button(bar,'Export CSV',lambda:self.export_rows_dialog('Document revisions',rows,'csv')); self.button(bar,'Export DOCX',lambda:self.export_rows_dialog('Document revisions',rows,'docx')); self.button(bar,'Copy selected cells',table.copy_selection); self.button(bar,'Delete selected revisions',lambda:remove()); self.button(bar,'Delete all revisions',lambda:remove(True)); self.button(bar,'Close',dlg.accept); reload(); compact_dialog(dlg,{'Save selected original file…'}); dlg.exec(); self.refresh()
   self.guard(action)
  def closeEvent(self,event):
   try: self.store.end_session()

@@ -1,4 +1,5 @@
 """Permit checklist editing and explicit browser links."""
+from .workspace_ui import compact_dialog
 from PySide6.QtCore import Qt,QUrl
 from PySide6.QtGui import QDesktopServices
 from PySide6.QtWidgets import (QDialog,QVBoxLayout,QHBoxLayout,QLabel,QLineEdit,QCheckBox,
@@ -107,5 +108,5 @@ class PermitUI:
    self.button(bar,'Export DOCX',lambda:self.export_rows_dialog('Permit checklist',[dict(item,permit=permit['title'],jurisdiction=permit['jurisdiction_name'],requirements_url=permit['requirements_url']) for item in items],'docx'))
    self.button(bar,'Delete selected',lambda:remove_requirements()); self.button(bar,'Delete all requirements',lambda:remove_requirements(True))
    self.button(bar,'+ Requirement',lambda:edit_requirement()); self.button(bar,'Edit selected',lambda:edit_requirement(True)); self.button(bar,'Open source link',open_source); self.button(bar,'Export checklist CSV',export); self.button(bar,'Close',dlg.accept)
-   table.doubleClicked.connect(lambda _:edit_requirement(True)); reload(); dlg.exec(); self.refresh()
+   table.doubleClicked.connect(lambda _:edit_requirement(True)); reload(); compact_dialog(dlg,{'+ Requirement','Edit selected'}); dlg.exec(); self.refresh()
   self.guard(action)

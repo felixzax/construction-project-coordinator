@@ -2,7 +2,7 @@
 from pathlib import Path
 from PySide6.QtCore import QSettings
 from PySide6.QtGui import QColor,QPalette,QAction,QActionGroup
-from PySide6.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication,QToolButton
 
 THEMES={
  'dark':dict(window='#151b24',panel='#1d2633',base='#111925',alternate='#222e3e',text='#e5edf7',muted='#aebdd0',border='#40516a',button='#29384b',hover='#354c67',selected='#285c91',selection_text='#ffffff',sidebar='#101a28',heading='#d1e5ff',error_bg='#48252c',error_text='#ffbbc3',warning_bg='#41351c',warning_text='#ffe09a',success='#8edcaf',pending='#ffe09a'),
@@ -34,7 +34,7 @@ def apply_theme(app,name):
  QToolButton { background: %(button)s; border: 1px solid %(border)s; padding: 6px 8px; border-radius: 4px; }
  QToolButton:hover, QToolButton:checked { background: %(hover)s; }
  QListWidget { background: %(sidebar)s; color: #eff5fc; border: 0; padding: 12px; }
- QListWidget::item { padding: 13px 5px; }
+ QListWidget::item { padding: 7px 5px; }
  QListWidget::item:selected { background: %(selected)s; color: #ffffff; border-radius: 5px; }
  QLabel#heading { font-size: 24pt; font-weight: 600; color: %(heading)s; padding: 12px 0; }
  QLabel#subheading { font-size: 12pt; font-weight: 600; color: %(heading)s; }
@@ -66,8 +66,8 @@ class ThemeUI:
   for name in ('dark','light'):
    action=QAction(name.title(),self);action.setCheckable(True);action.setChecked(app.property('cpcTheme')==name);group.addAction(action);appearance.addAction(action);self.theme_actions[name]=action
    action.triggered.connect(lambda checked,n=name:self.choose_theme(n) if checked else None)
-  self.dark_mode_action=QAction('Dark mode',self);self.dark_mode_action.setCheckable(True);self.dark_mode_action.setChecked(app.property('cpcTheme')=='dark');self.dark_mode_action.toggled.connect(lambda checked:self.choose_theme('dark' if checked else 'light'))
-  toolbar=self.addToolBar('Appearance');toolbar.setMovable(False);toolbar.addAction(self.dark_mode_action)
+  self.dark_mode_action=QAction('Switch to Light mode' if app.property('cpcTheme')=='dark' else 'Switch to Dark mode',self);self.dark_mode_action.setCheckable(True);self.dark_mode_action.setChecked(app.property('cpcTheme')=='dark');self.dark_mode_action.toggled.connect(lambda checked:self.choose_theme('dark' if checked else 'light'))
+  self.theme_button=QToolButton(self);self.theme_button.setDefaultAction(self.dark_mode_action);self.project_controls.addWidget(self.theme_button)
  def choose_theme(self,name):
   def action():
    if name not in THEMES:raise ValueError('Choose Light or Dark')
@@ -76,5 +76,7 @@ class ThemeUI:
    apply_theme(QApplication.instance(),name)
    for key,item in self.theme_actions.items():item.setChecked(key==name)
    self.dark_mode_action.blockSignals(True);self.dark_mode_action.setChecked(name=='dark');self.dark_mode_action.blockSignals(False)
+   self.dark_mode_action.setText('Switch to Light mode' if name=='dark' else 'Switch to Dark mode')
+   self.dark_mode_action.setToolTip('Current theme: '+name.title()+'. '+self.dark_mode_action.text())
    self.refresh()
   self.guard(action)

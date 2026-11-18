@@ -8,6 +8,8 @@ from PySide6.QtWidgets import (QApplication,QMainWindow,QWidget,QVBoxLayout,QHBo
 from PySide6.QtPrintSupport import QPrinter,QPrintPreviewDialog
 from .store import Store, FIELDS, TASK_STATUSES
 from .table import DataTable
+from .sidebar import SidebarUI
+from .workspace_ui import WorkspaceUI
 from .theme import ThemeUI,tokens,apply_theme,settings_for,saved_theme
 from .scope_ui import ScopeUI,AnswerChecks
 from .finance_ui import FinanceUI
@@ -19,7 +21,7 @@ from .permit_ui import PermitUI
 from .development_ui import DevelopmentUI, NAVIGATION, EXTRA_OPTIONS
 from .development import line_totals
 
-VERSION='1.7.1'
+VERSION='1.8.0'
 OPTIONS={'phase':['Planning','Design','Permitting','Construction','Inspection','Closeout'],'priority':['Low','Normal','High','Urgent'],'category':['Architectural Plans','Engineering Drawings','Permit','Cut Sheet','Estimate','Approval','CAD File','BIM Model','Site Plan','Survey','Specification','Shop Drawing','As-Built','Other'],'role':['Architect','Engineer','Contractor','City Official','County Official','Business Owner','Electrical Engineer','Plumbing Engineer','Mechanical Engineer','Civil Engineer','Structural Engineer','Surveyor','Estimator','Supplier','Developer','Other']}
 class Form(QDialog):
  def __init__(self,parent,title,fields,record=None,choices=None):
@@ -107,7 +109,7 @@ class BaseWindow(QMainWindow):
   root=QWidget(); self.setCentralWidget(root); outer=QHBoxLayout(root)
   self.nav=QListWidget(); self.nav.setFixedWidth(210); self.navigation=NAVIGATION; self.nav.addItems(NAVIGATION); self.nav.item(NAVIGATION.index('Documents')).setText('Plans & CAD'); outer.addWidget(self.nav)
   content=QWidget(); column=QVBoxLayout(content); outer.addWidget(content,1)
-  project_bar=QHBoxLayout(); project_bar.addWidget(QLabel('Project workspace:')); self.project_filter=QComboBox(); self.project_filter.addItem('All projects',None); self.project_filter.setMinimumWidth(300); project_bar.addWidget(self.project_filter); project_bar.addStretch(); column.addLayout(project_bar)
+  project_bar=QHBoxLayout(); self.project_controls=project_bar; project_bar.addWidget(QLabel('Project workspace:')); self.project_filter=QComboBox(); self.project_filter.addItem('All projects',None); self.project_filter.setMinimumWidth(300); project_bar.addWidget(self.project_filter); project_bar.addStretch(); column.addLayout(project_bar)
   self.stack=QStackedWidget(); column.addWidget(self.stack,1)
   for title in NAVIGATION: self.build_page(title)
   self.nav.currentRowChanged.connect(self.change_page); self.nav.setCurrentRow(0); self.refresh()
@@ -141,7 +143,7 @@ class BaseWindow(QMainWindow):
  def fill(self,title,rows):
   query=getattr(self,'filter_'+title,None)
   if query and query.text(): rows=[r for r in rows if query.text().lower() in ' '.join(str(v) for v in r.values()).lower()]
-  self.data[title]=rows; table=self.tables[title]; keys=[k for k in rows[0] if k!='id' and not k.startswith('_') and not k.endswith('_id')] if rows else []
+  self.data[title]=rows; table=self.tables[title]; keys=list(dict.fromkeys(k for row in rows for k in row if k!='id' and not k.startswith('_') and not k.endswith('_id')))
   preferred=['title','name','label','project','bidder','currency','total','status','discipline','building_area','deadline','responsible']
   if title=='Scope & Systems':preferred=['title','applicability','category','system_type','energy_source','status','building_area','deadline','responsible']
   if title=='Custom Information':preferred=['title','value','unit','completion','system','project']
@@ -156,7 +158,7 @@ class BaseWindow(QMainWindow):
   for i,r in enumerate(rows):
    overdue=bool(r.get('deadline') and r['deadline']<date.today().isoformat() and r.get('status') not in ('Completed','Approved','Resolved','Closed','Cancelled'))
    for j,key in enumerate(keys):
-    value=('✓ Reviewed' if r[key] else 'Not reviewed') if key=='requirements_reviewed' else (r[key] if r[key] is not None else '')
+    value=('✓ Reviewed' if r.get(key) else 'Not reviewed') if key=='requirements_reviewed' else (r.get(key) if r.get(key) is not None else '')
     item=QTableWidgetItem(str(value)); table.setItem(i,j,item)
     if title=='Budgets' and r.get('budget_alert')=='OVER BUDGET':item.setBackground(QColor(tokens()['error_bg']));item.setForeground(QColor(tokens()['error_text']))
     if title=='Receipts' and key=='status': item.setForeground(QColor(tokens()['success'] if r[key]=='Approved' else tokens()['error_text'] if r[key]=='Rejected' else tokens()['pending']))
@@ -278,7 +280,7 @@ class BaseWindow(QMainWindow):
    if path and QMessageBox.question(self,'Replace local data?','Restore this backup and replace all current records? A safety backup will be created.')==QMessageBox.Yes: self.store.restore(path); self.refresh(); QMessageBox.information(self,'Restore complete','Database restored successfully.')
   self.guard(action)
 
-class Window(ThemeUI,ExportUI,RecoveryUI,ScopeUI,FinanceUI,IssueUI,ReceiptUI,PermitUI,DevelopmentUI,BaseWindow):
+class Window(ThemeUI,WorkspaceUI,SidebarUI,ExportUI,RecoveryUI,ScopeUI,FinanceUI,IssueUI,ReceiptUI,PermitUI,DevelopmentUI,BaseWindow):
  pass
 
 def main():

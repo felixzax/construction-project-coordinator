@@ -39,7 +39,7 @@ STARTERS=[
  ('Required inspections / tests','Inspections & Closeout','General','Inspections'),('Commissioning / energy verification','Inspections & Closeout','Mechanical / HVAC','Commissioning'),('Occupancy / final sign-off','Inspections & Closeout','General','Occupancy'),('Warranties / manuals / training','Inspections & Closeout','General','Closeout'),
 ]
 SYSTEM_TYPES=list(dict.fromkeys([r[3] for r in STARTERS]+['Other']))
-PROTECTED_SECTIONS={'Dashboard','Projects','Search','Backup & Restore','Recovery & Data'}
+PROTECTED_SECTIONS={'Hidden sections'}
 
 class ScopeStore:
  def migrate_scope(self):
@@ -123,7 +123,7 @@ class ScopeStore:
   from .development_ui import NAVIGATION
   if not self.rows('SELECT id FROM projects WHERE id=?',(pid,)):raise ValueError('Select a project first')
   sections=set(sections)
-  if sections-set(NAVIGATION) or sections & PROTECTED_SECTIONS:raise ValueError('Essential navigation cannot be hidden')
+  if sections-set(NAVIGATION) or sections & PROTECTED_SECTIONS:raise ValueError('Hidden sections must remain available')
   with self.db:
    self.db.execute('DELETE FROM project_sections WHERE project_id=?',(pid,))
    self.db.executemany('INSERT INTO project_sections(project_id,section,hidden) VALUES(?,?,1)',[(pid,s) for s in sorted(sections)]);self.log(pid,'Project navigation preferences saved; hidden sections retain all data')

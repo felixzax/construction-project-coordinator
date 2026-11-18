@@ -107,29 +107,22 @@ class ScopeUI:
  def change_page(self,index):
   if index<0:return
   super().change_page(index);self.current=self.navigation[index]
- def apply_section_visibility(self):
-  hidden=self.store.hidden_sections(self.project_filter.currentData())-PROTECTED_SECTIONS
-  for i,title in enumerate(self.navigation):self.nav.item(i).setHidden(title in hidden)
-  if self.nav.currentRow()>=0 and self.nav.currentItem().isHidden():
-   self.nav.blockSignals(True);self.nav.setCurrentRow(0);self.nav.blockSignals(False);self.stack.setCurrentIndex(0);self.current='Dashboard'
  def selected_project_id(self):
   pid=self.project_filter.currentData()
   if not pid:raise ValueError('Select a project in the Project workspace dropdown first')
   return pid
  def customize_sections(self):
   def action():
-   pid=self.selected_project_id();dlg=QDialog(self);dlg.setWindowTitle('Visible sections — '+self.project_filter.currentText());dlg.resize(580,700);layout=QVBoxLayout(dlg);hint=QLabel('Checked sections appear in this project. Hiding preserves records, files, deadlines and reports. All projects always shows every section. Essential navigation remains available.');hint.setWordWrap(True);layout.addWidget(hint)
-   scroll=QScrollArea();scroll.setWidgetResizable(True);body=QWidget();boxes_layout=QVBoxLayout(body);scroll.setWidget(body);layout.addWidget(scroll);hidden=self.store.hidden_sections(pid);boxes={}
+   pid=self.project_filter.currentData();dlg=QDialog(self);dlg.setWindowTitle('Visible sections — '+self.project_filter.currentText());dlg.resize(580,700);layout=QVBoxLayout(dlg);hint=QLabel('Checked sections appear in this project. Hiding preserves records, files, deadlines and reports. The All projects view has a separate preference. Hidden sections always remains available.');hint.setWordWrap(True);layout.addWidget(hint)
+   scroll=QScrollArea();scroll.setWidgetResizable(True);body=QWidget();boxes_layout=QVBoxLayout(body);scroll.setWidget(body);layout.addWidget(scroll);hidden=self.navigation_hidden();boxes={}
    for title in self.navigation:
     box=QCheckBox('Plans & CAD' if title=='Documents' else title);box.setChecked(title not in hidden);box.setEnabled(title not in PROTECTED_SECTIONS);boxes_layout.addWidget(box);boxes[title]=box
    bar=QHBoxLayout();layout.addLayout(bar)
-   minimal=PROTECTED_SECTIONS|{'Project Profile','Scope & Systems','Tasks','Documents','Permits','Contracts','Budgets','Timeline'}
+   minimal=PROTECTED_SECTIONS|{'Dashboard','Projects','Search','Backup & Restore','Recovery & Data','Project Profile','Scope & Systems','Tasks','Documents','Permits','Contracts','Budgets','Timeline'}
    self.button(bar,'Minimal view',lambda:[box.setChecked(title in minimal) for title,box in boxes.items()]);self.button(bar,'Show all',lambda:[box.setChecked(True) for box in boxes.values()])
    buttons=QDialogButtonBox(QDialogButtonBox.Save|QDialogButtonBox.Cancel);layout.addWidget(buttons);buttons.accepted.connect(dlg.accept);buttons.rejected.connect(dlg.reject)
-   if dlg.exec():self.store.set_hidden_sections(pid,[title for title,box in boxes.items() if not box.isChecked()]);self.refresh()
+   if dlg.exec():self.save_navigation_hidden([title for title,box in boxes.items() if not box.isChecked()]);self.refresh()
   self.guard(action)
- def show_all_sections(self):
-  self.guard(lambda:(self.store.set_hidden_sections(self.selected_project_id(),[]),self.refresh()))
  def add_scope_prompts(self):
   def action():
    pid=self.selected_project_id()
