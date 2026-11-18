@@ -188,6 +188,18 @@ def smoke_test():
             write_docx(Path(folder) / 'systems.docx', 'Systems', store.scope_rows('scope_items'))
             if 'Rated capacity' not in store.report(pid):
                 raise RuntimeError('Scope report smoke check failed')
+            # Exercise saved appearance and semantic table colors in the packaged app.
+            from PySide6.QtGui import QPalette
+            before_count = len(store.all('projects'))
+            window.choose_theme('light')
+            if app.palette().color(QPalette.Base).lightness() < 200:
+                raise RuntimeError('Light palette smoke check failed')
+            window.dark_mode_action.setChecked(True)
+            if app.palette().color(QPalette.Base).lightness() > 70:
+                raise RuntimeError('Dark palette smoke check failed')
+            from cpc.theme import saved_theme
+            if saved_theme(window.appearance_settings) != 'dark' or len(store.all('projects')) != before_count:
+                raise RuntimeError('Appearance persistence/data smoke check failed')
             window.close()
             app.processEvents()
         finally:

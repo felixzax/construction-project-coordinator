@@ -8,6 +8,7 @@ from PySide6.QtWidgets import (QApplication,QMainWindow,QWidget,QVBoxLayout,QHBo
 from PySide6.QtPrintSupport import QPrinter,QPrintPreviewDialog
 from .store import Store, FIELDS, TASK_STATUSES
 from .table import DataTable
+from .theme import ThemeUI,tokens,apply_theme,settings_for,saved_theme
 from .scope_ui import ScopeUI,AnswerChecks
 from .finance_ui import FinanceUI
 from .issue_ui import IssueUI
@@ -18,7 +19,7 @@ from .permit_ui import PermitUI
 from .development_ui import DevelopmentUI, NAVIGATION, EXTRA_OPTIONS
 from .development import line_totals
 
-VERSION='1.7.0'
+VERSION='1.7.1'
 OPTIONS={'phase':['Planning','Design','Permitting','Construction','Inspection','Closeout'],'priority':['Low','Normal','High','Urgent'],'category':['Architectural Plans','Engineering Drawings','Permit','Cut Sheet','Estimate','Approval','CAD File','BIM Model','Site Plan','Survey','Specification','Shop Drawing','As-Built','Other'],'role':['Architect','Engineer','Contractor','City Official','County Official','Business Owner','Electrical Engineer','Plumbing Engineer','Mechanical Engineer','Civil Engineer','Structural Engineer','Surveyor','Estimator','Supplier','Developer','Other']}
 class Form(QDialog):
  def __init__(self,parent,title,fields,record=None,choices=None):
@@ -157,10 +158,10 @@ class BaseWindow(QMainWindow):
    for j,key in enumerate(keys):
     value=('✓ Reviewed' if r[key] else 'Not reviewed') if key=='requirements_reviewed' else (r[key] if r[key] is not None else '')
     item=QTableWidgetItem(str(value)); table.setItem(i,j,item)
-    if title=='Budgets' and r.get('budget_alert')=='OVER BUDGET':item.setBackground(QColor('#fde3df'));item.setForeground(QColor('#9b2525'))
-    if title=='Receipts' and key=='status': item.setForeground(QColor('#237447' if r[key]=='Approved' else '#a52d2d' if r[key]=='Rejected' else '#8a6518'))
-    if title=='Receipts' and key=='variance_amount' and r.get('comparison')=='Over estimate': item.setBackground(QColor('#fff0d0')); item.setForeground(QColor('#815311'))
-    if overdue: item.setBackground(QColor('#fde3df')); item.setForeground(QColor('#9b2525'))
+    if title=='Budgets' and r.get('budget_alert')=='OVER BUDGET':item.setBackground(QColor(tokens()['error_bg']));item.setForeground(QColor(tokens()['error_text']))
+    if title=='Receipts' and key=='status': item.setForeground(QColor(tokens()['success'] if r[key]=='Approved' else tokens()['error_text'] if r[key]=='Rejected' else tokens()['pending']))
+    if title=='Receipts' and key=='variance_amount' and r.get('comparison')=='Over estimate': item.setBackground(QColor(tokens()['warning_bg'])); item.setForeground(QColor(tokens()['warning_text']))
+    if overdue: item.setBackground(QColor(tokens()['error_bg'])); item.setForeground(QColor(tokens()['error_text']))
   table.horizontalHeader().setSectionResizeMode(QHeaderView.Interactive); table.resizeColumnsToContents()
   for j in range(len(keys)): table.setColumnWidth(j,min(320,max(80,table.columnWidth(j))))
  def refresh(self,*args):
@@ -277,13 +278,13 @@ class BaseWindow(QMainWindow):
    if path and QMessageBox.question(self,'Replace local data?','Restore this backup and replace all current records? A safety backup will be created.')==QMessageBox.Yes: self.store.restore(path); self.refresh(); QMessageBox.information(self,'Restore complete','Database restored successfully.')
   self.guard(action)
 
-class Window(ExportUI,RecoveryUI,ScopeUI,FinanceUI,IssueUI,ReceiptUI,PermitUI,DevelopmentUI,BaseWindow):
+class Window(ThemeUI,ExportUI,RecoveryUI,ScopeUI,FinanceUI,IssueUI,ReceiptUI,PermitUI,DevelopmentUI,BaseWindow):
  pass
 
 def main():
  app=QApplication(sys.argv); app.setOrganizationName('Construction Project Coordinator'); app.setApplicationName('Construction Project Coordinator'); app.setStyle('Fusion')
- app.setStyleSheet('QWidget { font-family: Segoe UI; font-size: 10pt; } QMainWindow { background:#f3f5f8; } QListWidget { background:#17324d; color:white; border:0; padding:12px; } QListWidget::item { padding:13px 5px; } QListWidget::item:selected { background:#2b658b; border-radius:5px; } QLabel#heading { font-size:24pt; font-weight:600; color:#17324d; padding:12px 0; } QPushButton { padding:8px 12px; border:1px solid #bdcbd6; border-radius:4px; background:white; } QPushButton:hover { background:#e0eef8; } QTableWidget { background:white; border:1px solid #d9e1e8; gridline-color:#e9edf2; } QHeaderView::section { background:#e7eef4; padding:8px; border:0; } QLineEdit,QComboBox,QTextEdit { padding:6px; border:1px solid #b8c8d5; border-radius:3px; }')
  path=Path(os.environ.get('CPC_DATA_DIR') or QStandardPaths.writableLocation(QStandardPaths.AppLocalDataLocation))/'coordinator.sqlite3'
+ apply_theme(app,saved_theme(settings_for(path.parent)))
  lock=QLockFile(str(path)+'.lock'); path.parent.mkdir(parents=True,exist_ok=True); lock.setStaleLockTime(0)
  if not lock.tryLock(0):
   QMessageBox.information(None,'Application already open','Construction Project Coordinator is already using this data folder. Close the other instance first.'); return 1

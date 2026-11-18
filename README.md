@@ -1,29 +1,35 @@
-# Construction Project Coordinator 1.7.0
+# Construction Project Coordinator 1.7.1
 
 A local Windows desktop workspace for construction and property development coordination, consultant disciplines, drawing registers, meetings and detailed bid estimates. Python 3.12, PySide6 and SQLite. No cloud subscription, email connection or account is required to use the app.
 
 ## Download and run
 
-**[Download Windows 1.7.0](https://github.com/felixzax/construction-project-coordinator/actions/runs/44385804661/artifacts/14466676692)** · [Successful build and test logs](https://github.com/felixzax/construction-project-coordinator/actions/runs/44385804661). All 224 Windows tests passed; the downloaded artifact passed checksum and isolated offscreen/native Windows launch checks.
+Version 1.7.1 Windows build verification is pending. A verified download link will be added after a successful run.
 
-Open [GitHub Actions](https://github.com/felixzax/construction-project-coordinator/actions/workflows/windows.yml), select a successful **Test and build Windows** run for version 1.7.0, and download **ConstructionProjectCoordinator-1.7.0-Windows**. GitHub may require sign-in for Actions downloads. Extract the downloaded ZIP **once** into a fresh folder and run `ConstructionProjectCoordinator.exe`. Version 1.7.0 is a standalone, single-file executable: Python and a companion `_internal` folder are not required. The ZIP also contains README, changelog and file checksums. Do not mix its files into an older application folder. The app is unsigned and Windows may show a reputation prompt. Artifacts are retained for 90 days.
+Open [GitHub Actions](https://github.com/felixzax/construction-project-coordinator/actions/workflows/windows.yml), select a successful **Test and build Windows** run for version 1.7.1, and download **ConstructionProjectCoordinator-1.7.1-Windows**. GitHub may require sign-in for Actions downloads. Extract the downloaded ZIP **once** into a fresh folder and run `ConstructionProjectCoordinator.exe`. Version 1.7.1 is a standalone, single-file executable: Python and a companion `_internal` folder are not required. The ZIP also contains README, changelog and file checksums. Do not mix its files into an older application folder. The app is unsigned and Windows may show a reputation prompt. Artifacts are retained for 90 days.
+
+## Dark mode and appearance
+
+Version 1.7.1 starts in **Dark mode** unless you previously selected Light. Toggle **Dark mode** on the toolbar, or use **View → Appearance → Dark / Light**. The choice applies immediately to dashboards, tables, forms, menus, supporting-file dialogs and the text/spreadsheet editor. Overdue, approval, warning and budget alerts use colors chosen for the active theme.
+
+The setting is remembered in `appearance.ini` beside the database, separately for each local data folder. It does not change project records or the database schema. Database-only backup/restore does not include this small appearance preference file. Printed and exported reports retain their normal document appearance; Windows-owned native dialogs and window decorations may follow Windows appearance settings.
 
 ## Fix for the Shiboken startup error
 
-If an older folder build reports `shiboken6\libshiboken does not exist`, use the new standalone 1.7.0 build above. The published 1.5.0 archive contains `_internal/shiboken6`, but the error occurs if that package folder is missing from the extracted copy. Do not create an empty libshiboken folder or install Python to work around it. The standalone build bundles its Qt/Shiboken runtime and extracts it automatically to a temporary directory when it starts.
+If an older folder build reports `shiboken6\libshiboken does not exist`, use the new standalone 1.7.1 build above. The published 1.5.0 archive contains `_internal/shiboken6`, but the error occurs if that package folder is missing from the extracted copy. Do not create an empty libshiboken folder or install Python to work around it. The standalone build bundles its Qt/Shiboken runtime and extracts it automatically to a temporary directory when it starts.
 
-Close the old app, extract the new ZIP into a fresh folder and launch the new executable. Project data stays in the same local data directory. Upgrading to 1.7.0 adds schema 8 with a pre-upgrade safety copy. All project features remain available.
+Close the old app, extract the new ZIP into a fresh folder and launch the new executable. Project data stays in the same local data directory. Version 1.7.1 uses schema 8, unchanged from 1.7.0. Older databases get a pre-upgrade safety copy. All project features remain available.
 
 If a runtime cannot load, the app gives a clear pre-Qt startup message and records `startup-error.txt` under `%LOCALAPPDATA%/Construction Project Coordinator/`. It does not alter project records in that failure path.
 
-## Upgrade from 1.0.0 through 1.6.0
+## Upgrade from 1.0.0 through 1.7.0
 
 1. In the old app, use Backup & Restore to back up your database. Also copy its adjacent `documents` folder to your backup location. Close all old app instances.
 2. Extract the new build into a new application folder. Keep the old executable until you verify the upgrade.
-3. Launch version 1.7.0 from the same Windows account. It uses the same Local AppData location, preserves existing projects, contacts, tasks and approved document revisions, and adds the new tables and fields automatically. It creates a `.before-v1.7.0.sqlite3` safety copy before upgrading a v1–v7 database.
+3. Launch version 1.7.1 from the same Windows account. It uses the same Local AppData location, preserves existing projects, contacts, tasks and approved document revisions, and adds the new tables and fields automatically. It creates a `.before-v1.7.0.sqlite3` safety copy before upgrading a v1–v7 database.
 4. Existing work is not replaced with demonstration data. New sections begin empty for existing users. Fresh workspaces may load fictional examples at the welcome prompt.
 
-The upgrade is one way: the new schema is version 8. To roll back, close the new app and restore the matching pre-upgrade database before running an older app. Do not open the upgraded database with the old app. Version 1.7.0 can restore v1–v8 backups; older backups are upgraded in a temporary copy before replacing live records.
+The upgrade is one way: the new schema is version 8. To roll back, close the new app and restore the matching pre-upgrade database before running an older app. Do not open the upgraded database with the old app. Version 1.7.1 can restore v1–v8 backups; older backups are upgraded in a temporary copy before replacing live records.
 
 ## Project-specific scope and a simpler workspace
 

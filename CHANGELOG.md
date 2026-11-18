@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.7.1 — 2026-11-18
+
+- Added a default dark theme and immediate Dark/Light switching from the toolbar or View → Appearance.
+- Persisted appearance per local data folder in appearance.ini without changing the database schema.
+- Styled tables, forms, menus, toolbars, file editing, selections and disabled controls consistently in both themes.
+- Added theme-aware overdue, budget, supplier approval and variance colors, appearance persistence checks and text/alert contrast tests.
+
 ## 1.7.0 — 2026-11-18
 
 - Added one-per-project profiles with residential/commercial use, site/building details and explicit Undecided/Yes/No/Not Applicable checkboxes.

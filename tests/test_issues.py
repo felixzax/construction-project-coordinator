@@ -114,10 +114,11 @@ def window(store,issue,app,monkeypatch):
 def test_issue_dashboard_timeline_overdue_and_resolution(window,store,issue,app):
  assert any(row.get('_source_table')=='issues' for row in window.data['Dashboard'])
  assert any(row.get('_source_table')=='issues' for row in window.data['Timeline'])
- table=window.tables['Violations'];assert table.item(0,0).background().color().name()=='#fde3df'
+ from cpc.theme import tokens
+ table=window.tables['Violations'];assert table.item(0,0).background().color().name()==tokens()['error_bg']
  store.save('issues',{'status':'Resolved'},issue);window.refresh()
  assert not any(row.get('_source_table')=='issues' for row in window.data['Dashboard'])
- assert table.item(0,0).background().color().name()!='#fde3df'
+ assert table.item(0,0).background().color().name()!=tokens()['error_bg']
 
 
 def test_new_correction_form_autofills_address_and_required_fix(window,store,project,monkeypatch):
