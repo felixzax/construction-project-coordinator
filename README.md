@@ -1,29 +1,57 @@
-# Construction Project Coordinator 1.6.0
+# Construction Project Coordinator 1.7.0
 
 A local Windows desktop workspace for construction and property development coordination, consultant disciplines, drawing registers, meetings and detailed bid estimates. Python 3.12, PySide6 and SQLite. No cloud subscription, email connection or account is required to use the app.
 
 ## Download and run
 
-**[Download Windows 1.6.0](https://github.com/felixzax/construction-project-coordinator/actions/runs/44201623124/artifacts/14381392666)** · [Successful build and test logs](https://github.com/felixzax/construction-project-coordinator/actions/runs/44201623124). All 190 Windows tests passed; the downloaded artifact passed checksum and isolated offscreen/native Windows launch checks.
+Version 1.7.0 Windows build verification is pending. A verified download link will be added after a successful run.
 
-Open [GitHub Actions](https://github.com/felixzax/construction-project-coordinator/actions/workflows/windows.yml), select a successful **Test and build Windows** run for version 1.6.0, and download **ConstructionProjectCoordinator-1.6.0-Windows**. GitHub may require sign-in for Actions downloads. Extract the downloaded ZIP **once** into a fresh folder and run `ConstructionProjectCoordinator.exe`. Version 1.6.0 is a standalone, single-file executable: Python and a companion `_internal` folder are not required. The ZIP also contains README, changelog and file checksums. Do not mix its files into an older application folder. The app is unsigned and Windows may show a reputation prompt. Artifacts are retained for 90 days.
+Open [GitHub Actions](https://github.com/felixzax/construction-project-coordinator/actions/workflows/windows.yml), select a successful **Test and build Windows** run for version 1.7.0, and download **ConstructionProjectCoordinator-1.7.0-Windows**. GitHub may require sign-in for Actions downloads. Extract the downloaded ZIP **once** into a fresh folder and run `ConstructionProjectCoordinator.exe`. Version 1.7.0 is a standalone, single-file executable: Python and a companion `_internal` folder are not required. The ZIP also contains README, changelog and file checksums. Do not mix its files into an older application folder. The app is unsigned and Windows may show a reputation prompt. Artifacts are retained for 90 days.
 
 ## Fix for the Shiboken startup error
 
-If an older folder build reports `shiboken6\libshiboken does not exist`, use the new standalone 1.6.0 build above. The published 1.5.0 archive contains `_internal/shiboken6`, but the error occurs if that package folder is missing from the extracted copy. Do not create an empty libshiboken folder or install Python to work around it. The standalone build bundles its Qt/Shiboken runtime and extracts it automatically to a temporary directory when it starts.
+If an older folder build reports `shiboken6\libshiboken does not exist`, use the new standalone 1.7.0 build above. The published 1.5.0 archive contains `_internal/shiboken6`, but the error occurs if that package folder is missing from the extracted copy. Do not create an empty libshiboken folder or install Python to work around it. The standalone build bundles its Qt/Shiboken runtime and extracts it automatically to a temporary directory when it starts.
 
-Close the old app, extract the new ZIP into a fresh folder and launch the new executable. Project data stays in the same local data directory. Upgrading to 1.6.0 adds schema 7 with a pre-upgrade safety copy. All project features remain available.
+Close the old app, extract the new ZIP into a fresh folder and launch the new executable. Project data stays in the same local data directory. Upgrading to 1.7.0 adds schema 8 with a pre-upgrade safety copy. All project features remain available.
 
 If a runtime cannot load, the app gives a clear pre-Qt startup message and records `startup-error.txt` under `%LOCALAPPDATA%/Construction Project Coordinator/`. It does not alter project records in that failure path.
 
-## Upgrade from 1.0.0 through 1.5.1
+## Upgrade from 1.0.0 through 1.6.0
 
 1. In the old app, use Backup & Restore to back up your database. Also copy its adjacent `documents` folder to your backup location. Close all old app instances.
 2. Extract the new build into a new application folder. Keep the old executable until you verify the upgrade.
-3. Launch version 1.6.0 from the same Windows account. It uses the same Local AppData location, preserves existing projects, contacts, tasks and approved document revisions, and adds the new tables and fields automatically. It creates a `.before-v1.6.0.sqlite3` safety copy before upgrading a v1–v6 database.
+3. Launch version 1.7.0 from the same Windows account. It uses the same Local AppData location, preserves existing projects, contacts, tasks and approved document revisions, and adds the new tables and fields automatically. It creates a `.before-v1.7.0.sqlite3` safety copy before upgrading a v1–v7 database.
 4. Existing work is not replaced with demonstration data. New sections begin empty for existing users. Fresh workspaces may load fictional examples at the welcome prompt.
 
-The upgrade is one way: the new schema is version 7. To roll back, close the new app and restore the matching pre-upgrade database before running an older app. Do not open the upgraded database with the old app. Version 1.6.0 can restore v1–v7 backups; older backups are upgraded in a temporary copy before replacing live records.
+The upgrade is one way: the new schema is version 8. To roll back, close the new app and restore the matching pre-upgrade database before running an older app. Do not open the upgraded database with the old app. Version 1.7.0 can restore v1–v8 backups; older backups are upgraded in a temporary copy before replacing live records.
+
+## Project-specific scope and a simpler workspace
+
+Start in **Projects → Project setup**, or choose a project from the workspace dropdown and open **Project Profile**. Record residential, commercial, mixed or other use; project type; occupancy, parcel, jurisdiction, zoning, construction type, stories, units and floor area. Kitchen, bathrooms, occupied-site work, accessibility work and sprinklers use explicit **Undecided / Yes / No / Not Applicable** checkboxes. A blank decision starts Undecided rather than silently becoming No. There is one editable profile per project; standard details may be left blank while information is being collected.
+
+Use **Scope & Systems** for individual installations, building features and requirements. Each item supports a category, discipline, applicability, custom system type, fuel/energy source, status, area, manufacturer/model, quantity/unit, specifications, outstanding requirements, responsible contact and deadline. Energy sources include electric, natural gas, hybrid electric/gas, solar, propane, oil and other sources; use separate records for separate systems.
+
+**Add standard prompts** explicitly adds missing prompts for kitchens/bathrooms, foundations/framing, trusses, roofing, insulation, windows, stairs/guards/handrails, elevators/lifts, HVAC, water heating, electrical/gas services, solar, batteries, EV charging, plumbing, drainage, fire protection, accessibility, inspections/testing, commissioning, occupancy and warranties/manuals. Repeating this action preserves existing entries and avoids duplicate prompt titles. Existing projects are not automatically filled with these prompts. These are optional coordination prompts, not an exhaustive code checklist or a compliance determination; your project professionals and authority determine the applicable requirements.
+
+Choose **Add custom field** for a selected system or use **Custom Information** to create project-wide or system-specific information. Fields have a title, type (Text, Number, Yes / No, Date or URL), value, unit and Required flag. Required fields may remain blank while collecting information and are visibly marked Missing required value. Custom Yes/No values use the explicit answer names; dates use YYYY-MM-DD and URLs must use http(s). System types, categories and units support custom entries. Custom categories appear in the category filter.
+
+## Hide sections without losing anything
+
+Choose a project in **Project workspace**, then use **Customize project sections** on the toolbar. Checked sections appear for that project. **Minimal view** offers a smaller set; **Show all** or **Show all project sections** brings sections back. Save applies the preference only to that project, and All projects shows all sidebar sections. Dashboard, Projects, Search, Backup & Restore and Recovery & Data always remain available.
+
+Within Scope & Systems, **Hide / show selected items** removes unused items from the normal list. Check **Include hidden items** to reveal and restore them. Hiding is not deletion: records, attachments, search results and full project/department reports remain available. Applicable outstanding systems and rebate deadlines still appear on the dashboard/timeline even if their section or system row is hidden. Set applicability to No/Not Applicable or complete an item to remove its outstanding deadline.
+
+## Rebates and incentives
+
+**Rebates & Incentives** records the provider, program type, related system, eligibility, application status, requirements/application website links, reference, responsible contact, deadline, submission date, currency and separate estimated, approved and received amounts. Open a saved program link after confirmation. Attach requirements, applications, invoices and approval letters through Files. Eligibility starts Undecided; statuses are your manual tracking, not a provider decision fetched online. Incentives do not automatically reduce project budgets and there is no automatic currency conversion. Verify current requirements, eligible equipment and submission deadlines with the actual provider.
+
+## Project-wide change orders and files beyond plans
+
+**Change Orders** shows all contract changes for the current project and supports editing, supporting files and CSV/DOCX exports. The existing Contracts → Change orders dialog remains available. Only Approved changes affect the contract total; rejected/proposed changes retain their documentation without changing commitments.
+
+The common **Files — add / edit / save copy** control is also available for project profiles, systems, custom information, rebates, projects, tasks, department coordination records, meetings, communications, plans/documents, registers/permits, bid packages, receipts, corrections, violations and timeline records. Select and save a record first. Multiple standard originals can be added, downloaded byte-for-byte or exported together as a ZIP with a manifest; basic supported formats can be edited/converted as described below. Supporting files are separate from formal document approval/revision status and never submit a document or mark it approved. Original version history remains available for formal plans. **Plans & CAD → Version history → Save selected original file** also downloads an existing retained revision.
+
+Each new section exports the listed records to CSV and DOCX. Full project reports include hidden systems, required custom details and incentives. Department reports include tagged systems and their linked custom fields/incentives. Files keep their original formats; exporting a coordination report does not embed attached file bytes. Use Save a copy/ZIP to retrieve attachments.
 
 ## Contracts, budgets and change orders
 
@@ -33,7 +61,7 @@ In Receipts, choose a budget or contract and use **Include in budget** for known
 
 Projected cost = included actual receipts + each committed contract's remaining amount (adjusted contract minus its linked actuals, minimum zero). For example, a $1,000 contract with $200 of linked receipts and $50 of direct budget receipts projects $1,050, avoiding double-counting the $200. Remaining funds subtract this projection from base plus contingency. Over-budget totals are highlighted. Project and department reports include these records.
 
-## Contract and budget files: add, edit and export
+## Supported attachment editing and conversion
 
 Save a contract or budget, then open **Files**. Add multiple standard documents: PDF, Word, Excel, CSV, TXT, RTF/OpenDocument, images, CAD/BIM, presentations, email files and archives. Files are copied locally; this does not upload them to a server or automatically import their amounts into budget fields. **Save a copy** returns the original bytes, verified with SHA-256. **Save all as ZIP** includes originals and a manifest. Delete removes selected metadata after confirmation; retained copies remain available for recovery.
 

@@ -150,6 +150,44 @@ def smoke_test():
             workbook_editor.save(Path(folder) / 'updated-budget.pdf')
             store.import_finance_files('budgets', budget, [workbook])
             store.export_finance_zip('budgets', budget, Path(folder) / 'budget-files.zip')
+            # Verify new scope decisions, project visibility and files in the packaged app.
+            from cpc.ui import Form
+            pid = store.all('projects')[0]['id']
+            if window.tables['Project Profile'].rowCount() != 1 or window.tables['Scope & Systems'].rowCount() != 1:
+                raise RuntimeError('Project profile/systems smoke check failed')
+            profile = store.profile(pid)
+            form = Form(window, 'Scope decision', ['kitchen'], profile)
+            form.inputs['kitchen'].boxes['No'].click()
+            store.save('project_profiles', form.values(), profile['id'])
+            if store.profile(pid)['kitchen'] != 'No':
+                raise RuntimeError('Explicit No decision was not preserved')
+            form.reject()
+            sid = store.save('scope_items', dict(project_id=pid, title='Smoke elevator', category='Vertical Access', system_type='Elevator / Lift', applicability='Undecided'))
+            store.save('custom_fields', dict(project_id=pid, scope_item_id=sid, title='Rated capacity', field_type='Number', value='2500', unit='lb', is_required=1))
+            scope_file = store.import_finance_files('scope_items', sid, [original])[0]
+            store.save_finance_copy(scope_file, Path(folder) / 'scope-original.txt')
+            from cpc.file_editor import FileEditor
+            file_editor = FileEditor(window, store, scope_file)
+            file_editor.editor.setPlainText('Revised scope specification')
+            if not file_editor.save_version(automatic=True):
+                raise RuntimeError('Scope file edited version smoke check failed')
+            file_editor.close()
+            if len(store.finance_files('scope_items', sid)) != 2:
+                raise RuntimeError('Scope attachment version smoke check failed')
+            store.export_finance_zip('scope_items', sid, Path(folder) / 'system-files.zip')
+            store.add_scope_starters(pid)
+            window.project_filter.setCurrentIndex(window.project_filter.findData(pid))
+            store.set_hidden_sections(pid, ['Electrical', 'Rebates & Incentives'])
+            window.refresh()
+            if not window.nav.item(window.navigation.index('Electrical')).isHidden():
+                raise RuntimeError('Project navigation visibility smoke check failed')
+            store.set_hidden_sections(pid, [])
+            window.refresh()
+            if window.nav.item(window.navigation.index('Electrical')).isHidden():
+                raise RuntimeError('Project section restore smoke check failed')
+            write_docx(Path(folder) / 'systems.docx', 'Systems', store.scope_rows('scope_items'))
+            if 'Rated capacity' not in store.report(pid):
+                raise RuntimeError('Scope report smoke check failed')
             window.close()
             app.processEvents()
         finally:

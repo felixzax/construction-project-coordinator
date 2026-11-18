@@ -178,7 +178,7 @@ class FileEditor(QDialog):
   self.dirty=True;self.load_grid()
  def change_sheet(self,name):self.model.sheet_name=name;self.load_grid()
  def attach_result(self,path):
-  table='contracts' if self.record['contract_id'] else 'budgets';parent=self.record['contract_id'] or self.record['budget_id']
+  table,parent=self.store.attachment_owner(self.record)
   self.store.import_finance_files(table,parent,[path],notes=f'Edited/converted from attachment #{self.file_id}: {self.record["original_name"]}')
  def autosave(self):
   if self.dirty:self.save_version(automatic=True)

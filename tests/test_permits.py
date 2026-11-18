@@ -72,19 +72,19 @@ def v2_database(path):
 def test_v2_upgrade_preserves_permits_and_bids_and_snapshot(tmp_path):
  path=tmp_path/'v2.sqlite3'; v2_database(path); s=Store(path)
  try:
-  assert s.db.execute('PRAGMA user_version').fetchone()[0]==7
+  assert s.db.execute('PRAGMA user_version').fetchone()[0]==8
   old=next(r for r in s.all('registers') if r['record_type']=='Permit')
   assert old['title']=='Existing permit' and old['status']=='Submitted'
   assert old['jurisdiction_name']=='' and old['requirements_reviewed']==0
   assert len(s.all('bids'))==2 and s.bid_totals(s.all('bids')[0]['id'])['total']>0
-  with closing(sqlite3.connect(str(path)+'.before-v1.6.0.sqlite3')) as backup:
+  with closing(sqlite3.connect(str(path)+'.before-v1.7.0.sqlite3')) as backup:
    assert backup.execute('PRAGMA user_version').fetchone()[0]==2
  finally: s.db.close()
 
 
 def test_v2_backup_restore_into_current_schema(store,tmp_path):
  store.seed(); old=tmp_path/'old.sqlite3'; v2_database(old); store.restore(old)
- assert store.db.execute('PRAGMA user_version').fetchone()[0]==7
+ assert store.db.execute('PRAGMA user_version').fetchone()[0]==8
  assert len(store.all('bids'))==2
  assert any(r['title']=='Existing permit' for r in store.all('registers'))
  assert store.all('permit_requirements')==[]

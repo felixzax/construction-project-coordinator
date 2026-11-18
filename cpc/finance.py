@@ -60,6 +60,8 @@ class FinanceStore:
     if name not in present:self.db.execute(f'ALTER TABLE receipts ADD COLUMN {name} {kind}')
    self.db.execute('PRAGMA user_version=7')
  def finance_project(self,table,data):
+  if table=='finance_files' and data.get('owner_table'):
+   owner=self.attachment_parent(data['owner_table'],data.get('owner_id'));return self.project_for(data['owner_table'],owner)
   if table=='contract_changes' or (table=='finance_files' and data.get('contract_id')):
    rows=self.rows('SELECT project_id FROM contracts WHERE id=?',(data.get('contract_id'),))
   elif table=='finance_files':rows=self.rows('SELECT project_id FROM budgets WHERE id=?',(data.get('budget_id'),))
@@ -145,14 +147,25 @@ class FinanceStore:
   if not rows:raise ValueError('Choose an awarded bid')
   row=rows[0]
   return self.save('contracts',dict(project_id=row['project_id'],title=row['title'],contractor_name=row['title'],contact_id=row['contact_id'],budget_id=budget_id,bid_id=bid_id,discipline=row['discipline'],currency=row['currency'],original_amount=str(self.bid_totals(bid_id)['total']),scope=row['scope'],status='Draft'))
+ def attachment_parent(self,table,parent_id):
+  from .store import FIELDS
+  if table not in FIELDS or table in ('finance_files','contacts'):raise ValueError('Unsupported attachment area')
+  rows=self.rows(f'SELECT * FROM {table} WHERE id=?',(parent_id,))
+  if not rows:raise ValueError('Save the record before attaching files')
+  return rows[0]
+ def attachment_owner(self,row):
+  if row.get('contract_id'):return 'contracts',row['contract_id']
+  if row.get('budget_id'):return 'budgets',row['budget_id']
+  return row['owner_table'],row['owner_id']
  def finance_files(self,table,parent_id):
-  if table not in ('contracts','budgets'):raise ValueError('Unsupported attachment area')
-  key='contract_id' if table=='contracts' else 'budget_id'
-  return self.rows(f'SELECT * FROM finance_files WHERE {key}=? ORDER BY id DESC',(parent_id,))
+  self.attachment_parent(table,parent_id)
+  if table in ('contracts','budgets'):
+   key='contract_id' if table=='contracts' else 'budget_id'
+   return self.rows(f'SELECT * FROM finance_files WHERE {key}=? ORDER BY id DESC',(parent_id,))
+  return self.rows('SELECT * FROM finance_files WHERE owner_table=? AND owner_id=? ORDER BY id DESC',(table,parent_id))
  def import_finance_files(self,table,parent_id,paths,notes=''):
-  if table not in ('contracts','budgets'):raise ValueError('Unsupported attachment area')
-  parents=self.rows(f'SELECT project_id FROM {table} WHERE id=?',(parent_id,))
-  if not parents:raise ValueError('Save the contract or budget first')
+  parent=self.attachment_parent(table,parent_id);pid=self.project_for(table,parent)
+  if not pid:raise ValueError('Files must belong to a project record')
   sources=[Path(p) for p in paths]
   if not sources:raise ValueError('Choose at least one file')
   for source in sources:
@@ -162,9 +175,10 @@ class FinanceStore:
    with self.db:
     for source in sources:
      target=folder/(uuid.uuid4().hex+source.suffix.lower());created.append(target);shutil.copy2(source,target)
-     key='contract_id' if table=='contracts' else 'budget_id'
-     fid=self.db.execute(f'INSERT INTO finance_files({key},original_name,file_path,sha256,byte_size,added_date,notes) VALUES(?,?,?,?,?,?,?)',(parent_id,source.name,str(target.resolve()),digest(target),target.stat().st_size,datetime.now().isoformat(timespec='seconds'),notes)).lastrowid;ids.append(fid)
-    self.log(parents[0]['project_id'],f'Imported {len(ids)} original file(s) for {table} #{parent_id}')
+     contract=parent_id if table=='contracts' else None;budget=parent_id if table=='budgets' else None
+     owner='' if contract or budget else table;oid=None if contract or budget else parent_id
+     fid=self.db.execute('INSERT INTO finance_files(contract_id,budget_id,owner_table,owner_id,original_name,file_path,sha256,byte_size,added_date,notes) VALUES(?,?,?,?,?,?,?,?,?,?)',(contract,budget,owner,oid,source.name,str(target.resolve()),digest(target),target.stat().st_size,datetime.now().isoformat(timespec='seconds'),notes)).lastrowid;ids.append(fid)
+    self.log(pid,f'Imported {len(ids)} original file(s) for {table} #{parent_id}')
   except Exception:
    for target in created:target.unlink(missing_ok=True)
    raise
@@ -201,6 +215,14 @@ class FinanceStore:
      used.add(name.lower());archive.write(path,name);manifest.append([name,row['original_name'],row['sha256'],row['added_date'],row['notes']])
     text=io.StringIO();writer=csv.writer(text);writer.writerow(['archive_name','original_name','sha256','added_date','notes']);writer.writerows([["'"+v if isinstance(v,str) and v.startswith(('=','+','-','@')) else v for v in row] for row in manifest]);archive.writestr('manifest.csv',text.getvalue())
    os.replace(temporary,destination)
+  finally:temporary.unlink(missing_ok=True)
+ def save_revision_copy(self,version_id,destination):
+  rows=self.rows('SELECT file_path FROM versions WHERE id=?',(version_id,))
+  if not rows or not rows[0]['file_path'] or not Path(rows[0]['file_path']).is_file():raise ValueError('Restore the revision file from your documents-folder backup first')
+  source=Path(rows[0]['file_path']);destination=Path(destination)
+  if source.resolve()==destination.resolve() or (self.path.parent/'documents').resolve() in destination.resolve().parents:raise ValueError('Save outside the retained originals')
+  with tempfile.NamedTemporaryFile(dir=destination.parent,delete=False,suffix='.partial') as file:temporary=Path(file.name)
+  try:shutil.copy2(source,temporary);os.replace(temporary,destination)
   finally:temporary.unlink(missing_ok=True)
  def finance_report(self,pid):
   e=lambda v:html.escape(str(v if v is not None else ''));out='<h2>Contracts and budgets</h2>'

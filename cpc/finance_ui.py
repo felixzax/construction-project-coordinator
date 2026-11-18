@@ -68,14 +68,21 @@ class FinanceUI:
      if self.confirm_delete([('contract_changes',rows[i]['id']) for i in indexes],'change orders'):reload()
     self.guard(perform)
    table.delete_selected=lambda:delete();table.delete_listed=lambda:delete(True)
+   def files():
+    def perform():
+     i=table.currentRow()
+     if i<0:raise ValueError('Select a change order')
+     self.finance_file_manager('Change order','contract_changes',rows[i])
+    self.guard(perform)
+   self.button(bar,'Files',files)
    self.button(bar,'+ Change order',lambda:edit());self.button(bar,'Edit selected',lambda:edit(True));self.button(bar,'Delete selected',lambda:delete());self.button(bar,'Export DOCX',lambda:self.export_rows_dialog('Change orders',rows,'docx'));self.button(bar,'Export CSV',lambda:self.export_rows_dialog('Change orders',rows,'csv'));self.button(bar,'Close',dlg.accept);reload();dlg.exec();self.refresh()
   self.guard(action)
- def finance_file_manager(self,title):
+ def finance_file_manager(self,title,parent_table=None,record=None):
   def action():
-   record=self.selected(title);parent_table=FINANCE_PAGES[title];dlg=QDialog(self);dlg.setWindowTitle(title+' files — '+record['title']);dlg.resize(1150,700);layout=QVBoxLayout(dlg)
+   owner_record=record if record is not None else self.selected(title);owner_table=parent_table or FINANCE_PAGES[title];dlg=QDialog(self);dlg.setWindowTitle(title+' files — '+owner_record.get('title',owner_record.get('name','Project')));dlg.resize(1150,700);layout=QVBoxLayout(dlg)
    hint=QLabel('Add files keeps an original local copy. Save a copy downloads the original bytes; Save all as ZIP includes every file. Text/CSV, basic DOCX and plain XLSX can be edited here. Supported conversions appear in Save as; complex files use their normal Windows app and can be re-imported as revised files.');hint.setWordWrap(True);layout.addWidget(hint)
    table=DataTable();table.setEditTriggers(QAbstractItemView.NoEditTriggers);layout.addWidget(table);bar=QHBoxLayout();layout.addLayout(bar);rows=[];working_copies={}
-   def reload():rows[:]=self.store.finance_files(parent_table,record['id']);self.render_recovery_table(table,[dict(filename=r['original_name'],bytes=r['byte_size'],added=r['added_date'],notes=r['notes']) for r in rows])
+   def reload():rows[:]=self.store.finance_files(owner_table,owner_record['id']);self.render_recovery_table(table,[dict(filename=r['original_name'],bytes=r['byte_size'],added=r['added_date'],notes=r['notes']) for r in rows])
    def selected():
     i=table.currentRow()
     if i<0:raise ValueError('Select a file')
@@ -83,7 +90,7 @@ class FinanceUI:
    def upload():
     def perform():
      paths,_=QFileDialog.getOpenFileNames(dlg,'Add original files','',FILE_FILTER)
-     if paths:self.store.import_finance_files(parent_table,record['id'],paths);reload()
+     if paths:self.store.import_finance_files(owner_table,owner_record['id'],paths);reload()
     self.guard(perform)
    def download():
     def perform():
@@ -93,7 +100,7 @@ class FinanceUI:
    def zip_all():
     def perform():
      path,_=QFileDialog.getSaveFileName(dlg,'Save all original files','attachments.zip','ZIP (*.zip)')
-     if path:self.store.export_finance_zip(parent_table,record['id'],path)
+     if path:self.store.export_finance_zip(owner_table,owner_record['id'],path)
     self.guard(perform)
    def open_file():
     def perform():
@@ -106,7 +113,7 @@ class FinanceUI:
     def perform():
      row=selected();path=working_copies.get(row['id'])
      if not path or not path.is_file():raise ValueError('Open a working copy first, or use Add files to import a revision saved elsewhere')
-     self.store.import_finance_files(parent_table,record['id'],[path],notes=f'External revision of attachment #{row["id"]}');reload()
+     self.store.import_finance_files(owner_table,owner_record['id'],[path],notes=f'External revision of attachment #{row["id"]}');reload()
     self.guard(perform)
    def edit_file():
     def perform():

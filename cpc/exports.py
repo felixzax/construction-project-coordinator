@@ -20,7 +20,7 @@ def write_docx(path,title,rows,project='All projects'):
   for key,value in row.items():
    if key=='id' or key.startswith('_') or key.endswith('_id'): continue
    if value in ('',None): continue
-   if key in ('completed','included','requirements_reviewed') and value in (0,1): value='Yes' if value else 'No'
+   if key in ('completed','included','requirements_reviewed','hidden','is_required','include_in_budget') and value in (0,1): value='Yes' if value else 'No'
    cells=table.add_row().cells; cells[0].text=key.replace('_',' ').title(); cells[1].text=str(value)
  doc.save(path)
 
@@ -36,10 +36,10 @@ def department_rows(store,disciplines,project_id=None,query=''):
   record.update({key:'' for key in ['quantity','unit','material','material_unit_cost','labor_hours','labor_rate','material_cost','labor_cost','equipment_cost','subcontract_cost','included','estimated_amount','actual_amount','variance_amount']}); record.update(cost or {})
   if query and query.lower() not in ' '.join(str(v) for v in record.values()).lower(): return
   result.append(record)
- for table,kind in [('work_packages','Coordination'),('tasks','Task'),('documents','Plan / document'),('registers','Development register'),('bid_packages','Bid package'),('receipts','Supplier receipt'),('issues','Correction / violation'),('contracts','Contract'),('budgets','Budget')]:
+ for table,kind in [('work_packages','Coordination'),('tasks','Task'),('documents','Plan / document'),('registers','Development register'),('bid_packages','Bid package'),('receipts','Supplier receipt'),('issues','Correction / violation'),('contracts','Contract'),('budgets','Budget'),('scope_items','System / requirement')]:
   for row in store.all(table):
    if row.get('discipline') not in disciplines: continue
-   details=' | '.join(f'{key.replace("_"," ")}: {row[key]}' for key in ('scope','requirements','notes','reference','jurisdiction_type','jurisdiction_name','department','sheet_number','drawing_type','scale','issue_purpose','response','supplier_name','approval_notes','site_address','location','required_fix','code_reference','authority','resolution_notes','contractor_name','contract_number') if row.get(key))
+   details=' | '.join(f'{key.replace("_"," ")}: {row[key]}' for key in ('scope','requirements','notes','reference','jurisdiction_type','jurisdiction_name','department','sheet_number','drawing_type','scale','issue_purpose','response','supplier_name','approval_notes','site_address','location','required_fix','code_reference','authority','resolution_notes','contractor_name','contract_number','system_type','energy_source','applicability','specifications','manufacturer','model') if row.get(key))
    url=row.get('requirements_url','')
    if table=='documents':
     versions=store.versions(row['id'])
@@ -65,6 +65,13 @@ def department_rows(store,disciplines,project_id=None,query=''):
       values=line_totals(item); item_context=dict(context,title=item['title'],building_area=item['building_area'],status='Included' if item['included'] else 'Excluded')
       cost=dict(quantity=str(values['effective_quantity']),unit=item['unit'],material=item['material'],material_unit_cost=item['material_unit_cost'],labor_hours=str(values['labor_hours']),labor_rate=item['labor_rate'],material_cost=str(values['materials']),labor_cost=str(values['labor']),equipment_cost=str(values['equipment']),subcontract_cost=str(values['subcontract']),included=item['included'])
       add('Cost item',item_context,item['item_type']+' | Specification: '+item['specification']+' | Estimate: '+bid['title'],currency=bid['currency'],total=values['direct_total'],cost=cost)
+ systems={r['id']:r for r in store.all('scope_items')}
+ for table,label in [('custom_fields','Custom system information'),('rebates','Rebate / incentive')]:
+  for row in store.all(table):
+   system=systems.get(row['scope_item_id'])
+   if not system or system['discipline'] not in disciplines:continue
+   details=' | '.join(k.replace('_',' ')+': '+str(v) for k,v in row.items() if k not in ('id','project_id','scope_item_id','title') and v not in ('',None))
+   add(label,dict(system,**{k:v for k,v in row.items() if k not in ('id','scope_item_id')}),details,source_url=row.get('requirements_url',''))
  for contact in store.all('contacts'):
   if contact.get('discipline') not in disciplines: continue
   links=store.rows('SELECT project_id FROM project_contacts WHERE contact_id=?',(contact['id'],))

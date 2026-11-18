@@ -6,6 +6,7 @@ import shutil
 import uuid
 import tempfile
 from contextlib import closing
+from .scope import ScopeStore,SCOPE_FIELDS,PROTECTED_SECTIONS
 from .finance import FinanceStore, FINANCE_FIELDS, RECEIPT_FINANCE_COLUMNS
 from .issues import IssueStore, ISSUE_FIELDS
 from .receipts import ReceiptStore, RECEIPT_FIELDS
@@ -40,21 +41,23 @@ FIELDS.update(NEW_FIELDS)
 FIELDS['receipts']=RECEIPT_FIELDS
 FIELDS['issues']=ISSUE_FIELDS
 FIELDS.update(FINANCE_FIELDS)
+FIELDS.update(SCOPE_FIELDS)
+FIELDS['finance_files'].extend(['owner_table','owner_id'])
 FIELDS['receipts'].extend(RECEIPT_FINANCE_COLUMNS)
 FIELDS['registers'].extend(PERMIT_COLUMNS)
 FIELDS['permit_requirements']=REQUIREMENT_FIELDS+['completed_on']
 for _table,_columns in ADDED_COLUMNS.items():
  FIELDS[_table].extend(_columns)
 
-class Store(FinanceStore,IssueStore,ReceiptStore,RecoveryStore,PermitStore,DevelopmentStore):
+class Store(ScopeStore,FinanceStore,IssueStore,ReceiptStore,RecoveryStore,PermitStore,DevelopmentStore):
  def __init__(self, path):
   self.path=Path(path); self.path.parent.mkdir(parents=True,exist_ok=True)
   self.db=sqlite3.connect(self.path); self.db.row_factory=sqlite3.Row
   version=self.db.execute('PRAGMA user_version').fetchone()[0]
-  if version not in (0,1,2,3,4,5,6,7):
+  if version not in (0,1,2,3,4,5,6,7,8):
    self.db.close(); raise ValueError('This database requires a newer version of the application')
-  if version in (1,2,3,4,5,6):
-   self.backup(str(self.path)+'.before-v1.6.0.sqlite3')
+  if version in (1,2,3,4,5,6,7):
+   self.backup(str(self.path)+'.before-v1.7.0.sqlite3')
   self.db.execute('PRAGMA foreign_keys=ON'); self.db.executescript(SCHEMA)
   self.migrate_development()
   self.migrate_permits()
@@ -62,6 +65,7 @@ class Store(FinanceStore,IssueStore,ReceiptStore,RecoveryStore,PermitStore,Devel
   self.migrate_receipts()
   self.migrate_issues()
   self.migrate_finance()
+  self.migrate_scope()
   self.db.execute("PRAGMA journal_mode=WAL")
   self.db.execute("PRAGMA synchronous=FULL")
   self.db.execute("PRAGMA busy_timeout=5000")
@@ -85,6 +89,7 @@ class Store(FinanceStore,IssueStore,ReceiptStore,RecoveryStore,PermitStore,Devel
   self.validate_receipt(table,data,row_id)
   self.validate_issue(table,data,row_id)
   self.validate_finance(table,data,row_id)
+  self.validate_scope(table,data,row_id)
   for key in ('name','title','summary'):
    if key in FIELDS[table] and not str(data.get(key,'')).strip(): raise ValueError(f'{key.title()} is required')
   for key in ('deadline','follow_up','occurred'):
@@ -129,7 +134,7 @@ class Store(FinanceStore,IssueStore,ReceiptStore,RecoveryStore,PermitStore,Devel
   for table,fields in FIELDS.items():
    cols=[f for f in fields if not f.endswith('_id') and f not in ('archived','included')]
    for row in self.rows(f'SELECT * FROM {table} WHERE '+ ' OR '.join(f'{c} LIKE ?' for c in cols),['%'+query+'%']*len(cols)):
-    result.append({'type':table,'id':row['id'],'project_id':(row['id'] if table=='projects' else self.project_for(table,row)) or '','label':row.get('name',row.get('title',row.get('summary','')))})
+    result.append({'type':table,'id':row['id'],'project_id':(row['id'] if table=='projects' else self.project_for(table,row)) or '','label':row.get('name',row.get('title',row.get('summary',row.get('original_name',''))))})
   for row in self.rows('SELECT v.*,d.project_id,d.title FROM versions v JOIN documents d ON d.id=v.document_id WHERE v.revision LIKE ? OR v.requirements LIKE ?',('%'+query+'%','%'+query+'%')):
    result.append({'type':'versions','id':row['id'],'project_id':row['project_id'],'label':row['title']+' / '+row['revision']+': '+row['requirements']})
   return result
@@ -146,9 +151,10 @@ class Store(FinanceStore,IssueStore,ReceiptStore,RecoveryStore,PermitStore,Devel
    with closing(sqlite3.connect(f'{source.resolve().as_uri()}?mode=ro',uri=True)) as candidate:
     if candidate.execute('PRAGMA integrity_check').fetchone()[0]!='ok': raise ValueError('Invalid backup')
     version=candidate.execute('PRAGMA user_version').fetchone()[0]
-    if version not in (1,2,3,4,5,6,7): raise ValueError('Unsupported backup version')
+    if version not in (1,2,3,4,5,6,7,8): raise ValueError('Unsupported backup version')
     # Validate the original schema before any CREATE TABLE statement can mask missing tables.
-    for table in list(FIELDS)+['versions','activity','project_contacts']+RECOVERY_TABLES:
+    for table in list(FIELDS)+['versions','activity','project_contacts']+RECOVERY_TABLES+['project_sections']:
+     if version<8 and table in (*SCOPE_FIELDS,'project_sections'):continue
      if version<7 and table in FINANCE_FIELDS:continue
      if version<6 and table=='issues':continue
      if version<5 and table=='receipts': continue
@@ -156,6 +162,7 @@ class Store(FinanceStore,IssueStore,ReceiptStore,RecoveryStore,PermitStore,Devel
      if version==1 and table in NEW_FIELDS: continue
      if version<=2 and table=='permit_requirements': continue
      expected={r[1] for r in self.db.execute(f'PRAGMA table_info({table})')}
+     if version<8 and table=='finance_files':expected-={'owner_table','owner_id'}
      if version<7 and table=='receipts':expected-=set(RECEIPT_FINANCE_COLUMNS)
      if version==1: expected-=set(ADDED_COLUMNS.get(table,{}))
      if version<=2 and table=='registers': expected-=set(PERMIT_COLUMNS)
@@ -166,6 +173,11 @@ class Store(FinanceStore,IssueStore,ReceiptStore,RecoveryStore,PermitStore,Devel
    restored=Store(copy)
    try:
     if restored.db.execute('PRAGMA foreign_key_check').fetchone(): raise ValueError('Backup relationships are invalid')
+    for attachment in restored.all('finance_files'):
+     owner,rid=restored.attachment_owner(attachment);restored.attachment_parent(owner,rid)
+    from .development_ui import NAVIGATION
+    for setting in restored.rows('SELECT * FROM project_sections'):
+     if setting['section'] in PROTECTED_SECTIONS or setting['section'] not in NAVIGATION or setting['hidden'] not in (0,1):raise ValueError('Backup has invalid section preferences')
     self.backup(str(self.path)+'.before-restore.sqlite3')
     restored.db.backup(self.db)
    finally: restored.db.close()
@@ -181,7 +193,7 @@ class Store(FinanceStore,IssueStore,ReceiptStore,RecoveryStore,PermitStore,Devel
   for title,rows in [('Outstanding tasks',self.outstanding(pid)),('Documents',self.rows('SELECT d.title,v.revision,v.status,v.requirements,v.resubmission FROM documents d LEFT JOIN versions v ON v.id=(SELECT MAX(id) FROM versions WHERE document_id=d.id) WHERE d.project_id=?',(pid,))),('Milestones',self.rows('SELECT title,phase,deadline,status FROM milestones WHERE project_id=? ORDER BY deadline',(pid,))),('Communication',self.rows('SELECT occurred,summary,follow_up,status FROM communications WHERE project_id=? ORDER BY occurred DESC',(pid,)))]:
    out+=f'<h2>{title}</h2>'
    for r in rows: out+='<p>'+' | '.join(f'{e(k)}: {e(v)}' for k,v in r.items() if k not in ('id','project_id','contact_id'))+'</p>'
-  return out+self.development_report(pid)+self.permit_checklist_report(pid)+self.receipt_report(pid)+self.issue_report(pid)+self.finance_report(pid)
+  return out+self.development_report(pid)+self.permit_checklist_report(pid)+self.receipt_report(pid)+self.issue_report(pid)+self.finance_report(pid)+self.scope_report(pid)
  def draft(self,comm):
   p=self.rows('SELECT name FROM projects WHERE id=?',(comm['project_id'],))[0]
   c=self.rows('SELECT name,email FROM contacts WHERE id=?',(comm['contact_id'],))
@@ -211,3 +223,7 @@ class Store(FinanceStore,IssueStore,ReceiptStore,RecoveryStore,PermitStore,Devel
 
   budget=self.save('budgets',dict(project_id=p,title='Electrical budget',discipline='Electrical',currency='USD',base_amount='10000',contingency_amount='1000'))
   self.save('contracts',dict(project_id=p,title='Electrical installation agreement',contractor_name='Example Electrical A (fictional)',budget_id=budget,discipline='Electrical',currency='USD',original_amount='7500',scope='Fictional installation scope',status='Active'))
+
+  self.save('project_profiles',dict(project_id=p,title='Project profile',use_type='Commercial',project_type='Tenant Improvement',kitchen='Undecided',occupied_work='Yes',notes='Fictional example; verify all scope decisions with the project team.'))
+  self.save('scope_items',dict(project_id=p,title='Heating / cooling equipment',category='Energy & Utilities',discipline='Mechanical / HVAC',system_type='HVAC',energy_source='Hybrid (electric / gas)',applicability='Yes',notes='Fictional example equipment; specifications to be confirmed.'))
+  self.save('rebates',dict(project_id=p,title='Example utility equipment rebate (fictional)',provider='Example utility',requirements_url='https://example.com/rebate-requirements',application_url='https://example.com/rebate-application',notes='Fictional program; replace with current provider requirements.'))

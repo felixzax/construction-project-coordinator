@@ -60,7 +60,7 @@ class RecoveryUI:
   from .development_ui import DISCIPLINE_PAGES,REGISTER_PAGES
   if row.get('_source_table'): return row['_source_table'],row['_source_id']
   if title=='Search': return row['type'],row['id']
-  mapping={'Projects':'projects','Tasks':'tasks','Contacts':'contacts','Communications':'communications','Documents':'documents','Meetings':'meetings','Bidding':'bid_packages','Bids':'bids','Receipts':'receipts','Corrections':'issues','Violations':'issues','Contracts':'contracts','Budgets':'budgets'}
+  mapping={'Project Profile':'project_profiles','Scope & Systems':'scope_items','Custom Information':'custom_fields','Rebates & Incentives':'rebates','Change Orders':'contract_changes','Projects':'projects','Tasks':'tasks','Contacts':'contacts','Communications':'communications','Documents':'documents','Meetings':'meetings','Bidding':'bid_packages','Bids':'bids','Receipts':'receipts','Corrections':'issues','Violations':'issues','Contracts':'contracts','Budgets':'budgets'}
   if title in DISCIPLINE_PAGES: return 'work_packages',row['id']
   if title in REGISTER_PAGES: return 'registers',row['id']
   if title=='Timeline':
@@ -153,6 +153,16 @@ class RecoveryUI:
      if self.confirm_delete([('versions',rows[i]['id']) for i in indexes],'document revisions'): reload()
     self.guard(perform)
    table.delete_selected=lambda:remove(); table.delete_listed=lambda:remove(True)
+   def save_original():
+    def perform():
+     from PySide6.QtWidgets import QFileDialog
+     i=table.currentRow()
+     if i<0:raise ValueError('Select a revision')
+     row=rows[i];extension=Path(row['file_path']).suffix
+     path,_=QFileDialog.getSaveFileName(dlg,'Save retained revision copy','revision-'+str(row['id'])+extension,'Original file (*'+extension+')')
+     if path:self.store.save_revision_copy(row['id'],path)
+    self.guard(perform)
+   self.button(bar,'Save selected original file…',save_original)
    self.button(bar,'Export CSV',lambda:self.export_rows_dialog('Document revisions',rows,'csv')); self.button(bar,'Export DOCX',lambda:self.export_rows_dialog('Document revisions',rows,'docx')); self.button(bar,'Copy selected cells',table.copy_selection); self.button(bar,'Delete selected revisions',lambda:remove()); self.button(bar,'Delete all revisions',lambda:remove(True)); self.button(bar,'Close',dlg.accept); reload(); dlg.exec(); self.refresh()
   self.guard(action)
  def closeEvent(self,event):

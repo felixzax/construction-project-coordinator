@@ -77,7 +77,7 @@ class RecoveryStore:
    if table not in allowed: raise ValueError('Unknown record type')
    if not isinstance(row_id,int): raise ValueError('Select a saved record')
    if self.db.execute(f'SELECT 1 FROM {table} WHERE id=?',(row_id,)).fetchone(): plan.setdefault(table,set()).add(row_id)
-  links=[('contracts','contract_changes','contract_id'),('contracts','finance_files','contract_id'),('budgets','finance_files','budget_id'),('documents','versions','document_id'),('registers','permit_requirements','register_id'),('bid_packages','bids','package_id'),('bids','bid_items','bid_id')]
+  links=[('scope_items','custom_fields','scope_item_id'),('contracts','contract_changes','contract_id'),('contracts','finance_files','contract_id'),('budgets','finance_files','budget_id'),('documents','versions','document_id'),('registers','permit_requirements','register_id'),('bid_packages','bids','package_id'),('bids','bid_items','bid_id')]
   for table,fields in FIELDS.items():
    if 'project_id' in fields: links.append(('projects',table,'project_id'))
   links.append(('projects','activity','project_id'))
@@ -89,6 +89,11 @@ class RecoveryStore:
      ids={r['id'] for r in self.rows(f'SELECT id FROM {child} WHERE {fk} IN ({marks(batch)})',batch)}
      new=ids-plan.get(child,set())
      if new: plan.setdefault(child,set()).update(new); changed=True
+   for parent,ids in list(plan.items()):
+    for batch in chunks(ids):
+     files={r['id'] for r in self.rows(f'SELECT id FROM finance_files WHERE owner_table=? AND owner_id IN ({marks(batch)})',[parent,*batch])}
+     new=files-plan.get('finance_files',set())
+     if new:plan.setdefault('finance_files',set()).update(new);changed=True
   return plan
  def deletion_summary(self,targets):
   return {table:len(ids) for table,ids in self._delete_plan(targets).items()}
@@ -104,6 +109,7 @@ class RecoveryStore:
      pid=row['id'] if table=='projects' else self.project_for(table,row)
      if pid: affected.add(pid)
   with self.db:
+   for batch in chunks(plan.get('scope_items',())):self.db.execute(f'UPDATE rebates SET scope_item_id=NULL WHERE scope_item_id IN ({marks(batch)})',batch)
    for batch in chunks(plan.get('bids',())):self.db.execute(f'UPDATE contracts SET bid_id=NULL WHERE bid_id IN ({marks(batch)})',batch)
    for batch in chunks(plan.get('contracts',())):self.db.execute(f'UPDATE receipts SET contract_id=NULL WHERE contract_id IN ({marks(batch)})',batch)
    for batch in chunks(plan.get('budgets',())):
@@ -119,8 +125,9 @@ class RecoveryStore:
    for batch in chunks(plan.get('meetings',())):
     self.db.execute(f'UPDATE tasks SET meeting_id=NULL WHERE meeting_id IN ({marks(batch)})',batch)
    for batch in chunks(plan.get('projects',())):
+    self.db.execute(f'DELETE FROM project_sections WHERE project_id IN ({marks(batch)})',batch)
     self.db.execute(f'DELETE FROM project_contacts WHERE project_id IN ({marks(batch)})',batch)
-   order=['finance_files','contract_changes','issues','receipts','permit_requirements','bid_items','versions','tasks','communications','milestones','work_packages','registers','meetings','bids','bid_packages','documents','contracts','budgets','activity','projects','contacts']
+   order=['finance_files','custom_fields','rebates','scope_items','project_profiles','contract_changes','issues','receipts','permit_requirements','bid_items','versions','tasks','communications','milestones','work_packages','registers','meetings','bids','bid_packages','documents','contracts','budgets','activity','projects','contacts']
    for table in order:
     for batch in chunks(plan.get(table,())): self.db.execute(f'DELETE FROM {table} WHERE id IN ({marks(batch)})',batch)
    # Existing discounts must still fit when deleting cost items. Failure rolls back the entire deletion.

@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.7.0 — 2026-11-18
+
+- Added one-per-project profiles with residential/commercial use, site/building details and explicit Undecided/Yes/No/Not Applicable checkboxes.
+- Added Scope & Systems, 26 optional standard prompts, fuel/energy sources, customizable categories/types/specifications and typed custom information with required-value tracking.
+- Added rebates/incentives with provider links, eligibility, deadlines and separate estimated/approved/received amounts, without automatically reducing budgets.
+- Added per-project sidebar visibility, Minimal view, restoration controls and hideable system rows; hidden records remain searchable/reportable and outstanding deadlines remain visible.
+- Added project-wide Change Orders and common original-file upload/download/versioned editing across project records, plus download of retained plan revisions.
+- Added schema 8 migration, retained v7 attachment IDs, older-backup restores and new persistence/UI/attachment tests.
+
 ## 1.6.0 — 2026-11-17
 
 - Added contracts, awarded-bid snapshots, approved change orders and budgets with receipt allocation and non-double-counted projections.
