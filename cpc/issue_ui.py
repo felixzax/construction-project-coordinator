@@ -71,7 +71,7 @@ class IssueUI:
   self.guard(action)
  def show_project_issues(self,title):
   def action():
-   project=self.selected('Projects');self.project_filter.setCurrentIndex(self.project_filter.findData(project['id']));self.nav.setCurrentRow(self.navigation.index(title))
+   project=self.selected('Projects');self.project_filter.setCurrentIndex(self.project_filter.findData(project['id']));self.navigate(title)
   self.guard(action)
  def attach_issue_file(self,title):
   def action():

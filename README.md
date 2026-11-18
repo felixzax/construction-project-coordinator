@@ -1,12 +1,12 @@
-# Construction Project Coordinator 1.8.0
+# Construction Project Coordinator 1.9.0
 
 A local Windows desktop workspace for construction and property development coordination, consultant disciplines, drawing registers, meetings and detailed bid estimates. Python 3.12, PySide6 and SQLite. No cloud subscription, email connection or account is required to use the app.
 
 ## Download and run
 
-**[Download Windows 1.8.0](https://github.com/felixzax/construction-project-coordinator/actions/runs/44402054054/artifacts/14473721974)** · [Successful build and test logs](https://github.com/felixzax/construction-project-coordinator/actions/runs/44402054054). All 237 Windows tests passed; the downloaded artifact passed checksum and isolated offscreen/native Windows launch checks.
+Version 1.9.0 Windows verification is pending. A verified download link will be added after a successful run.
 
-Open [GitHub Actions](https://github.com/felixzax/construction-project-coordinator/actions/workflows/windows.yml), select a successful **Test and build Windows** run for version 1.8.0, and download **ConstructionProjectCoordinator-1.8.0-Windows**. GitHub may require sign-in for Actions downloads. Extract the downloaded ZIP **once** into a fresh folder and run `ConstructionProjectCoordinator.exe`. Version 1.8.0 is a standalone, single-file executable: Python and a companion `_internal` folder are not required. The ZIP also contains README, changelog and file checksums. Do not mix its files into an older application folder. The app is unsigned and Windows may show a reputation prompt. Artifacts are retained for 90 days.
+Open [GitHub Actions](https://github.com/felixzax/construction-project-coordinator/actions/workflows/windows.yml), select a successful **Test and build Windows** run for version 1.9.0, and download **ConstructionProjectCoordinator-1.9.0-Windows**. GitHub may require sign-in for Actions downloads. Extract the downloaded ZIP **once** into a fresh folder and run `ConstructionProjectCoordinator.exe`. Version 1.9.0 is a standalone, single-file executable: Python and a companion `_internal` folder are not required. The ZIP also contains README, changelog and file checksums. Do not mix its files into an older application folder. The app is unsigned and Windows may show a reputation prompt. Artifacts are retained for 90 days.
 
 ## Cleaner commands and navigation
 
@@ -22,20 +22,20 @@ The setting is remembered in `appearance.ini` beside the database, separately fo
 
 ## Fix for the Shiboken startup error
 
-If an older folder build reports `shiboken6\libshiboken does not exist`, use the new standalone 1.8.0 build above. The published 1.5.0 archive contains `_internal/shiboken6`, but the error occurs if that package folder is missing from the extracted copy. Do not create an empty libshiboken folder or install Python to work around it. The standalone build bundles its Qt/Shiboken runtime and extracts it automatically to a temporary directory when it starts.
+If an older folder build reports `shiboken6\libshiboken does not exist`, use the new standalone 1.9.0 build above. The published 1.5.0 archive contains `_internal/shiboken6`, but the error occurs if that package folder is missing from the extracted copy. Do not create an empty libshiboken folder or install Python to work around it. The standalone build bundles its Qt/Shiboken runtime and extracts it automatically to a temporary directory when it starts.
 
-Close the old app, extract the new ZIP into a fresh folder and launch the new executable. Project data stays in the same local data directory. Version 1.8.0 uses schema 8, unchanged from 1.7.0. Older databases get a pre-upgrade safety copy. All project features remain available.
+Close the old app, extract the new ZIP into a fresh folder and launch the new executable. Project data stays in the same local data directory. Version 1.9.0 adds schema 9 to save project section order. Older databases get a pre-upgrade safety copy. All project features remain available.
 
 If a runtime cannot load, the app gives a clear pre-Qt startup message and records `startup-error.txt` under `%LOCALAPPDATA%/Construction Project Coordinator/`. It does not alter project records in that failure path.
 
-## Upgrade from 1.0.0 through 1.7.1
+## Upgrade from 1.0.0 through 1.8.0
 
 1. In the old app, use Backup & Restore to back up your database. Also copy its adjacent `documents` folder to your backup location. Close all old app instances.
 2. Extract the new build into a new application folder. Keep the old executable until you verify the upgrade.
-3. Launch version 1.8.0 from the same Windows account. It uses the same Local AppData location, preserves existing projects, contacts, tasks and approved document revisions, and adds the new tables and fields automatically. It creates a `.before-v1.7.0.sqlite3` safety copy before upgrading a v1–v7 database.
+3. Launch version 1.9.0 from the same Windows account. It uses the same Local AppData location, preserves existing projects, contacts, tasks and approved document revisions, and adds the new tables and fields automatically. It creates a `.before-v1.9.0.sqlite3` safety copy before upgrading a v1–v8 database.
 4. Existing work is not replaced with demonstration data. New sections begin empty for existing users. Fresh workspaces may load fictional examples at the welcome prompt.
 
-The upgrade is one way: the new schema is version 8. To roll back, close the new app and restore the matching pre-upgrade database before running an older app. Do not open the upgraded database with the old app. Version 1.8.0 can restore v1–v8 backups; older backups are upgraded in a temporary copy before replacing live records.
+The upgrade is one way: the new schema is version 9. To roll back, close the new app and restore the matching pre-upgrade database before running an older app. Do not open the upgraded database with the old app. Version 1.9.0 can restore v1–v9 backups; older backups are upgraded in a temporary copy before replacing live records.
 
 ## Project-specific scope and a simpler workspace
 
@@ -47,9 +47,19 @@ Use **Scope & Systems** for individual installations, building features and requ
 
 Choose **Add custom field** for a selected system or use **Custom Information** to create project-wide or system-specific information. Fields have a title, type (Text, Number, Yes / No, Date or URL), value, unit and Required flag. Required fields may remain blank while collecting information and are visibly marked Missing required value. Custom Yes/No values use the explicit answer names; dates use YYYY-MM-DD and URLs must use http(s). System types, categories and units support custom entries. Custom categories appear in the category filter.
 
+## Hold and drag to reorder sections
+
+Press and hold the left mouse button on a **category name**, then drag it up or down in the sidebar. Release at the highlighted insertion line. The target row is outlined and tinted too: dark mode uses a brighter blue line, while light mode uses a darker blue. The row name, rather than the eye icon, is the drag handle; the eye still hides/restores. Hold the drag near the top or bottom edge to scroll a long list. Escape or dropping outside cancels the move.
+
+Open **Hidden sections** and use the same gesture to reorder its categories independently. Hiding and restoring retain the category's saved sidebar position. Rearranging the hidden list does not rearrange the normal list. Drag within the relevant list; use the eye to move a category between visible and hidden areas.
+
+The order is saved immediately for the active project, including through database backup/restore. All projects has its own separate local order in appearance.ini. Switching projects, using F5, changing theme or restarting keeps the corresponding saved order. Opening a reordered category still opens that category's correct page; existing record selections are preserved during a reorder. The Hidden sections tab remains available and may itself be repositioned in the sidebar.
+
+Keyboard alternative: select a category and press **Alt+Up / Alt+Down**. To return both lists to the default ordering for the current view, use **Sections → Reset section order**. Resetting order preserves which sections are hidden and does not change project records or files. If new categories are added in a future update, they are appended to a previously saved order.
+
 ## Hide sections with the sidebar eye
 
-Click the crossed-eye icon on the **right of any sidebar category** to move it into the single **Hidden sections** tab near the top. Open that tab and click the open-eye icon, double-click a category, or select it and press Ctrl+H to restore it to its original place in the sidebar. You can also right-click a sidebar category to hide it, or a hidden category to restore it. Ctrl+H works while the corresponding list has keyboard focus.
+Click the crossed-eye icon on the **right of any sidebar category** to move it into the single **Hidden sections** tab (near the top by default). Open that tab and click the open-eye icon, double-click a category, or select it and press Ctrl+H to restore it to its original place in the sidebar. You can also right-click a sidebar category to hide it, or a hidden category to restore it. Ctrl+H works while the corresponding list has keyboard focus.
 
 Every category except Hidden sections itself can be hidden. Hidden sections always remains available, even if everything else is hidden. The sidebar scrolls vertically, with more compact rows and no horizontal scrolling. If the currently open category is hidden, the app safely opens an available category.
 

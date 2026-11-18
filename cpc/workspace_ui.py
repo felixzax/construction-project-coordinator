@@ -7,7 +7,7 @@ class WorkspaceUI:
   super().__init__(*args,**kwargs)
   # Existing keyboard/menu actions remain available without repeated toolbars.
   for toolbar in self.findChildren(QToolBar):self.removeToolBar(toolbar);toolbar.hide()
-  self.sections_button=QToolButton(self);self.sections_button.setText('Sections');self.sections_button.setPopupMode(QToolButton.InstantPopup);menu=QMenu(self.sections_button);menu.addAction('Customize visible sections…',self.customize_sections);menu.addAction('Restore all hidden sections',self.show_all_sections);self.sections_button.setMenu(menu)
+  self.sections_button=QToolButton(self);self.sections_button.setText('Sections');self.sections_button.setPopupMode(QToolButton.InstantPopup);menu=QMenu(self.sections_button);menu.addAction('Customize visible sections…',self.customize_sections);menu.addAction('Restore all hidden sections',self.show_all_sections);menu.addSeparator();menu.addAction('Reset section order',self.reset_section_order);self.sections_button.setMenu(menu)
   self.project_controls.addWidget(self.sections_button)
  def build_page(self,title):
   super().build_page(title)

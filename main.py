@@ -6,6 +6,7 @@ def smoke_test():
     import tempfile
     from pathlib import Path
     from PySide6.QtWidgets import QApplication
+    from PySide6.QtCore import Qt
     from cpc.store import Store
     from cpc.ui import Window
     app = QApplication.instance() or QApplication([])
@@ -19,7 +20,7 @@ def smoke_test():
             for index in range(window.nav.count()):
                 window.nav.setCurrentRow(index)
                 app.processEvents()
-                if window.stack.currentIndex() != index:
+                if window.stack.currentIndex() != window.navigation.index(window.nav.item(index).data(Qt.UserRole)):
                     raise RuntimeError('Navigation smoke check failed')
             if window.tables['Tasks'].rowCount() != 2:
                 raise RuntimeError('Sample task smoke check failed')
@@ -179,11 +180,11 @@ def smoke_test():
             window.project_filter.setCurrentIndex(window.project_filter.findData(pid))
             store.set_hidden_sections(pid, ['Electrical', 'Rebates & Incentives'])
             window.refresh()
-            if not window.nav.item(window.navigation.index('Electrical')).isHidden():
+            if not window.nav_item('Electrical').isHidden():
                 raise RuntimeError('Project navigation visibility smoke check failed')
             store.set_hidden_sections(pid, [])
             window.refresh()
-            if window.nav.item(window.navigation.index('Electrical')).isHidden():
+            if window.nav_item('Electrical').isHidden():
                 raise RuntimeError('Project section restore smoke check failed')
             write_docx(Path(folder) / 'systems.docx', 'Systems', store.scope_rows('scope_items'))
             if 'Rated capacity' not in store.report(pid):
@@ -192,14 +193,14 @@ def smoke_test():
             from cpc.sidebar import HIDDEN, eye_rect
             from PySide6.QtTest import QTest
             window.project_filter.setCurrentIndex(0)
-            nav_item = window.nav.item(window.navigation.index('Electrical'))
+            nav_item = window.nav_item('Electrical')
             window.nav.scrollToItem(nav_item)
             app.processEvents()
             QTest.mouseClick(window.nav.viewport(), Qt.LeftButton, pos=eye_rect(window.nav.visualItemRect(nav_item)).center())
             app.processEvents()
             if not nav_item.isHidden() or 'Electrical' not in window.navigation_hidden():
                 raise RuntimeError('Sidebar eye hide smoke check failed')
-            window.nav.setCurrentRow(window.navigation.index(HIDDEN))
+            window.navigate(HIDDEN)
             hidden_item = next(window.hidden_sections_list.item(i) for i in range(window.hidden_sections_list.count()) if window.hidden_sections_list.item(i).data(Qt.UserRole) == 'Electrical')
             window.hidden_sections_list.scrollToItem(hidden_item)
             app.processEvents()
@@ -217,6 +218,39 @@ def smoke_test():
                 QFileDialog.getSaveFileName = original_save
             if not task_export.is_file():
                 raise RuntimeError('Compact export menu smoke check failed')
+            # Send real Qt drag/drop events and verify identity-based navigation.
+            from PySide6.QtCore import QPointF, QPoint
+            from PySide6.QtGui import QDragEnterEvent, QDragMoveEvent, QDropEvent
+            def reorder_smoke(view, section):
+                view.verticalScrollBar().setValue(0)
+                app.processEvents()
+                mime = view.drag_mime(section)
+                target = QPoint(12, 2)
+                enter = QDragEnterEvent(target, Qt.MoveAction, mime, Qt.LeftButton, Qt.NoModifier)
+                QApplication.sendEvent(view.viewport(), enter)
+                move = QDragMoveEvent(target, Qt.MoveAction, mime, Qt.LeftButton, Qt.NoModifier)
+                QApplication.sendEvent(view.viewport(), move)
+                if not move.isAccepted() or view._drop_boundary is None:
+                    raise RuntimeError('Drag highlight smoke check failed')
+                drop = QDropEvent(QPointF(target), Qt.MoveAction, mime, Qt.LeftButton, Qt.NoModifier)
+                QApplication.sendEvent(view.viewport(), drop)
+                if not drop.isAccepted() or view.visible_sections()[0] != section:
+                    raise RuntimeError('Section reordering smoke check failed')
+            window.navigate('Dashboard')
+            window.nav.verticalScrollBar().setValue(0)
+            reorder_smoke(window.nav, 'Tasks')
+            window.navigate('Tasks')
+            if window.stack.currentIndex() != window.navigation.index('Tasks'):
+                raise RuntimeError('Reordered section opened wrong page')
+            window.hide_sidebar_section('Electrical')
+            window.hide_sidebar_section('Architecture')
+            window.navigate(HIDDEN)
+            reorder_smoke(window.hidden_sections_list, 'Electrical')
+            window.restore_sidebar_section('Electrical')
+            window.navigate('Electrical')
+            if window.stack.currentIndex() != window.navigation.index('Electrical'):
+                raise RuntimeError('Restored reordered section opened wrong page')
+            window.show_all_sections()
             # Exercise saved appearance and semantic table colors in the packaged app.
             from PySide6.QtGui import QPalette
             before_count = len(store.all('projects'))

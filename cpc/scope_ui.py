@@ -104,9 +104,6 @@ class ScopeUI:
   self.fill('Dashboard',sorted(self.data.get('Dashboard',[])+extra,key=lambda r:r['deadline'] or '9999'))
   timeline=self.data.get('Timeline',[])+[dict(r,id=None,title=r['item'],phase='') for r in extra];self.fill('Timeline',sorted(timeline,key=lambda r:r['deadline'] or '9999'))
   self.apply_section_visibility()
- def change_page(self,index):
-  if index<0:return
-  super().change_page(index);self.current=self.navigation[index]
  def selected_project_id(self):
   pid=self.project_filter.currentData()
   if not pid:raise ValueError('Select a project in the Project workspace dropdown first')
@@ -158,5 +155,5 @@ class ScopeUI:
   self.guard(action)
  def open_project_setup(self):
   def action():
-   project=self.selected('Projects');self.project_filter.setCurrentIndex(self.project_filter.findData(project['id']));self.nav.setCurrentRow(self.navigation.index('Project Profile'));self.edit('Project Profile')
+   project=self.selected('Projects');self.project_filter.setCurrentIndex(self.project_filter.findData(project['id']));self.navigate('Project Profile');self.edit('Project Profile')
   self.guard(action)

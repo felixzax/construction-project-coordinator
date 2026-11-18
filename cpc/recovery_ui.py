@@ -15,7 +15,7 @@ class RecoveryUI:
   select=QAction('Select all',self); select.setShortcut(QKeySequence.SelectAll); select.triggered.connect(self.select_focused); menu.addAction(select)
   view=self.menuBar().addMenu('Refresh & Recovery')
   refresh=QAction('Refresh and clear display cache',self); refresh.setShortcut('F5'); refresh.triggered.connect(self.refresh_from_disk); view.addAction(refresh)
-  recovery=QAction('Recovery workspace',self); recovery.triggered.connect(lambda:self.nav.setCurrentRow(self.navigation.index('Recovery & Data'))); view.addAction(recovery)
+  recovery=QAction('Recovery workspace',self); recovery.triggered.connect(lambda:self.navigate('Recovery & Data')); view.addAction(recovery)
   toolbar=self.addToolBar('Refresh'); toolbar.setMovable(False); toolbar.addAction(refresh); toolbar.addAction(recovery)
   self.snapshot_timer=QTimer(self); self.snapshot_timer.setInterval(120000); self.snapshot_timer.timeout.connect(self.periodic_snapshot)
   if getattr(self.store,'_session_started',False): self.snapshot_timer.start()

@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.9.0 — 2026-11-18
+
+- Added hold-and-drag ordering in both the normal sidebar and Hidden sections, with independent saved orders per project and All projects.
+- Added theme-aware insertion lines and row outlines, edge scrolling, cancellation and Alt+Up/Down keyboard ordering.
+- Preserved section identities, active pages, hide/restore positions and compact command menus after reordering; added Reset section order under Sections.
+- Added schema 9 project-order persistence, pre-upgrade safety copies, v1–v9 backup restore support and project-deletion cleanup.
+- Added Qt drag/drop, highlight, persistence, navigation, backup/upgrade and invalid-order regression tests and expanded packaged smoke checks.
+
 ## 1.8.0 — 2026-11-18
 
 - Consolidated workspace commands into compact New/Edit/Files headers with More and Export menus; grouped secondary document/checklist/bid/change-order dialog commands.

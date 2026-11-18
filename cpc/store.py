@@ -6,6 +6,7 @@ import shutil
 import uuid
 import tempfile
 from contextlib import closing
+from .navigation import NavigationStore
 from .scope import ScopeStore,SCOPE_FIELDS,PROTECTED_SECTIONS
 from .finance import FinanceStore, FINANCE_FIELDS, RECEIPT_FINANCE_COLUMNS
 from .issues import IssueStore, ISSUE_FIELDS
@@ -49,15 +50,15 @@ FIELDS['permit_requirements']=REQUIREMENT_FIELDS+['completed_on']
 for _table,_columns in ADDED_COLUMNS.items():
  FIELDS[_table].extend(_columns)
 
-class Store(ScopeStore,FinanceStore,IssueStore,ReceiptStore,RecoveryStore,PermitStore,DevelopmentStore):
+class Store(NavigationStore,ScopeStore,FinanceStore,IssueStore,ReceiptStore,RecoveryStore,PermitStore,DevelopmentStore):
  def __init__(self, path):
   self.path=Path(path); self.path.parent.mkdir(parents=True,exist_ok=True)
   self.db=sqlite3.connect(self.path); self.db.row_factory=sqlite3.Row
   version=self.db.execute('PRAGMA user_version').fetchone()[0]
-  if version not in (0,1,2,3,4,5,6,7,8):
+  if version not in (0,1,2,3,4,5,6,7,8,9):
    self.db.close(); raise ValueError('This database requires a newer version of the application')
-  if version in (1,2,3,4,5,6,7):
-   self.backup(str(self.path)+'.before-v1.7.0.sqlite3')
+  if version in (1,2,3,4,5,6,7,8):
+   self.backup(str(self.path)+'.before-v1.9.0.sqlite3')
   self.db.execute('PRAGMA foreign_keys=ON'); self.db.executescript(SCHEMA)
   self.migrate_development()
   self.migrate_permits()
@@ -66,6 +67,7 @@ class Store(ScopeStore,FinanceStore,IssueStore,ReceiptStore,RecoveryStore,Permit
   self.migrate_issues()
   self.migrate_finance()
   self.migrate_scope()
+  self.migrate_navigation()
   self.db.execute("PRAGMA journal_mode=WAL")
   self.db.execute("PRAGMA synchronous=FULL")
   self.db.execute("PRAGMA busy_timeout=5000")
@@ -151,9 +153,10 @@ class Store(ScopeStore,FinanceStore,IssueStore,ReceiptStore,RecoveryStore,Permit
    with closing(sqlite3.connect(f'{source.resolve().as_uri()}?mode=ro',uri=True)) as candidate:
     if candidate.execute('PRAGMA integrity_check').fetchone()[0]!='ok': raise ValueError('Invalid backup')
     version=candidate.execute('PRAGMA user_version').fetchone()[0]
-    if version not in (1,2,3,4,5,6,7,8): raise ValueError('Unsupported backup version')
+    if version not in (1,2,3,4,5,6,7,8,9): raise ValueError('Unsupported backup version')
     # Validate the original schema before any CREATE TABLE statement can mask missing tables.
-    for table in list(FIELDS)+['versions','activity','project_contacts']+RECOVERY_TABLES+['project_sections']:
+    for table in list(FIELDS)+['versions','activity','project_contacts']+RECOVERY_TABLES+['project_sections','project_section_order']:
+     if version<9 and table=='project_section_order':continue
      if version<8 and table in (*SCOPE_FIELDS,'project_sections'):continue
      if version<7 and table in FINANCE_FIELDS:continue
      if version<6 and table=='issues':continue
@@ -178,6 +181,7 @@ class Store(ScopeStore,FinanceStore,IssueStore,ReceiptStore,RecoveryStore,Permit
     from .development_ui import NAVIGATION
     for setting in restored.rows('SELECT * FROM project_sections'):
      if setting['section'] in PROTECTED_SECTIONS or setting['section'] not in NAVIGATION or setting['hidden'] not in (0,1):raise ValueError('Backup has invalid section preferences')
+    restored.validate_section_orders()
     self.backup(str(self.path)+'.before-restore.sqlite3')
     restored.db.backup(self.db)
    finally: restored.db.close()

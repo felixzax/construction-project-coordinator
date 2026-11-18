@@ -8,6 +8,7 @@ from PySide6.QtWidgets import (QApplication,QMainWindow,QWidget,QVBoxLayout,QHBo
 from PySide6.QtPrintSupport import QPrinter,QPrintPreviewDialog
 from .store import Store, FIELDS, TASK_STATUSES
 from .table import DataTable
+from .section_list import SectionList
 from .sidebar import SidebarUI
 from .workspace_ui import WorkspaceUI
 from .theme import ThemeUI,tokens,apply_theme,settings_for,saved_theme
@@ -21,7 +22,7 @@ from .permit_ui import PermitUI
 from .development_ui import DevelopmentUI, NAVIGATION, EXTRA_OPTIONS
 from .development import line_totals
 
-VERSION='1.8.0'
+VERSION='1.9.0'
 OPTIONS={'phase':['Planning','Design','Permitting','Construction','Inspection','Closeout'],'priority':['Low','Normal','High','Urgent'],'category':['Architectural Plans','Engineering Drawings','Permit','Cut Sheet','Estimate','Approval','CAD File','BIM Model','Site Plan','Survey','Specification','Shop Drawing','As-Built','Other'],'role':['Architect','Engineer','Contractor','City Official','County Official','Business Owner','Electrical Engineer','Plumbing Engineer','Mechanical Engineer','Civil Engineer','Structural Engineer','Surveyor','Estimator','Supplier','Developer','Other']}
 class Form(QDialog):
  def __init__(self,parent,title,fields,record=None,choices=None):
@@ -107,7 +108,8 @@ class BaseWindow(QMainWindow):
  def __init__(self,store):
   super().__init__(); self.store=store; self.setWindowTitle(f'Construction Project Coordinator · {VERSION}'); self.resize(1280,800); self.tables={}; self.data={}; self.current='Dashboard'
   root=QWidget(); self.setCentralWidget(root); outer=QHBoxLayout(root)
-  self.nav=QListWidget(); self.nav.setFixedWidth(210); self.navigation=NAVIGATION; self.nav.addItems(NAVIGATION); self.nav.item(NAVIGATION.index('Documents')).setText('Plans & CAD'); outer.addWidget(self.nav)
+  self.nav=SectionList(); self.nav.setFixedWidth(210); self.navigation=NAVIGATION; self.nav.addItems(NAVIGATION); self.nav.item(NAVIGATION.index('Documents')).setText('Plans & CAD'); outer.addWidget(self.nav)
+  for i,title in enumerate(self.navigation):self.nav.item(i).setData(Qt.UserRole,title)
   content=QWidget(); column=QVBoxLayout(content); outer.addWidget(content,1)
   project_bar=QHBoxLayout(); self.project_controls=project_bar; project_bar.addWidget(QLabel('Project workspace:')); self.project_filter=QComboBox(); self.project_filter.addItem('All projects',None); self.project_filter.setMinimumWidth(300); project_bar.addWidget(self.project_filter); project_bar.addStretch(); column.addLayout(project_bar)
   self.stack=QStackedWidget(); column.addWidget(self.stack,1)

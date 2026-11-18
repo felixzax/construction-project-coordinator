@@ -125,6 +125,7 @@ class RecoveryStore:
    for batch in chunks(plan.get('meetings',())):
     self.db.execute(f'UPDATE tasks SET meeting_id=NULL WHERE meeting_id IN ({marks(batch)})',batch)
    for batch in chunks(plan.get('projects',())):
+    self.db.execute(f'DELETE FROM project_section_order WHERE project_id IN ({marks(batch)})',batch)
     self.db.execute(f'DELETE FROM project_sections WHERE project_id IN ({marks(batch)})',batch)
     self.db.execute(f'DELETE FROM project_contacts WHERE project_id IN ({marks(batch)})',batch)
    order=['finance_files','custom_fields','rebates','scope_items','project_profiles','contract_changes','issues','receipts','permit_requirements','bid_items','versions','tasks','communications','milestones','work_packages','registers','meetings','bids','bid_packages','documents','contracts','budgets','activity','projects','contacts']
