@@ -33,6 +33,30 @@ jobs:
           if-no-files-found: error
           retention-days: 90
       - name: Download exact published artifact
+        id: download
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ steps.application.outputs.artifact-id }}
+          path: downloaded-artifact
+          merge-multiple: true
+      - name: Wait for artifact metadata if not yet visible
+        if: steps.download.outcome == 'failure'
+        run: Start-Sleep -Seconds 10
+      - name: Retry exact artifact download
+        if: steps.download.outcome == 'failure'
+        id: download_retry
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ steps.application.outputs.artifact-id }}
+          path: downloaded-artifact
+          merge-multiple: true
+      - name: Wait before final artifact download attempt
+        if: steps.download_retry.outcome == 'failure'
+        run: Start-Sleep -Seconds 20
+      - name: Final exact artifact download attempt
+        if: steps.download_retry.outcome == 'failure'
         uses: actions/download-artifact@v4
         with:
           artifact-ids: ${{ steps.application.outputs.artifact-id }}
