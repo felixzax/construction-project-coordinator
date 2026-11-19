@@ -86,17 +86,17 @@ def v5_database(path):
 def test_v5_upgrade_preserves_receipts_and_permits(tmp_path):
  path=tmp_path/'v5.sqlite3';v5_database(path);s=Store(path)
  try:
-  assert s.db.execute('PRAGMA user_version').fetchone()[0]==9
+  assert s.db.execute('PRAGMA user_version').fetchone()[0]==10
   assert len(s.all('receipts'))==1 and len(s.all('permit_requirements'))==2 and len(s.all('bids'))==2
   assert s.all('issues')==[]
-  with closing(sqlite3.connect(str(path)+'.before-v1.9.0.sqlite3')) as old:assert old.execute('PRAGMA user_version').fetchone()[0]==5
+  with closing(sqlite3.connect(str(path)+'.before-v1.10.0.sqlite3')) as old:assert old.execute('PRAGMA user_version').fetchone()[0]==5
  finally:s.db.close()
 
 
 def test_v5_restore_into_current_schema(store,issue,tmp_path):
  path=tmp_path/'v5.sqlite3';v5_database(path);store.restore(path)
  assert store.all('issues')==[] and len(store.all('receipts'))==1
- assert store.db.execute('PRAGMA user_version').fetchone()[0]==9
+ assert store.db.execute('PRAGMA user_version').fetchone()[0]==10
 
 @pytest.fixture
 def app():

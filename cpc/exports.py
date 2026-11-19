@@ -36,10 +36,10 @@ def department_rows(store,disciplines,project_id=None,query=''):
   record.update({key:'' for key in ['quantity','unit','material','material_unit_cost','labor_hours','labor_rate','material_cost','labor_cost','equipment_cost','subcontract_cost','included','estimated_amount','actual_amount','variance_amount']}); record.update(cost or {})
   if query and query.lower() not in ' '.join(str(v) for v in record.values()).lower(): return
   result.append(record)
- for table,kind in [('work_packages','Coordination'),('tasks','Task'),('documents','Plan / document'),('registers','Development register'),('bid_packages','Bid package'),('receipts','Supplier receipt'),('issues','Correction / violation'),('contracts','Contract'),('budgets','Budget'),('scope_items','System / requirement')]:
+ for table,kind in [('work_packages','Coordination'),('tasks','Task'),('documents','Plan / document'),('registers','Development register'),('bid_packages','Bid package'),('receipts','Supplier receipt'),('issues','Correction / violation'),('contracts','Contract'),('budgets','Budget'),('scope_items','System / requirement'),('approvals','Approval')]:
   for row in store.all(table):
    if row.get('discipline') not in disciplines: continue
-   details=' | '.join(f'{key.replace("_"," ")}: {row[key]}' for key in ('scope','requirements','notes','reference','jurisdiction_type','jurisdiction_name','department','sheet_number','drawing_type','scale','issue_purpose','response','supplier_name','approval_notes','site_address','location','required_fix','code_reference','authority','resolution_notes','contractor_name','contract_number','system_type','energy_source','applicability','specifications','manufacturer','model') if row.get(key))
+   details=' | '.join(f'{key.replace("_"," ")}: {row[key]}' for key in ('scope','requirements','notes','reference','jurisdiction_type','jurisdiction_name','department','sheet_number','drawing_type','scale','issue_purpose','response','supplier_name','approval_notes','site_address','location','required_fix','code_reference','authority','resolution_notes','contractor_name','contract_number','system_type','energy_source','applicability','specifications','manufacturer','model','cost_category','source_type','purchaser_name','payment_responsibility','reimbursement_amount','reimbursement_status','reimbursement_notes','approval_type','price','reviewed_by','review_date','decision_notes') if row.get(key))
    url=row.get('requirements_url','')
    if table=='documents':
     versions=store.versions(row['id'])
@@ -49,6 +49,7 @@ def department_rows(store,disciplines,project_id=None,query=''):
    if table in ('contracts','budgets'):
     values=store.contract_totals(row['id']) if table=='contracts' else store.budget_totals(row['id'])
     add(kind,row,details+' | '+' | '.join(k+': '+str(v) for k,v in values.items()),currency=row['currency'],total=values['adjusted_amount'] if table=='contracts' else values['total_budget'])
+   elif table=='approvals':add(kind,row,details,currency=row['currency'],total=row['price'])
    elif table=='receipts':
     from .receipts import receipt_variance
     add(kind,row,details,url,currency=row['currency'],total=row['actual_amount'],cost={key:row.get(key,'') for key in ['estimated_amount','actual_amount']}|{'variance_amount':receipt_variance(row)})

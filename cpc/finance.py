@@ -88,6 +88,7 @@ class FinanceStore:
     if not str(data.get('contractor_name','') or '').strip():raise ValueError('Enter the contractor/company or choose a contact')
     if data.get('budget_id'):self._matching_budget(data['budget_id'],data['project_id'],data.get('currency','USD'))
     old=self.rows('SELECT * FROM contracts WHERE id=?',(row_id,))[0] if row_id else None
+    if old and any(data.get(k,old[k])!=old[k] for k in ('project_id','currency')) and self.rows('SELECT id FROM approvals WHERE contract_id=?',(row_id,)):raise ValueError('Unlink related approvals before moving the contract or changing currency')
     if old and any(data.get(k,old[k])!=old[k] for k in ('project_id','currency','budget_id')) and self.rows('SELECT id FROM receipts WHERE contract_id=?',(row_id,)):raise ValueError('Unlink receipt allocations before moving the contract or changing its currency/budget')
     if data.get('bid_id') and (not old or old['bid_id']!=data['bid_id']):
      bids=self.rows('SELECT b.*,p.project_id FROM bids b JOIN bid_packages p ON p.id=b.package_id WHERE b.id=?',(data['bid_id'],))
@@ -178,6 +179,7 @@ class FinanceStore:
      contract=parent_id if table=='contracts' else None;budget=parent_id if table=='budgets' else None
      owner='' if contract or budget else table;oid=None if contract or budget else parent_id
      fid=self.db.execute('INSERT INTO finance_files(contract_id,budget_id,owner_table,owner_id,original_name,file_path,sha256,byte_size,added_date,notes) VALUES(?,?,?,?,?,?,?,?,?,?)',(contract,budget,owner,oid,source.name,str(target.resolve()),digest(target),target.stat().st_size,datetime.now().isoformat(timespec='seconds'),notes)).lastrowid;ids.append(fid)
+    if table=='approvals':self.approval_evidence_changed(parent_id)
     self.log(pid,f'Imported {len(ids)} original file(s) for {table} #{parent_id}')
   except Exception:
    for target in created:target.unlink(missing_ok=True)

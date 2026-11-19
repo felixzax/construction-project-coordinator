@@ -8,7 +8,7 @@ from .section_list import SectionList
 from .navigation import normalized_order
 
 HIDDEN='Hidden sections'
-def label(title):return 'Plans & CAD' if title=='Documents' else title
+def label(title):return 'Plans & CAD' if title=='Documents' else 'Receipts & Parts' if title=='Receipts' else title
 
 def eye_rect(rect):return QRect(rect.right()-31,rect.top()+(rect.height()-26)//2,27,26)
 def paint_eye(painter,rect,restore=False):

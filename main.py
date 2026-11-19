@@ -218,6 +218,28 @@ def smoke_test():
                 QFileDialog.getSaveFileName = original_save
             if not task_export.is_file():
                 raise RuntimeError('Compact export menu smoke check failed')
+            # Verify cost approvals and parts/reimbursement budgeting in the shipped app.
+            if window.tables['Approvals'].rowCount() != 1:
+                raise RuntimeError('Approvals workspace smoke check failed')
+            request = store.save('approvals', dict(project_id=pid, title='Smoke parts approval', price='120', status='Approved', reviewed_by='Example reviewer'))
+            store.import_finance_files('approvals', request, [original])
+            if next(r for r in store.approval_rows() if r['id'] == request)['status'] != 'Pending Review':
+                raise RuntimeError('Approval file review reset smoke check failed')
+            store.save('approvals', {'status':'Approved'}, request)
+            store.save('approvals', {'price':'150'}, request)
+            if not any(e['price']=='120.00' and e['status']=='Approved' for e in store.approval_events(request)):
+                raise RuntimeError('Approval prior price history smoke check failed')
+            before_parts = store.budget_totals(budget)['projected_total']
+            reimbursed = store.save('receipts', dict(project_id=pid, title='Smoke contractor parts', supplier_name='Example supplier', contract_id=contract, actual_amount='100', source_type='Contractor Purchase', purchaser_name='Example contractor', payment_responsibility='Reimburse Purchaser', reimbursement_amount='80'))
+            store.save('receipts', {'reimbursement_status':'Paid'}, reimbursed)
+            if store.budget_totals(budget)['projected_total'] != before_parts:
+                raise RuntimeError('Reimbursement was counted as a second budget expense')
+            store.save('receipts', dict(project_id=pid, title='Smoke company stock', source_type='Company Stock', actual_amount='50', budget_id=budget))
+            if store.budget_totals(budget)['projected_total'] != before_parts + 50:
+                raise RuntimeError('Company stock was omitted from the project budget')
+            write_docx(Path(folder)/'approvals.docx','Approvals',store.approval_rows())
+            store.export(Path(folder)/'parts.csv',store.receipt_rows())
+            window.refresh()
             # Send real Qt drag/drop events and verify identity-based navigation.
             from PySide6.QtCore import QPointF, QPoint
             from PySide6.QtGui import QDragEnterEvent, QDragMoveEvent, QDropEvent

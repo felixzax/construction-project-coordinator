@@ -3,14 +3,14 @@ from PySide6.QtCore import QUrl
 from PySide6.QtGui import QDesktopServices
 from PySide6.QtWidgets import QWidget,QVBoxLayout,QHBoxLayout,QLabel,QLineEdit,QFileDialog,QMessageBox,QAbstractItemView
 from .table import DataTable
-from .receipts import RECEIPT_STATUSES,RECEIPT_FORM_FIELDS
+from .receipts import RECEIPT_STATUSES,RECEIPT_FORM_FIELDS,COST_CATEGORIES,PARTS_SOURCES,PAYMENT_RESPONSIBILITY,REIMBURSEMENT_STATUSES
 from .finance import RECEIPT_FINANCE_COLUMNS
 
 class ReceiptUI:
  def build_page(self,title):
   if title!='Receipts': return super().build_page(title)
-  page=QWidget(); layout=QVBoxLayout(page); heading=QLabel('Supplier Receipts'); heading.setObjectName('heading'); layout.addWidget(heading)
-  hint=QLabel('Compare the supplier estimate with the actual price, then record approval. Blank prices mean unknown; enter 0 for a confirmed zero price. Changing an approved supplier, price, currency or attachment resets approval for review.'); hint.setWordWrap(True); layout.addWidget(hint)
+  page=QWidget(); layout=QVBoxLayout(page); heading=QLabel('Receipts & Parts Costs'); heading.setObjectName('heading'); layout.addWidget(heading)
+  hint=QLabel('Track parts/materials separately from labor: company purchases or stock, contractor/employee purchases and reimbursements. Include actual cost in its budget once; reimbursement is a portion of that cost, never an additional expense. Link parts to a contract only if its price already includes them; otherwise link directly to the budget. Blank prices mean unknown; 0 is a confirmed zero.'); hint.setWordWrap(True); layout.addWidget(hint)
   bar=QHBoxLayout(); layout.addLayout(bar); self.button(bar,'+ New receipt',lambda:self.edit('Receipts')); self.button(bar,'Edit selected',lambda:self.edit('Receipts',True)); self.button(bar,'Attach receipt file',self.attach_receipt_file); self.button(bar,'Open receipt file',self.open_receipt_file)
   self.filter_Receipts=QLineEdit(); self.filter_Receipts.setPlaceholderText('Filter by supplier, reference, approval status or receipt details…'); self.filter_Receipts.textChanged.connect(self.refresh); layout.addWidget(self.filter_Receipts)
   table=DataTable(); table.setEditTriggers(QAbstractItemView.NoEditTriggers); table.setAlternatingRowColors(True); table.doubleClicked.connect(lambda _:self.edit('Receipts',True)); layout.addWidget(table); self.tables['Receipts']=table; self.stack.addWidget(page)
@@ -19,7 +19,7 @@ class ReceiptUI:
   self.fill('Receipts',self.store.receipt_rows())
  def choices(self,table):
   choices=super().choices(table)
-  if table=='receipts': choices['status']=RECEIPT_STATUSES
+  if table=='receipts':choices.update(status=RECEIPT_STATUSES,cost_category=COST_CATEGORIES,source_type=PARTS_SOURCES,payment_responsibility=PAYMENT_RESPONSIBILITY,reimbursement_status=REIMBURSEMENT_STATUSES)
   return choices
  def edit(self,title,existing=False):
   if title!='Receipts': return super().edit(title,existing)
@@ -27,7 +27,9 @@ class ReceiptUI:
   def action():
    if not self.store.all('projects'): raise ValueError('Create a project first')
    row=self.selected('Receipts') if existing else dict(project_id=self.project_filter.currentData(),currency='USD',status='Pending Review',include_in_budget=1)
-   form=Form(self,'Edit supplier receipt' if existing else 'New supplier receipt',RECEIPT_FORM_FIELDS+list(RECEIPT_FINANCE_COLUMNS),row,self.choices('receipts'))
+   fields=RECEIPT_FORM_FIELDS+list(RECEIPT_FINANCE_COLUMNS);first=['project_id','title','cost_category','source_type','supplier_name','contact_id','discipline','building_area','currency','estimated_amount','actual_amount','budget_id','contract_id','include_in_budget','payment_responsibility','purchaser_name','reimbursement_amount','reimbursement_status','reimbursed_date','reimbursement_notes','status']
+   fields=first+[f for f in fields if f not in first]
+   form=Form(self,'Edit parts / receipt cost' if existing else 'New parts / receipt cost',fields,row,self.choices('receipts'))
    form.persist=lambda values:self.store.save('receipts',values,row['id'] if existing else None); form.enable_draft('receipts',row['id'] if existing else None)
    if form.exec(): self.refresh()
   self.guard(action)

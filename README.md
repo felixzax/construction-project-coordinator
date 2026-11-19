@@ -1,12 +1,41 @@
-# Construction Project Coordinator 1.9.0
+# Construction Project Coordinator 1.10.0
 
 A local Windows desktop workspace for construction and property development coordination, consultant disciplines, drawing registers, meetings and detailed bid estimates. Python 3.12, PySide6 and SQLite. No cloud subscription, email connection or account is required to use the app.
 
 ## Download and run
 
-**[Download Windows 1.9.0](https://github.com/felixzax/construction-project-coordinator/actions/runs/44414162109/artifacts/14477848823)** · [Successful build and test logs](https://github.com/felixzax/construction-project-coordinator/actions/runs/44414162109). All 250 Windows tests passed; the downloaded artifact passed checksum and isolated offscreen/native Windows launch checks.
+Version 1.10.0 Windows verification is pending. A verified download link will be added after a successful run.
 
-Open [GitHub Actions](https://github.com/felixzax/construction-project-coordinator/actions/workflows/windows.yml), select a successful **Test and build Windows** run for version 1.9.0, and download **ConstructionProjectCoordinator-1.9.0-Windows**. GitHub may require sign-in for Actions downloads. Extract the downloaded ZIP **once** into a fresh folder and run `ConstructionProjectCoordinator.exe`. Version 1.9.0 is a standalone, single-file executable: Python and a companion `_internal` folder are not required. The ZIP also contains README, changelog and file checksums. Do not mix its files into an older application folder. The app is unsigned and Windows may show a reputation prompt. Artifacts are retained for 90 days.
+Open [GitHub Actions](https://github.com/felixzax/construction-project-coordinator/actions/workflows/windows.yml), select a successful **Test and build Windows** run for version 1.10.0, and download **ConstructionProjectCoordinator-1.10.0-Windows**. GitHub may require sign-in for Actions downloads. Extract the downloaded ZIP **once** into a fresh folder and run `ConstructionProjectCoordinator.exe`. Version 1.10.0 is a standalone, single-file executable: Python and a companion `_internal` folder are not required. The ZIP also contains README, changelog and file checksums. Do not mix its files into an older application folder. The app is unsigned and Windows may show a reputation prompt. Artifacts are retained for 90 days.
+
+## Approvals with item or work prices
+
+Open **Approvals** and create a project-linked request with the item/work title, type, supplier or responsible contact, optional related contract, scope/description, price, currency, submission/deadline and notes. The price is the **cost of the item or work being approved**, not an approval/permit fee. Blank means unknown; use 0 for a confirmed zero. Prices use two-decimal rounding. Related contracts must match the project and currency.
+
+Statuses are Draft, Pending Review, Approved, Rejected, Needs Changes and Withdrawn. Select a reviewer contact and/or enter the reviewer's name, decision date and decision notes. Decision dates default to today; approving requires a known price. Price/scope/supplier/contract-context changes on an Approved record reset it to Pending Review. Save the new information, then record the fresh approval separately. Ordinary filing-note changes preserve approval.
+
+Use **Files** for multiple supporting quotes, specifications, approvals and other standard originals. Save a copy returns original bytes; supported basic files can be edited/converted as described below. Adding/revising or removing supporting files resets an Approved request to Pending Review. **More → Review history** shows saved price/decision snapshots and supporting-file names, with CSV/DOCX export. The history is read-only through this dialog, not a tamper-proof external audit system. Deleting a request includes its history and creates a recovery snapshot first.
+
+Pending dated requests appear on the dashboard/timeline, including when Approvals is hidden. Approved, Rejected and Withdrawn requests are not outstanding. Project, department, CSV and DOCX reports include approval prices/statuses. Approval prices do **not** automatically add another budget cost, modify a contract, authorize payment or send a request. Track commitments in contracts/change orders and actual item costs in Receipts & Parts. All decisions are manual local coordination records.
+
+If you previously saved a custom sidebar order, the new Approvals category appears at the end of that order. Drag it wherever you prefer.
+
+## Parts, company-supplied items and reimbursements
+
+Use the existing **Receipts & Parts** section rather than another category. Parts/materials, equipment and other non-labor cost categories have these fields:
+
+- **Source:** Company Purchase, Company Stock, Contractor Purchase, Employee Purchase, Owner Supplied or Other.
+- **Purchased / supplied by:** the person or company that procured the parts, separate from the supplier/stock source.
+- **Payment responsibility:** Company / Direct Cost, Reimburse Purchaser or No Company Payment.
+- **Reimbursement portion, status and paid date:** Not Applicable, Pending Review, Approved, Paid or Rejected, with notes. Paid requires a known amount and gets today's date if none is entered. The reimbursed portion cannot exceed a known actual cost. Clear reimbursement details before changing to a non-reimbursement payment responsibility.
+
+Enter the part's full project cost in **actual price**, including an assigned company-stock cost when applicable. Company Stock may use the default supplier label Company stock. Mark **Include actual price in budget costs**, and choose the project budget. The source/payer/reimbursement status does not exclude the cost by itself; use the inclusion checkbox deliberately. Unknown actual costs do not contribute until entered.
+
+**The actual part cost counts once. Reimbursement is a portion of that cost, never another expense.** For example, a $200 part with $150 reimbursed contributes $200, not $350. Partial reimbursement and marking it Paid do not change that budget amount. No currency conversion, payment transmission, bank/account data or inventory quantity accounting is provided.
+
+Link a receipt to a contract **only if that contract's agreed price already includes those parts**; it then reduces the remaining contract commitment instead of adding the invoiced amount twice. If the contract covers labor only and parts are additional, leave Related contract blank and link the parts directly to its budget. A $1,000 labor-only contract plus $200 of additional company-stock parts projects $1,200. Labor estimates and contract breakdowns remain in the existing Bidding/Contracts areas.
+
+The supplier estimate/actual comparison, receipt review, original attachments and CSV/DOCX/department reports remain available. Changes to an Approved receipt's cost, source, purchaser, payment responsibility or reimbursement amount require review again. Posting a reimbursement Paid status alone preserves the receipt approval. Reimbursement approval is a separate manual tracking state and is not payment authorization.
 
 ## Cleaner commands and navigation
 
@@ -22,20 +51,20 @@ The setting is remembered in `appearance.ini` beside the database, separately fo
 
 ## Fix for the Shiboken startup error
 
-If an older folder build reports `shiboken6\libshiboken does not exist`, use the new standalone 1.9.0 build above. The published 1.5.0 archive contains `_internal/shiboken6`, but the error occurs if that package folder is missing from the extracted copy. Do not create an empty libshiboken folder or install Python to work around it. The standalone build bundles its Qt/Shiboken runtime and extracts it automatically to a temporary directory when it starts.
+If an older folder build reports `shiboken6\libshiboken does not exist`, use the new standalone 1.10.0 build above. The published 1.5.0 archive contains `_internal/shiboken6`, but the error occurs if that package folder is missing from the extracted copy. Do not create an empty libshiboken folder or install Python to work around it. The standalone build bundles its Qt/Shiboken runtime and extracts it automatically to a temporary directory when it starts.
 
-Close the old app, extract the new ZIP into a fresh folder and launch the new executable. Project data stays in the same local data directory. Version 1.9.0 adds schema 9 to save project section order. Older databases get a pre-upgrade safety copy. All project features remain available.
+Close the old app, extract the new ZIP into a fresh folder and launch the new executable. Project data stays in the same local data directory. Version 1.10.0 adds schema 10 for approvals and parts/reimbursement details. Older databases get a pre-upgrade safety copy. All project features remain available.
 
 If a runtime cannot load, the app gives a clear pre-Qt startup message and records `startup-error.txt` under `%LOCALAPPDATA%/Construction Project Coordinator/`. It does not alter project records in that failure path.
 
-## Upgrade from 1.0.0 through 1.8.0
+## Upgrade from 1.0.0 through 1.9.0
 
 1. In the old app, use Backup & Restore to back up your database. Also copy its adjacent `documents` folder to your backup location. Close all old app instances.
 2. Extract the new build into a new application folder. Keep the old executable until you verify the upgrade.
-3. Launch version 1.9.0 from the same Windows account. It uses the same Local AppData location, preserves existing projects, contacts, tasks and approved document revisions, and adds the new tables and fields automatically. It creates a `.before-v1.9.0.sqlite3` safety copy before upgrading a v1–v8 database.
+3. Launch version 1.10.0 from the same Windows account. It uses the same Local AppData location, preserves existing projects, contacts, tasks and approved document revisions, and adds the new tables and fields automatically. It creates a `.before-v1.10.0.sqlite3` safety copy before upgrading a v1–v9 database.
 4. Existing work is not replaced with demonstration data. New sections begin empty for existing users. Fresh workspaces may load fictional examples at the welcome prompt.
 
-The upgrade is one way: the new schema is version 9. To roll back, close the new app and restore the matching pre-upgrade database before running an older app. Do not open the upgraded database with the old app. Version 1.9.0 can restore v1–v9 backups; older backups are upgraded in a temporary copy before replacing live records.
+The upgrade is one way: the new schema is version 10. To roll back, close the new app and restore the matching pre-upgrade database before running an older app. Do not open the upgraded database with the old app. Version 1.10.0 can restore v1–v10 backups; older backups are upgraded in a temporary copy before replacing live records.
 
 ## Project-specific scope and a simpler workspace
 
@@ -120,7 +149,7 @@ Both sections support project/text filters, search, CSV/DOCX exports, saved form
 
 ## Supplier receipts, estimate versus actual, and approval
 
-Open **Receipts** in the sidebar. Create a receipt linked to a project and enter:
+Open **Receipts & Parts** in the sidebar. Create a receipt linked to a project and enter:
 
 - Description/title, supplier/company name or an existing supplier contact, receipt/reference number and date.
 - Discipline and building/floor/area for department reports.

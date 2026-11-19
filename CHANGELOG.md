@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.10.0 — 2026-11-19
+
+- Added Approvals with item/work prices, currencies, review status/dates, optional contract context, supporting originals and retained review snapshots.
+- Reset Approved requests for review after scope, price, supplier/context or supporting-file changes; included pending deadlines, search and CSV/DOCX/project/department reporting.
+- Expanded Receipts into Receipts & Parts with company-stock/company/contractor/employee/owner sources, purchaser, payment responsibility and partial reimbursement amount/status/date/notes.
+- Kept budget actuals counted once regardless of payer or reimbursement; retained separate labor/contract cost breakdowns and explicit receipt budget inclusion.
+- Added schema 10 upgrades and v1–v10 restore coverage, preserving prior costs, attachments, project data and sidebar preferences.
+
 ## 1.9.0 — 2026-11-18
 
 - Added hold-and-drag ordering in both the normal sidebar and Hidden sections, with independent saved orders per project and All projects.
