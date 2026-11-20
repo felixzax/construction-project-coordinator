@@ -6,6 +6,7 @@ import shutil
 import uuid
 import tempfile
 from contextlib import closing
+from .work_orders import WorkOrderStore,WORK_ORDER_FIELDS
 from .approvals import ApprovalStore,APPROVAL_FIELDS
 from .navigation import NavigationStore
 from .scope import ScopeStore,SCOPE_FIELDS,PROTECTED_SECTIONS
@@ -43,6 +44,7 @@ FIELDS.update(NEW_FIELDS)
 FIELDS['receipts']=RECEIPT_FIELDS
 FIELDS['issues']=ISSUE_FIELDS
 FIELDS['approvals']=APPROVAL_FIELDS
+FIELDS['work_orders']=WORK_ORDER_FIELDS
 FIELDS.update(FINANCE_FIELDS)
 FIELDS.update(SCOPE_FIELDS)
 FIELDS['finance_files'].extend(['owner_table','owner_id'])
@@ -52,15 +54,15 @@ FIELDS['permit_requirements']=REQUIREMENT_FIELDS+['completed_on']
 for _table,_columns in ADDED_COLUMNS.items():
  FIELDS[_table].extend(_columns)
 
-class Store(ApprovalStore,NavigationStore,ScopeStore,FinanceStore,IssueStore,ReceiptStore,RecoveryStore,PermitStore,DevelopmentStore):
+class Store(WorkOrderStore,ApprovalStore,NavigationStore,ScopeStore,FinanceStore,IssueStore,ReceiptStore,RecoveryStore,PermitStore,DevelopmentStore):
  def __init__(self, path):
   self.path=Path(path); self.path.parent.mkdir(parents=True,exist_ok=True)
   self.db=sqlite3.connect(self.path); self.db.row_factory=sqlite3.Row
   version=self.db.execute('PRAGMA user_version').fetchone()[0]
-  if version not in (0,1,2,3,4,5,6,7,8,9,10):
+  if version not in (0,1,2,3,4,5,6,7,8,9,10,11):
    self.db.close(); raise ValueError('This database requires a newer version of the application')
-  if version in (1,2,3,4,5,6,7,8,9):
-   self.backup(str(self.path)+'.before-v1.10.0.sqlite3')
+  if version in (1,2,3,4,5,6,7,8,9,10):
+   self.backup(str(self.path)+'.before-v1.11.0.sqlite3')
   self.db.execute('PRAGMA foreign_keys=ON'); self.db.executescript(SCHEMA)
   self.migrate_development()
   self.migrate_permits()
@@ -71,6 +73,7 @@ class Store(ApprovalStore,NavigationStore,ScopeStore,FinanceStore,IssueStore,Rec
   self.migrate_scope()
   self.migrate_navigation()
   self.migrate_approvals()
+  self.migrate_work_orders()
   self.db.execute("PRAGMA journal_mode=WAL")
   self.db.execute("PRAGMA synchronous=FULL")
   self.db.execute("PRAGMA busy_timeout=5000")
@@ -96,6 +99,7 @@ class Store(ApprovalStore,NavigationStore,ScopeStore,FinanceStore,IssueStore,Rec
   self.validate_finance(table,data,row_id)
   self.validate_scope(table,data,row_id)
   self.validate_approval(table,data,row_id)
+  self.validate_work_order(table,data,row_id)
   for key in ('name','title','summary'):
    if key in FIELDS[table] and not str(data.get(key,'')).strip(): raise ValueError(f'{key.title()} is required')
   for key in ('deadline','follow_up','occurred'):
@@ -107,6 +111,7 @@ class Store(ApprovalStore,NavigationStore,ScopeStore,FinanceStore,IssueStore,Rec
     self.db.execute(f'UPDATE {table} SET '+','.join(f'{k}=?' for k in data)+' WHERE id=?',[*data.values(),row_id])
    else:
     row_id=self.db.execute(f'INSERT INTO {table} ('+','.join(data)+') VALUES ('+','.join('?' for _ in data)+')',list(data.values())).lastrowid
+   if table=='work_orders':self.log(data['project_id'],f'Work order #{row_id}: job valuation {data["job_valuation"] or "unknown"}; permit fee {data["permit_fee"] or "unknown"} {data["currency"]}; fee {data["fee_status"]}')
    if table=='approvals':self.approval_snapshot(row_id,'Record saved')
    pid=row_id if table=='projects' else self.project_for(table,data)
    if table=='issues' and pid:self.log(pid,f'{data.get("issue_type","Correction")} #{row_id}: {data.get("status","Open")}; required fix: {data["required_fix"]}')
@@ -158,9 +163,10 @@ class Store(ApprovalStore,NavigationStore,ScopeStore,FinanceStore,IssueStore,Rec
    with closing(sqlite3.connect(f'{source.resolve().as_uri()}?mode=ro',uri=True)) as candidate:
     if candidate.execute('PRAGMA integrity_check').fetchone()[0]!='ok': raise ValueError('Invalid backup')
     version=candidate.execute('PRAGMA user_version').fetchone()[0]
-    if version not in (1,2,3,4,5,6,7,8,9,10): raise ValueError('Unsupported backup version')
+    if version not in (1,2,3,4,5,6,7,8,9,10,11): raise ValueError('Unsupported backup version')
     # Validate the original schema before any CREATE TABLE statement can mask missing tables.
     for table in list(FIELDS)+['versions','activity','project_contacts']+RECOVERY_TABLES+['project_sections','project_section_order','approval_history']:
+     if version<11 and table=='work_orders':continue
      if version<10 and table in ('approvals','approval_history'):continue
      if version<9 and table=='project_section_order':continue
      if version<8 and table in (*SCOPE_FIELDS,'project_sections'):continue
@@ -204,7 +210,7 @@ class Store(ApprovalStore,NavigationStore,ScopeStore,FinanceStore,IssueStore,Rec
   for title,rows in [('Outstanding tasks',self.outstanding(pid)),('Documents',self.rows('SELECT d.title,v.revision,v.status,v.requirements,v.resubmission FROM documents d LEFT JOIN versions v ON v.id=(SELECT MAX(id) FROM versions WHERE document_id=d.id) WHERE d.project_id=?',(pid,))),('Milestones',self.rows('SELECT title,phase,deadline,status FROM milestones WHERE project_id=? ORDER BY deadline',(pid,))),('Communication',self.rows('SELECT occurred,summary,follow_up,status FROM communications WHERE project_id=? ORDER BY occurred DESC',(pid,)))]:
    out+=f'<h2>{title}</h2>'
    for r in rows: out+='<p>'+' | '.join(f'{e(k)}: {e(v)}' for k,v in r.items() if k not in ('id','project_id','contact_id'))+'</p>'
-  return out+self.development_report(pid)+self.permit_checklist_report(pid)+self.receipt_report(pid)+self.issue_report(pid)+self.finance_report(pid)+self.scope_report(pid)+self.approval_report(pid)
+  return out+self.development_report(pid)+self.permit_checklist_report(pid)+self.receipt_report(pid)+self.issue_report(pid)+self.finance_report(pid)+self.scope_report(pid)+self.approval_report(pid)+self.work_order_report(pid)
  def draft(self,comm):
   p=self.rows('SELECT name FROM projects WHERE id=?',(comm['project_id'],))[0]
   c=self.rows('SELECT name,email FROM contacts WHERE id=?',(comm['contact_id'],))
@@ -240,3 +246,5 @@ class Store(ApprovalStore,NavigationStore,ScopeStore,FinanceStore,IssueStore,Rec
   self.save('rebates',dict(project_id=p,title='Example utility equipment rebate (fictional)',provider='Example utility',requirements_url='https://example.com/rebate-requirements',application_url='https://example.com/rebate-application',notes='Fictional program; replace with current provider requirements.'))
 
   self.save('approvals',dict(project_id=p,title='Example lighting materials purchase',approval_type='Parts / Materials',discipline='Electrical',supplier_name='Example Electrical Supply (fictional)',price='1295.50',currency='USD',status='Pending Review',deadline=(date.today()+timedelta(days=5)).isoformat(),description='Fictional purchase request; review specifications and price before ordering.'))
+
+  self.save('work_orders',dict(project_id=p,title='Example retail improvement work order',reference='DEMO-WO-001',job_valuation='25000',permit_fee='650',currency='USD',valuation_basis='Declared for Permit',fee_status='Estimated',permit_id=permit,discipline='General',status='Draft',scope='Fictional tenant improvement scope; verify valuation and fee with the jurisdiction.'))

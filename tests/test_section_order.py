@@ -105,10 +105,10 @@ def test_v8_upgrade_preserves_data_and_visibility_and_old_backup_restore(store,t
  with closing(sqlite3.connect(old)) as db:db.executescript((Path(__file__).parent/'fixtures/v8_database.sql').read_text())
  upgraded=Store(old)
  try:
-  assert upgraded.db.execute('PRAGMA user_version').fetchone()[0]==10 and len(upgraded.all('contracts'))==1
+  assert upgraded.db.execute('PRAGMA user_version').fetchone()[0]==11 and len(upgraded.all('contracts'))==1
   pid=upgraded.all('projects')[0]['id'];assert upgraded.hidden_sections(pid)=={'Electrical','Plumbing'} and upgraded.rows('SELECT * FROM project_section_order')==[]
  finally:upgraded.db.close()
- safety=str(old)+'.before-v1.10.0.sqlite3'
+ safety=str(old)+'.before-v1.11.0.sqlite3'
  with closing(sqlite3.connect(safety)) as db:assert db.execute('PRAGMA user_version').fetchone()[0]==8
  store.restore(safety);assert len(store.all('scope_items'))==1 and store.rows('SELECT * FROM project_section_order')==[]
 

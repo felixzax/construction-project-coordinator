@@ -117,6 +117,7 @@ class RecoveryStore:
    for batch in chunks(plan.get('contracts',())):
     self.db.execute(f'UPDATE receipts SET contract_id=NULL WHERE contract_id IN ({marks(batch)})',batch)
     self.db.execute(f'UPDATE approvals SET contract_id=NULL WHERE contract_id IN ({marks(batch)})',batch)
+    self.db.execute(f'UPDATE work_orders SET contract_id=NULL WHERE contract_id IN ({marks(batch)})',batch)
    for batch in chunks(plan.get('budgets',())):
     self.db.execute(f'UPDATE contracts SET budget_id=NULL WHERE budget_id IN ({marks(batch)})',batch)
     self.db.execute(f'UPDATE receipts SET budget_id=NULL WHERE budget_id IN ({marks(batch)})',batch)
@@ -127,13 +128,14 @@ class RecoveryStore:
     self.db.execute(f'DELETE FROM project_contacts WHERE contact_id IN ({marks(batch)})',batch)
    for batch in chunks(plan.get('registers',())):
     self.db.execute(f'UPDATE issues SET permit_id=NULL WHERE permit_id IN ({marks(batch)})',batch)
+    self.db.execute(f'UPDATE work_orders SET permit_id=NULL WHERE permit_id IN ({marks(batch)})',batch)
    for batch in chunks(plan.get('meetings',())):
     self.db.execute(f'UPDATE tasks SET meeting_id=NULL WHERE meeting_id IN ({marks(batch)})',batch)
    for batch in chunks(plan.get('projects',())):
     self.db.execute(f'DELETE FROM project_section_order WHERE project_id IN ({marks(batch)})',batch)
     self.db.execute(f'DELETE FROM project_sections WHERE project_id IN ({marks(batch)})',batch)
     self.db.execute(f'DELETE FROM project_contacts WHERE project_id IN ({marks(batch)})',batch)
-   order=['finance_files','approval_history','approvals','custom_fields','rebates','scope_items','project_profiles','contract_changes','issues','receipts','permit_requirements','bid_items','versions','tasks','communications','milestones','work_packages','registers','meetings','bids','bid_packages','documents','contracts','budgets','activity','projects','contacts']
+   order=['finance_files','work_orders','approval_history','approvals','custom_fields','rebates','scope_items','project_profiles','contract_changes','issues','receipts','permit_requirements','bid_items','versions','tasks','communications','milestones','work_packages','registers','meetings','bids','bid_packages','documents','contracts','budgets','activity','projects','contacts']
    for table in order:
     for batch in chunks(plan.get(table,())): self.db.execute(f'DELETE FROM {table} WHERE id IN ({marks(batch)})',batch)
    for approval_id in changed_approvals-plan.get('approvals',set()):self.approval_evidence_changed(approval_id)

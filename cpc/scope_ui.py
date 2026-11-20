@@ -43,7 +43,7 @@ class ScopeUI:
    table=DataTable();table.setEditTriggers(QAbstractItemView.NoEditTriggers);table.setAlternatingRowColors(True);table.doubleClicked.connect(lambda _,t=title:self.edit(t,True));layout.addWidget(table);self.tables[title]=table;self.stack.addWidget(page)
   else:super().build_page(title)
   # Reuse one versioned file manager throughout project records and department work.
-  supported={'Approvals','Projects','Tasks','Communications','Documents','Timeline','Meetings','Bidding','Contracts','Budgets','Receipts','Corrections','Violations',*PAGES}
+  supported={'Work Orders','Approvals','Projects','Tasks','Communications','Documents','Timeline','Meetings','Bidding','Contracts','Budgets','Receipts','Corrections','Violations',*PAGES}
   from .development_ui import DISCIPLINE_PAGES,REGISTER_PAGES
   if title in supported|set(DISCIPLINE_PAGES)|set(REGISTER_PAGES) and title not in ('Contracts','Budgets'):
    page=self.stack.widget(self.stack.count()-1);bar=QHBoxLayout();page.layout().addLayout(bar);self.button(bar,'Files — add / edit / save copy',lambda _,t=title:self.record_files(t))

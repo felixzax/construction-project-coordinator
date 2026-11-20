@@ -89,6 +89,7 @@ class FinanceStore:
     if data.get('budget_id'):self._matching_budget(data['budget_id'],data['project_id'],data.get('currency','USD'))
     old=self.rows('SELECT * FROM contracts WHERE id=?',(row_id,))[0] if row_id else None
     if old and any(data.get(k,old[k])!=old[k] for k in ('project_id','currency')) and self.rows('SELECT id FROM approvals WHERE contract_id=?',(row_id,)):raise ValueError('Unlink related approvals before moving the contract or changing currency')
+    if old and any(data.get(k,old[k])!=old[k] for k in ('project_id','currency')) and self.rows('SELECT id FROM work_orders WHERE contract_id=?',(row_id,)):raise ValueError('Unlink related work orders before moving the contract or changing currency')
     if old and any(data.get(k,old[k])!=old[k] for k in ('project_id','currency','budget_id')) and self.rows('SELECT id FROM receipts WHERE contract_id=?',(row_id,)):raise ValueError('Unlink receipt allocations before moving the contract or changing its currency/budget')
     if data.get('bid_id') and (not old or old['bid_id']!=data['bid_id']):
      bids=self.rows('SELECT b.*,p.project_id FROM bids b JOIN bid_packages p ON p.id=b.package_id WHERE b.id=?',(data['bid_id'],))

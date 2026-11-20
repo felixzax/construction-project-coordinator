@@ -8,6 +8,7 @@ from PySide6.QtWidgets import (QApplication,QMainWindow,QWidget,QVBoxLayout,QHBo
 from PySide6.QtPrintSupport import QPrinter,QPrintPreviewDialog
 from .store import Store, FIELDS, TASK_STATUSES
 from .table import DataTable
+from .work_order_ui import WorkOrderUI
 from .approval_ui import ApprovalUI
 from .section_list import SectionList
 from .sidebar import SidebarUI
@@ -23,7 +24,7 @@ from .permit_ui import PermitUI
 from .development_ui import DevelopmentUI, NAVIGATION, EXTRA_OPTIONS
 from .development import line_totals
 
-VERSION='1.10.0'
+VERSION='1.11.0'
 OPTIONS={'phase':['Planning','Design','Permitting','Construction','Inspection','Closeout'],'priority':['Low','Normal','High','Urgent'],'category':['Architectural Plans','Engineering Drawings','Permit','Cut Sheet','Estimate','Approval','CAD File','BIM Model','Site Plan','Survey','Specification','Shop Drawing','As-Built','Other'],'role':['Architect','Engineer','Contractor','City Official','County Official','Business Owner','Electrical Engineer','Plumbing Engineer','Mechanical Engineer','Civil Engineer','Structural Engineer','Surveyor','Estimator','Supplier','Developer','Other']}
 class Form(QDialog):
  def __init__(self,parent,title,fields,record=None,choices=None):
@@ -45,11 +46,16 @@ class Form(QDialog):
     widget=QTextEdit(); widget.setPlainText(str(value or '')); widget.setMaximumHeight(110)
    else:
     widget=QLineEdit(str(value or ''))
-    if key in ('deadline','follow_up','occurred','submitted','received','valid_until','meeting_date','receipt_date','review_date','reported_date','resolved_date','signed_date','start_date','end_date','approved_date','reimbursed_date'): widget.setPlaceholderText('YYYY-MM-DD (blank allowed except required dates)')
-   labels={'price':'Price of item / work','reviewer_id':'Reviewer contact','reviewed_by':'Reviewed by (name)','purchaser_name':'Purchased / supplied by','payment_responsibility':'Payment responsibility','reimbursement_amount':'Reimbursement portion (not an extra budget cost)','source_type':'Where the parts come from','reimbursed_date':'Reimbursement paid date','supplier_name':'Supplier / stock source','use_type':'Residential / commercial use','kitchen':'Will there be a kitchen?','bathroom':'Will there be bathrooms?','occupied_work':'Will the site remain occupied?','accessibility':'Accessibility work in scope?','fire_sprinklers':'Fire sprinklers in scope?','scope_item_id':'Related system / requirement','is_required':'Required custom information','hidden':'Hide from the normal systems list','specifications':'Specifications / installation details','energy_source':'Energy / fuel source','project_id':'Project','contact_id':'Responsible contact / bidder','designer_id':'Designer / consultant','meeting_id':'Related meeting','package_id':'Trade bid package','bid_id':'Bid estimate','labor_rate':'Labor hourly rate','material_unit_cost':'Material cost per unit','equipment_unit_cost':'Equipment cost per unit','subcontract_unit_cost':'Subcontract cost per unit','other_cost':'Other fixed cost','included':'Include in bid total','budget_id':'Budget category','contract_id':'Related contract','bid_id':'Source awarded bid','original_amount':'Original contract amount','base_amount':'Base budget allocation','contingency_amount':'Contingency allowance','include_in_budget':'Include actual price in budget costs','site_address':'Site address','location':'Exact spot / floor / room','required_fix':'Required fix / action','authority':'City / county / inspector','permit_id':'Related permit','estimated_amount':'Supplier estimated price','actual_amount':'Supplier actual price','status':'Status / approval','register_id':'Permit application','jurisdiction_name':'City / county name','requirements_url':'Application requirements link','application_url':'Application / portal link','requirements_reviewed':'Requirements page reviewed','source_url':'Requirement source link','completed':'Requirement ready','building_area':'Building / floor / area','tax_percent':'Material tax (%)','markup_percent':'Markup (%)','contingency_percent':'Contingency (%)','waste_percent':'Material waste (%)'}
+    if key in ('deadline','follow_up','occurred','submitted','received','valid_until','meeting_date','receipt_date','review_date','reported_date','resolved_date','signed_date','start_date','end_date','approved_date','reimbursed_date','issued_date'): widget.setPlaceholderText('YYYY-MM-DD (blank allowed except required dates)')
+   labels={'job_valuation':'Job valuation','permit_fee':'Permit fee','valuation_basis':'Valuation basis','fee_status':'Permit fee status','issued_date':'Work order issue date','price':'Price of item / work','reviewer_id':'Reviewer contact','reviewed_by':'Reviewed by (name)','purchaser_name':'Purchased / supplied by','payment_responsibility':'Payment responsibility','reimbursement_amount':'Reimbursement portion (not an extra budget cost)','source_type':'Where the parts come from','reimbursed_date':'Reimbursement paid date','supplier_name':'Supplier / stock source','use_type':'Residential / commercial use','kitchen':'Will there be a kitchen?','bathroom':'Will there be bathrooms?','occupied_work':'Will the site remain occupied?','accessibility':'Accessibility work in scope?','fire_sprinklers':'Fire sprinklers in scope?','scope_item_id':'Related system / requirement','is_required':'Required custom information','hidden':'Hide from the normal systems list','specifications':'Specifications / installation details','energy_source':'Energy / fuel source','project_id':'Project','contact_id':'Responsible contact / bidder','designer_id':'Designer / consultant','meeting_id':'Related meeting','package_id':'Trade bid package','bid_id':'Bid estimate','labor_rate':'Labor hourly rate','material_unit_cost':'Material cost per unit','equipment_unit_cost':'Equipment cost per unit','subcontract_unit_cost':'Subcontract cost per unit','other_cost':'Other fixed cost','included':'Include in bid total','budget_id':'Budget category','contract_id':'Related contract','bid_id':'Source awarded bid','original_amount':'Original contract amount','base_amount':'Base budget allocation','contingency_amount':'Contingency allowance','include_in_budget':'Include actual price in budget costs','site_address':'Site address','location':'Exact spot / floor / room','required_fix':'Required fix / action','authority':'City / county / inspector','permit_id':'Related permit','estimated_amount':'Supplier estimated price','actual_amount':'Supplier actual price','status':'Status / approval','register_id':'Permit application','jurisdiction_name':'City / county name','requirements_url':'Application requirements link','application_url':'Application / portal link','requirements_reviewed':'Requirements page reviewed','source_url':'Requirement source link','completed':'Requirement ready','building_area':'Building / floor / area','tax_percent':'Material tax (%)','markup_percent':'Markup (%)','contingency_percent':'Contingency (%)','waste_percent':'Material waste (%)'}
    self.inputs[key]=widget; form.addRow(labels.get(key,key.replace('_',' ').title()),widget)
    if key=='file_path':
     browse=QPushButton('Choose document file…'); browse.clicked.connect(lambda _,w=widget:self.browse(w)); form.addRow('',browse)
+  if 'job_valuation' in self.inputs and 'permit_fee' in self.inputs:
+   first=form.getWidgetPosition(self.inputs['job_valuation'])[0];left=form.takeRow(self.inputs['job_valuation']);right=form.takeRow(self.inputs['permit_fee']);pair=QWidget();row_layout=QHBoxLayout(pair);row_layout.setContentsMargins(0,0,0,0)
+   for taken in (left,right):
+    column=QVBoxLayout();column.addWidget(taken.labelItem.widget());column.addWidget(taken.fieldItem.widget());row_layout.addLayout(column,1)
+   form.insertRow(first,pair)
   if 'material_unit_cost' in fields:
    self.preview=QLabel(); self.preview.setWordWrap(True); layout.addWidget(self.preview)
    for widget in self.inputs.values():
@@ -148,6 +154,7 @@ class BaseWindow(QMainWindow):
   if query and query.text(): rows=[r for r in rows if query.text().lower() in ' '.join(str(v) for v in r.values()).lower()]
   self.data[title]=rows; table=self.tables[title]; keys=list(dict.fromkeys(k for row in rows for k in row if k!='id' and not k.startswith('_') and not k.endswith('_id')))
   preferred=['title','name','label','project','bidder','currency','total','status','discipline','building_area','deadline','responsible']
+  if title=='Work Orders':preferred=['title','job_valuation','permit_fee','currency','valuation_basis','fee_status','status','reference','site_address','contractor_name','deadline','permit','project']
   if title=='Approvals':preferred=['title','price','currency','status','supplier_name','reviewed_by','review_date','deadline','project','contract']
   if title=='Scope & Systems':preferred=['title','applicability','category','system_type','energy_source','status','building_area','deadline','responsible']
   if title=='Custom Information':preferred=['title','value','unit','completion','system','project']
@@ -284,7 +291,7 @@ class BaseWindow(QMainWindow):
    if path and QMessageBox.question(self,'Replace local data?','Restore this backup and replace all current records? A safety backup will be created.')==QMessageBox.Yes: self.store.restore(path); self.refresh(); QMessageBox.information(self,'Restore complete','Database restored successfully.')
   self.guard(action)
 
-class Window(ThemeUI,WorkspaceUI,SidebarUI,ExportUI,RecoveryUI,ScopeUI,ApprovalUI,FinanceUI,IssueUI,ReceiptUI,PermitUI,DevelopmentUI,BaseWindow):
+class Window(ThemeUI,WorkspaceUI,SidebarUI,ExportUI,RecoveryUI,ScopeUI,WorkOrderUI,ApprovalUI,FinanceUI,IssueUI,ReceiptUI,PermitUI,DevelopmentUI,BaseWindow):
  pass
 
 def main():

@@ -135,11 +135,11 @@ def test_schema9_upgrade_and_restore_preserve_existing_costs_and_orders(store,tm
  with closing(sqlite3.connect(path)) as db:db.executescript((Path(__file__).parent/'fixtures/v9_database.sql').read_text())
  upgraded=Store(path)
  try:
-  assert upgraded.db.execute('PRAGMA user_version').fetchone()[0]==10 and upgraded.all('approvals')==[]
+  assert upgraded.db.execute('PRAGMA user_version').fetchone()[0]==11 and upgraded.all('approvals')==[]
   p=upgraded.all('projects')[0]['id'];assert upgraded.section_order(p,'sidebar')[0]=='Contracts' and 'Approvals' in upgraded.section_order(p,'sidebar')
   row=upgraded.all('receipts')[0];assert row['actual_amount']=='1295.50' and row['reimbursement_status']=='Not Applicable'
  finally:upgraded.db.close()
- backup=str(path)+'.before-v1.10.0.sqlite3'
+ backup=str(path)+'.before-v1.11.0.sqlite3'
  with closing(sqlite3.connect(backup)) as db:assert db.execute('PRAGMA user_version').fetchone()[0]==9
  store.restore(backup);assert store.all('approvals')==[] and len(store.all('receipts'))==1
 

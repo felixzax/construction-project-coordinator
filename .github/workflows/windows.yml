@@ -28,7 +28,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         id: application
         with:
-          name: ConstructionProjectCoordinator-1.10.0-Windows
+          name: ConstructionProjectCoordinator-1.11.0-Windows
           path: release/*
           if-no-files-found: error
           retention-days: 90

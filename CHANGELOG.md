@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.11.0 — 2026-11-20
+
+- Added Work Orders with adjacent job valuation and permit-fee entry/list columns, currency, valuation basis and fee status.
+- Added work-order references, site address, contractor/contact, scope, dates, progress and related city/county permit/contract context.
+- Integrated original files, CSV/DOCX/project/department reports, pending deadlines, search, sidebar ordering/hiding and draft recovery.
+- Kept valuation/fee coordination amounts separate from actual budget expenses; added amount/date/link validation and paid-fee reconfirmation after fee/currency changes.
+- Added schema 11 migration and v1–v11 restores preserving prior approvals, parts costs, documents and sidebar preferences.
+
 ## 1.10.0 — 2026-11-19
 
 - Added Approvals with item/work prices, currencies, review status/dates, optional contract context, supporting originals and retained review snapshots.

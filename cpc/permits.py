@@ -53,6 +53,8 @@ class PermitStore:
     linked=self.rows('SELECT project_id FROM issues WHERE permit_id=?',(row_id,))
     if linked and data.get('record_type')!='Permit':raise ValueError('A permit linked to corrections or violations must remain a permit')
     if any(row['project_id']!=data.get('project_id') for row in linked):raise ValueError('Unlink related corrections or violations before moving the permit to another project')
+    orders=self.rows('SELECT project_id FROM work_orders WHERE permit_id=?',(row_id,))
+    if orders and (data.get('record_type')!='Permit' or any(r['project_id']!=data.get('project_id') for r in orders)):raise ValueError('Unlink related work orders before changing permit type or project')
   if table=='permit_requirements':
    parent=self.rows('SELECT project_id,record_type FROM registers WHERE id=?',(data.get('register_id'),))
    if not parent or parent[0]['record_type']!='Permit': raise ValueError('Requirements must belong to a permit')

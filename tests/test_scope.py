@@ -163,13 +163,13 @@ def test_v7_upgrade_retains_attachment_ids_bytes_and_finance(store,tmp_path):
   db.executescript((Path(__file__).parent/'fixtures/v7_database.sql').read_text());db.execute('UPDATE finance_files SET file_path=?',(str(legacy),));db.commit()
  upgraded=Store(old)
  try:
-  assert upgraded.db.execute('PRAGMA user_version').fetchone()[0]==10
+  assert upgraded.db.execute('PRAGMA user_version').fetchone()[0]==11
   fid=upgraded.all('finance_files')[0]['id'];copy=tmp_path/'saved.txt';upgraded.save_finance_copy(fid,copy);assert copy.read_bytes()==legacy.read_bytes()
   assert len(upgraded.all('contracts'))==1 and upgraded.all('scope_items')==[]
   assert upgraded.all('finance_files')[0]['owner_table']==''
  finally:upgraded.db.close()
- with closing(sqlite3.connect(str(old)+'.before-v1.10.0.sqlite3')) as db:assert db.execute('PRAGMA user_version').fetchone()[0]==7
- store.restore(str(old)+'.before-v1.10.0.sqlite3');assert len(store.all('finance_files'))==1 and store.all('project_profiles')==[]
+ with closing(sqlite3.connect(str(old)+'.before-v1.11.0.sqlite3')) as db:assert db.execute('PRAGMA user_version').fetchone()[0]==7
+ store.restore(str(old)+'.before-v1.11.0.sqlite3');assert len(store.all('finance_files'))==1 and store.all('project_profiles')==[]
 
 
 def test_generic_file_manager_ui_adds_and_saves_scope_original(store,project,app,tmp_path,monkeypatch):

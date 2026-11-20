@@ -1,12 +1,26 @@
-# Construction Project Coordinator 1.10.0
+# Construction Project Coordinator 1.11.0
 
 A local Windows desktop workspace for construction and property development coordination, consultant disciplines, drawing registers, meetings and detailed bid estimates. Python 3.12, PySide6 and SQLite. No cloud subscription, email connection or account is required to use the app.
 
 ## Download and run
 
-**[Download Windows 1.10.0](https://github.com/felixzax/construction-project-coordinator/actions/runs/44634654614/artifacts/14583990910)** · [Successful build and test logs](https://github.com/felixzax/construction-project-coordinator/actions/runs/44634654614). All 279 Windows tests passed; the downloaded artifact passed checksum and isolated offscreen/native Windows launch checks.
+Version 1.11.0 Windows verification is pending. A verified download link will be added after a successful run.
 
-Open [GitHub Actions](https://github.com/felixzax/construction-project-coordinator/actions/workflows/windows.yml), select a successful **Test and build Windows** run for version 1.10.0, and download **ConstructionProjectCoordinator-1.10.0-Windows**. GitHub may require sign-in for Actions downloads. Extract the downloaded ZIP **once** into a fresh folder and run `ConstructionProjectCoordinator.exe`. Version 1.10.0 is a standalone, single-file executable: Python and a companion `_internal` folder are not required. The ZIP also contains README, changelog and file checksums. Do not mix its files into an older application folder. The app is unsigned and Windows may show a reputation prompt. Artifacts are retained for 90 days.
+Open [GitHub Actions](https://github.com/felixzax/construction-project-coordinator/actions/workflows/windows.yml), select a successful **Test and build Windows** run for version 1.11.0, and download **ConstructionProjectCoordinator-1.11.0-Windows**. GitHub may require sign-in for Actions downloads. Extract the downloaded ZIP **once** into a fresh folder and run `ConstructionProjectCoordinator.exe`. Version 1.11.0 is a standalone, single-file executable: Python and a companion `_internal` folder are not required. The ZIP also contains README, changelog and file checksums. Do not mix its files into an older application folder. The app is unsigned and Windows may show a reputation prompt. Artifacts are retained for 90 days.
+
+## Work Orders — job valuation and permit fee
+
+Use **Work Orders → New** to record a construction work order. **Job valuation** and **Permit fee** appear next to each other in both the form and list, using the selected currency. Valuation is the declared/estimated construction value for that scope; the permit fee is the separate jurisdiction charge. Enter the values manually—this app does not calculate an agency fee or decide the jurisdiction's valuation rules. Blank means unknown; 0 is a confirmed zero. Both amounts use two-decimal rounding.
+
+Work orders include a title/reference, site address, contractor/responsible contact, discipline/area, scope/notes, optional contract and permit, issue/start/deadline dates and status: Draft, Ready, Scheduled, In Progress, On Hold, Completed or Cancelled. The address defaults from the project and can be customized. Choose a valuation basis (Estimated, Declared for Permit, Contract Based or Other); this labels your entered value and does not copy or recalculate a contract amount.
+
+Permit fee status is Unknown, Estimated, Assessed, Paid or Waived. A known fee defaults to Estimated if its status was Unknown. Paid requires a known amount; Waived records zero. Changing an already-paid fee amount or its currency returns its fee status to Assessed, so the updated amount must be confirmed again. Saving records logs valuation and fee values in project activity.
+
+Select a related city/county permit from the same project. Its jurisdiction type/name appear in the form and are taken from that permit when saved; without a linked permit you can enter the jurisdiction manually. Related contracts must match project and currency. Deleting a linked permit/contract keeps the work order and its stored amounts/address/jurisdiction, clearing only the link. Linked permits/contracts cannot be moved to conflicting project/currency contexts without unlinking the work order first.
+
+**Files** supports original uploads/downloads, ZIP export and the existing supported basic-file editing/conversion. **Export** provides CSV and DOCX. Project and department reports include both amounts in separate fields; they are not added into a misleading total. Active dated work orders appear on the dashboard/timeline, including when their sidebar category is hidden; Completed/Cancelled work drops out of outstanding deadlines.
+
+**Valuation and permit-fee tracking do not automatically add budget expenses or transmit payments.** Record an actual paid fee once in Receipts & Parts (Other cost, agency as supplier) and link it to the appropriate budget/contract using the existing cost rules. Contract commitments and receipt actuals remain the budget source. Work orders retain your drag order, hiding, draft recovery and backed-up deletion features. If you saved a custom sidebar order, Work Orders appears at the end until you drag it to your preferred position.
 
 ## Approvals with item or work prices
 
@@ -51,20 +65,20 @@ The setting is remembered in `appearance.ini` beside the database, separately fo
 
 ## Fix for the Shiboken startup error
 
-If an older folder build reports `shiboken6\libshiboken does not exist`, use the new standalone 1.10.0 build above. The published 1.5.0 archive contains `_internal/shiboken6`, but the error occurs if that package folder is missing from the extracted copy. Do not create an empty libshiboken folder or install Python to work around it. The standalone build bundles its Qt/Shiboken runtime and extracts it automatically to a temporary directory when it starts.
+If an older folder build reports `shiboken6\libshiboken does not exist`, use the new standalone 1.11.0 build above. The published 1.5.0 archive contains `_internal/shiboken6`, but the error occurs if that package folder is missing from the extracted copy. Do not create an empty libshiboken folder or install Python to work around it. The standalone build bundles its Qt/Shiboken runtime and extracts it automatically to a temporary directory when it starts.
 
-Close the old app, extract the new ZIP into a fresh folder and launch the new executable. Project data stays in the same local data directory. Version 1.10.0 adds schema 10 for approvals and parts/reimbursement details. Older databases get a pre-upgrade safety copy. All project features remain available.
+Close the old app, extract the new ZIP into a fresh folder and launch the new executable. Project data stays in the same local data directory. Version 1.11.0 adds schema 11 for work orders, job valuations and permit fees. Older databases get a pre-upgrade safety copy. All project features remain available.
 
 If a runtime cannot load, the app gives a clear pre-Qt startup message and records `startup-error.txt` under `%LOCALAPPDATA%/Construction Project Coordinator/`. It does not alter project records in that failure path.
 
-## Upgrade from 1.0.0 through 1.9.0
+## Upgrade from 1.0.0 through 1.10.0
 
 1. In the old app, use Backup & Restore to back up your database. Also copy its adjacent `documents` folder to your backup location. Close all old app instances.
 2. Extract the new build into a new application folder. Keep the old executable until you verify the upgrade.
-3. Launch version 1.10.0 from the same Windows account. It uses the same Local AppData location, preserves existing projects, contacts, tasks and approved document revisions, and adds the new tables and fields automatically. It creates a `.before-v1.10.0.sqlite3` safety copy before upgrading a v1–v9 database.
+3. Launch version 1.11.0 from the same Windows account. It uses the same Local AppData location, preserves existing projects, contacts, tasks and approved document revisions, and adds the new tables and fields automatically. It creates a `.before-v1.11.0.sqlite3` safety copy before upgrading a v1–v10 database.
 4. Existing work is not replaced with demonstration data. New sections begin empty for existing users. Fresh workspaces may load fictional examples at the welcome prompt.
 
-The upgrade is one way: the new schema is version 10. To roll back, close the new app and restore the matching pre-upgrade database before running an older app. Do not open the upgraded database with the old app. Version 1.10.0 can restore v1–v10 backups; older backups are upgraded in a temporary copy before replacing live records.
+The upgrade is one way: the new schema is version 11. To roll back, close the new app and restore the matching pre-upgrade database before running an older app. Do not open the upgraded database with the old app. Version 1.11.0 can restore v1–v11 backups; older backups are upgraded in a temporary copy before replacing live records.
 
 ## Project-specific scope and a simpler workspace
 

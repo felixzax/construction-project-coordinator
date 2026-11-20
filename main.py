@@ -240,6 +240,38 @@ def smoke_test():
             write_docx(Path(folder)/'approvals.docx','Approvals',store.approval_rows())
             store.export(Path(folder)/'parts.csv',store.receipt_rows())
             window.refresh()
+            # Verify work-order valuation and permit-fee entry in the packaged UI.
+            if window.tables['Work Orders'].rowCount() != 1:
+                raise RuntimeError('Work Orders workspace smoke check failed')
+            before_work = store.budget_totals(budget)
+            work_failures = []
+            def enter_work_order():
+                form = app.activeModalWidget()
+                try:
+                    left = form.inputs['job_valuation']; right = form.inputs['permit_fee']
+                    if left.parentWidget() is not right.parentWidget() or left.geometry().x() >= right.geometry().x():
+                        raise RuntimeError('Valuation and permit fee are not adjacent')
+                    form.inputs['title'].setText('Smoke valuation work order')
+                    left.setText('9000'); right.setText('200')
+                    form.inputs['permit_id'].setCurrentIndex(form.inputs['permit_id'].findData(permit['id']))
+                    form.accept()
+                except Exception as error:
+                    work_failures.append(error)
+                    if form is not None: form.reject()
+            QTimer.singleShot(0, enter_work_order)
+            window.edit('Work Orders')
+            if work_failures: raise work_failures[0]
+            work_order = store.work_order_rows()[0]
+            if work_order['job_valuation'] != '9000.00' or work_order['permit_fee'] != '200.00':
+                raise RuntimeError('Work-order amounts failed to persist')
+            if store.budget_totals(budget) != before_work:
+                raise RuntimeError('Work-order valuation was counted as an expense')
+            work_file = store.import_finance_files('work_orders', work_order['id'], [original])[0]
+            work_copy = Path(folder)/'work-order-original.txt'; store.save_finance_copy(work_file, work_copy)
+            if work_copy.read_bytes() != original.read_bytes():
+                raise RuntimeError('Work-order original download failed')
+            write_docx(Path(folder)/'work-orders.docx', 'Work Orders', store.work_order_rows())
+            store.export(Path(folder)/'work-orders.csv', store.work_order_rows())
             # Send real Qt drag/drop events and verify identity-based navigation.
             from PySide6.QtCore import QPointF, QPoint
             from PySide6.QtGui import QDragEnterEvent, QDragMoveEvent, QDropEvent
