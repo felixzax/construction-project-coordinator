@@ -185,13 +185,9 @@ class CityPermitStore:
    else:
     row=self.rows('SELECT * FROM reg_tracker_steps WHERE id=?',(row_id,))[0];meta=metadata(row);meta['user_hidden']=bool(hidden);self._city_put('reg_tracker_steps',dict(hidden=int(hidden),details_json=json.dumps(meta)),row_id)
  def delete_city_item(self,kind,row_id):
-  """Backed-up deletion with a durable tombstone so Add never resurrects it."""
-  if kind=='checklist':
-   row=self.rows('SELECT r.*,d.template_key FROM permit_requirements r LEFT JOIN reg_requirement_details d ON d.requirement_id=r.id WHERE r.id=?',(row_id,))[0];table='permit_requirements';key=row['template_key']
-  else:row=self.rows('SELECT * FROM reg_tracker_steps WHERE id=?',(row_id,))[0];table='reg_tracker_steps';key=row['step_key'] if row['template_item_id'] else None
-  # Existing deletion creates its own snapshot. Insert tombstone only after
-  # successful deletion; both operations are coordinated by delete_records below.
-  return self.delete_records([(table,row_id)])
+  """The shared deletion transaction records stable-key tombstones and a backup."""
+  if kind not in ('checklist','tracker'):raise ValueError('Choose checklist or tracker')
+  return self.delete_records([('permit_requirements' if kind=='checklist' else 'reg_tracker_steps',row_id)])
  def city_file_warnings(self,register_id,path,cycle_no=1,naming_basis='Address',prefix='',upload_record_kind='SUB'):
   details=self.city_details(register_id)
   if details['jurisdiction_key']!=CITY or details['permit_family']!='Building':return ['Verify file requirements with this jurisdiction; City EPC checks are not applied.']

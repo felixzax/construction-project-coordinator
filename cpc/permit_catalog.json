@@ -21,7 +21,7 @@
       "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/EPC-Quick-Reference-Submittal-Guide.pdf",
       "last_verified_date": "2026-11-20",
       "verification_status": "Verified",
-      "conflict_notes": "\nGuide v27 p32 has an MP example ending REPY, while its p33 naming examples and the newer Quick Reference use REPLY. Use REPLY; retain this discrepancy in the source register.\nQuick Reference says to resubmit complete PLANS. Guide v27 p34 says files unaffected by correction comments should not be uploaded; revised files must be complete. Warn to send a complete revised PLANS set and complete SUPP if affected; verify an unaffected-file exception with intake. No automated submission or blocker.",
+      "conflict_notes": "\nGuide v27 p32 has an MP example ending REPY, while its p33 naming examples and the newer Quick Reference use REPLY. Use REPLY; retain this discrepancy in the source register.\nQuick Reference says to resubmit complete PLANS. Guide v27 p34 says files unaffected by correction comments should not be uploaded; revised files must be complete. Warn to send a complete revised PLANS set and complete SUPP if affected; verify an unaffected-file exception with intake. No automated submission or blocker.\nQuick Reference (2024-10-17), p3, describes each PLANS page as bookmarked; CDD-0316 (2024-12-10), p1, explicitly calls for bookmarks for files with more than 20 pages, and section/document bookmarks elsewhere. Use the newer CDD-0316 minimum as the warning reference; bookmark/page coverage remains a manual Verify item. More extensive bookmarks may satisfy both; confirm the submission format with intake.",
       "notes": "Retrieved official PDF; revision read from its printed footer.",
       "sha256": "31b878ca35ef8000c6fb973fbaabda3e9b7caea35d3b55a4d709c996f7dbb82e"
     },
@@ -33,7 +33,7 @@
       "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/CDD-0316_Electronic-Plan-Check-(EPC)-Submittal-Verification-Checklist.pdf",
       "last_verified_date": "2026-11-20",
       "verification_status": "Verified",
-      "conflict_notes": "\nEPC Guide v27 (2020), p16, recommends approximately 400 MB per PDF. CDD-0316 (2024-12-10) states APP 50 MB, PLANS 300 MB, SUPP 150 MB. Use the newer per-file limits as editable warning defaults; coordinate oversized plans with intake. REPLY has no verified size limit in CDD-0316. Prefer CDD-0316; never silently apply 400 MB or invent a REPLY limit.",
+      "conflict_notes": "\nEPC Guide v27 (2020), p11, recommends approximately 400 MB per PDF. CDD-0316 (2024-12-10) states APP 50 MB, PLANS 300 MB, SUPP 150 MB. Use the newer per-file limits as editable warning defaults; coordinate oversized plans with intake. REPLY has no verified size limit in CDD-0316. Prefer CDD-0316; never silently apply 400 MB or invent a REPLY limit.\nQuick Reference (2024-10-17), p3, describes each PLANS page as bookmarked; CDD-0316 (2024-12-10), p1, explicitly calls for bookmarks for files with more than 20 pages, and section/document bookmarks elsewhere. Use the newer CDD-0316 minimum as the warning reference; bookmark/page coverage remains a manual Verify item. More extensive bookmarks may satisfy both; confirm the submission format with intake.",
       "notes": "Retrieved official PDF; revision read from its printed footer.",
       "sha256": "f203cdc07217c082651d1586a90951a325e3d80464636302d6c84b60355e372d"
     },
@@ -45,7 +45,7 @@
       "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/EPC-Submittal-Guide-Full-Version.pdf",
       "last_verified_date": "2026-11-20",
       "verification_status": "Verified",
-      "conflict_notes": "\nEPC Guide v27 (2020), p16, recommends approximately 400 MB per PDF. CDD-0316 (2024-12-10) states APP 50 MB, PLANS 300 MB, SUPP 150 MB. Use the newer per-file limits as editable warning defaults; coordinate oversized plans with intake. REPLY has no verified size limit in CDD-0316. Prefer CDD-0316; never silently apply 400 MB or invent a REPLY limit.\nGuide v27 p32 has an MP example ending REPY, while its p33 naming examples and the newer Quick Reference use REPLY. Use REPLY; retain this discrepancy in the source register.\nQuick Reference says to resubmit complete PLANS. Guide v27 p34 says files unaffected by correction comments should not be uploaded; revised files must be complete. Warn to send a complete revised PLANS set and complete SUPP if affected; verify an unaffected-file exception with intake. No automated submission or blocker.",
+      "conflict_notes": "\nEPC Guide v27 (2020), p11, recommends approximately 400 MB per PDF. CDD-0316 (2024-12-10) states APP 50 MB, PLANS 300 MB, SUPP 150 MB. Use the newer per-file limits as editable warning defaults; coordinate oversized plans with intake. REPLY has no verified size limit in CDD-0316. Prefer CDD-0316; never silently apply 400 MB or invent a REPLY limit.\nGuide v27 p32 has an MP example ending REPY, while its p33 naming examples and the newer Quick Reference use REPLY. Use REPLY; retain this discrepancy in the source register.\nQuick Reference says to resubmit complete PLANS. Guide v27 p34 says files unaffected by correction comments should not be uploaded; revised files must be complete. Warn to send a complete revised PLANS set and complete SUPP if affected; verify an unaffected-file exception with intake. No automated submission or blocker.",
       "notes": "Retrieved official PDF; revision read from its printed footer.",
       "sha256": "c64097671ed010de91b7bc8c0b36dc47a376137f27a4e75a923074ca48e65064"
     },
@@ -177,7 +177,7 @@
         "guide",
         "316"
       ],
-      "description": "EPC Guide v27 (2020), p16, recommends approximately 400 MB per PDF. CDD-0316 (2024-12-10) states APP 50 MB, PLANS 300 MB, SUPP 150 MB. Use the newer per-file limits as editable warning defaults; coordinate oversized plans with intake. REPLY has no verified size limit in CDD-0316.",
+      "description": "EPC Guide v27 (2020), p11, recommends approximately 400 MB per PDF. CDD-0316 (2024-12-10) states APP 50 MB, PLANS 300 MB, SUPP 150 MB. Use the newer per-file limits as editable warning defaults; coordinate oversized plans with intake. REPLY has no verified size limit in CDD-0316.",
       "resolution": "Prefer CDD-0316; never silently apply 400 MB or invent a REPLY limit."
     },
     {
@@ -206,6 +206,15 @@
       ],
       "description": "Quick Reference says to resubmit complete PLANS. Guide v27 p34 says files unaffected by correction comments should not be uploaded; revised files must be complete.",
       "resolution": "Warn to send a complete revised PLANS set and complete SUPP if affected; verify an unaffected-file exception with intake. No automated submission or blocker."
+    },
+    {
+      "key": "bookmark-scope",
+      "sources": [
+        "quick",
+        "316"
+      ],
+      "description": "Quick Reference (2024-10-17), p3, describes each PLANS page as bookmarked; CDD-0316 (2024-12-10), p1, explicitly calls for bookmarks for files with more than 20 pages, and section/document bookmarks elsewhere.",
+      "resolution": "Use the newer CDD-0316 minimum as the warning reference; bookmark/page coverage remains a manual Verify item. More extensive bookmarks may satisfy both; confirm the submission format with intake."
     }
   ],
   "items": [
@@ -295,8 +304,8 @@
       "if_applicable": 0,
       "verify_label": "Verified source / verify applicability",
       "last_verified_date": "2026-11-20",
-      "locator": "p44\u201346",
-      "notes": "",
+      "locator": "EPC Guide v27 p49",
+      "notes": "The guide describes a 24-hour intake-response goal, excluding weekends/holidays; it is not an automatic deadline.",
       "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/EPC-Submittal-Guide-Full-Version.pdf"
     },
     {
@@ -313,7 +322,7 @@
       "if_applicable": 0,
       "verify_label": "Verified source / verify applicability",
       "last_verified_date": "2026-11-20",
-      "locator": "p1, p44\u201346",
+      "locator": "EPC Guide v27 p1, p5, p49\u201350",
       "notes": "",
       "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/EPC-Submittal-Guide-Full-Version.pdf"
     },

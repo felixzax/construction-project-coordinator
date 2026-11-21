@@ -131,6 +131,16 @@ class RecoveryStore:
       if item['register_id'] in plan.get('registers',()):continue
       pid=self.rows('SELECT project_id FROM registers WHERE id=?',(item['register_id'],))[0]['project_id']
       self.db.execute('INSERT OR IGNORE INTO reg_template_tombstones(project_id,register_id,template_item_key,reason,occurred) VALUES(?,?,?,?,?)',(pid,item['register_id'],item['item_key'],'User deletion',now()))
+   for charge_id in plan.get('reg_manual_charges',()):
+    charge=self.rows('SELECT * FROM reg_manual_charges WHERE id=?',(charge_id,))[0]
+    if not charge['register_id'] or charge['register_id'] in plan.get('registers',()):continue
+    details=self.rows('SELECT details_json FROM reg_permit_details WHERE register_id=?',(charge['register_id'],))
+    configuration=json.loads(details[0]['details_json']) if details else {};generated=configuration.get('generated_charges',{})
+    for key,value in list(generated.items()):
+     if value==charge_id:
+      self.db.execute('INSERT OR IGNORE INTO reg_template_tombstones(project_id,register_id,template_item_key,reason,occurred) VALUES(?,?,?,?,?)',(charge['project_id'],charge['register_id'],key,'User deletion',now()))
+      del generated[key]
+    if details:self.db.execute('UPDATE reg_permit_details SET details_json=? WHERE register_id=?',(json.dumps(configuration),charge['register_id']))
    for batch in chunks(plan.get('scope_items',())):self.db.execute(f'UPDATE rebates SET scope_item_id=NULL WHERE scope_item_id IN ({marks(batch)})',batch)
    for batch in chunks(plan.get('bids',())):self.db.execute(f'UPDATE contracts SET bid_id=NULL WHERE bid_id IN ({marks(batch)})',batch)
    for batch in chunks(plan.get('contracts',())):

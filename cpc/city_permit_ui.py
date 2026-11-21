@@ -145,7 +145,13 @@ class CityPermitUI:
    if self.confirm_delete([(table,self.city_rows[name][i]['id']) for i in ids],name):self.refresh()
   self.guard(action)
  def city_row_files(self,name):
-  self.guard(lambda:self.finance_file_manager(name,{'Tracker':'reg_tracker_steps','Checklist':'permit_requirements','City Records':'reg_city_records','Manual Charges':'reg_manual_charges','Review Cycles':'reg_review_cycles'}[name],self.city_selected_row(name)))
+  def action():
+   row=self.city_selected_row(name)
+   if name=='City Records' and row['record_kind'] in ('COM','RES','FPP','MP'):
+    text='City EPC uploads and resubmittals belong to SUB, not '+row['record_kind']+'. These Files are local reference copies only; the app never uploads to the City. Continue storing a local reference here?'
+    if QMessageBox.warning(self,'Use SUB for City uploads',text,QMessageBox.Ok|QMessageBox.Cancel,QMessageBox.Cancel)!=QMessageBox.Ok:return
+   self.finance_file_manager(name,{'Tracker':'reg_tracker_steps','Checklist':'permit_requirements','City Records':'reg_city_records','Manual Charges':'reg_manual_charges','Review Cycles':'reg_review_cycles'}[name],row)
+  self.guard(action)
  def city_permit_files(self):self.guard(lambda:self.finance_file_manager('Permit','registers',self.city_parent()))
  def delete_city_permit(self):
   def action():
@@ -169,7 +175,7 @@ class CityPermitUI:
   def action():
    rid=self.city_selected_id();self.store.city_details(rid);path,_=QFileDialog.getOpenFileName(self,'Choose a local file to check')
    if not path:return
-   form=Form(self,'City file-name / size check',['file_path','cycle_no','naming_basis','prefix','upload_record_kind'],dict(file_path=path,cycle_no='1',naming_basis='Address',upload_record_kind='SUB'),dict(naming_basis=['Address','APN','Master Plan'],upload_record_kind=['SUB','PLN','COM','RES','FPP','MP']))
+   form=Form(self,'City file-name / size check',['file_path','cycle_no','naming_basis','prefix','upload_record_kind'],dict(file_path=path,cycle_no=str(max([r['cycle_no'] for r in self.store.city_cycles(rid)],default=1)),naming_basis='Address',upload_record_kind='SUB'),dict(naming_basis=['Address','APN','Master Plan'],upload_record_kind=['SUB','PLN','COM','RES','FPP','MP']))
    if form.exec():
     v=form.values();warnings=self.store.city_file_warnings(rid,v['file_path'],v['cycle_no'],v['naming_basis'],v['prefix'],v['upload_record_kind']);self.city_show_message('File warnings (no submission)', '\n\n'.join(warnings))
   self.guard(action)

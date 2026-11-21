@@ -160,7 +160,7 @@ def test_sources_register_every_item_and_known_conflicts(store):
   assert r['source_document'] and r['source_revision_date'] and r['last_verified_date'] and r['source_sha256']
   assert r['source_link'].startswith(('https://www.cityofsacramento.gov/','https://development.saccounty.gov/'))
   assert r['jurisdiction'] in (CITY,COUNTY) and 'Elk Grove' not in r['item']
- assert len(catalog()['conflicts'])==4 and any('400 MB' in c['description'] and '50 MB' in c['description'] for c in catalog()['conflicts'])
+ assert len(catalog()['conflicts'])==5 and any('400 MB' in c['description'] and '50 MB' in c['description'] for c in catalog()['conflicts'])
  county=[r for r in rows if r['jurisdiction']==COUNTY and r['kind']=='Checklist'];assert any(r['verification']=='Verify' for r in county)
 
 
@@ -234,3 +234,27 @@ def test_ci_test_job_cannot_build_or_publish_release():
  release=workflow.split('\n  windows:',1)[1]
  assert "if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.build_release == true" in release
  assert 'default: false' in workflow
+
+
+def test_city_record_files_warn_about_sub_before_opening_local_manager(store,pid,monkeypatch):
+ from PySide6.QtWidgets import QApplication,QMessageBox
+ from cpc.ui import Window
+ app=QApplication.instance() or QApplication([]);rid=permit(store,pid)
+ store.save('reg_city_records',dict(project_id=pid,permit_register_id=rid,record_kind='COM',reference='COM-1234567'))
+ w=Window(store);w.project_filter.setCurrentIndex(w.project_filter.findData(pid));w.city_permit_select.setCurrentIndex(w.city_permit_select.findData(rid));w.city_tables['City Records'].selectRow(0);opened=[];warnings=[]
+ monkeypatch.setattr(w,'finance_file_manager',lambda *args:opened.append(args))
+ def cancel(*args):warnings.append(args[2]);return QMessageBox.Cancel
+ monkeypatch.setattr(QMessageBox,'warning',cancel);w.city_row_files('City Records');assert not opened and 'SUB' in warnings[0]
+ monkeypatch.setattr(QMessageBox,'warning',lambda *a:QMessageBox.Ok);w.city_row_files('City Records');assert opened;w.close()
+
+
+def test_deleted_generated_charge_stays_deleted(store,pid):
+ rid=permit(store,pid);charge=store.city_charges(rid)[0];store.delete_records([('reg_manual_charges',charge['id'])]);store.add_city_standard(rid)
+ assert charge['title'] not in [r['title'] for r in store.city_charges(rid)]
+
+
+def test_deleted_charge_id_reuse_does_not_hide_new_user_charge_on_county(store,pid):
+ rid=permit(store,pid);last=store.city_charges(rid)[-1];store.delete_records([('reg_manual_charges',last['id'])])
+ new=store.save('reg_manual_charges',dict(project_id=pid,register_id=rid,title='User manual charge'))
+ store.configure_city_permit(config(pid,COUNTY),rid,True)
+ assert new in [r['id'] for r in store.city_charges(rid)]
