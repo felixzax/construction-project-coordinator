@@ -111,3 +111,15 @@ class RegulatoryStore:
   # The existing inspection register remains the owner, including Files.
   rows=self.rows('SELECT id FROM reg_inspection_details WHERE register_id=?',(register_id,))
   return self.save('reg_inspection_details',dict(values,register_id=register_id),rows[0]['id'] if rows else None)
+
+ def regulatory_search_label(self,table,row):
+  if table not in REG_FIELDS:return ''
+  if row.get('register_id'):
+   parents=self.rows('SELECT title FROM registers WHERE id=?',(row['register_id'],))
+   if parents:return parents[0]['title']+' — '+table.replace('reg_','').replace('_',' ')
+  if table=='reg_rfactor_periods':return 'R period '+row['start_date']+' — '+row['end_date']
+  if row.get('filing_type'):return row['filing_type']+(' — '+row['reference'] if row.get('reference') else '')
+  if row.get('role'):
+   contacts=self.rows('SELECT name FROM contacts WHERE id=?',(row.get('contact_id'),))
+   return row['role']+(' — '+contacts[0]['name'] if contacts else ' — Unassigned')
+  return row.get('wdid') or row.get('field_name') or table.replace('reg_','').replace('_',' ').title()

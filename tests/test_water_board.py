@@ -231,3 +231,14 @@ def test_ceqa_survives_deleting_water_site_and_regenerate_clears_obsolete_row_dr
  ceqa=store.save('reg_filings',dict(project_id=pid,wb_site_id=sid,filing_type='CEQA Notice of Determination'))
  assert next(r for r in store.all('reg_filings') if r['id']==ceqa)['wb_site_id'] is None
  store.delete_records([('reg_wb_sites',sid)]);assert store.all('reg_filings')[0]['id']==ceqa
+
+
+def test_new_records_have_readable_search_labels_and_weekly_dashboard_warning(store,pid):
+ from PySide6.QtWidgets import QApplication
+ from cpc.ui import Window
+ app=QApplication.instance() or QApplication([]);sid=filled(store,pid);store.save('reg_wb_sites',dict(wdid='Fictional WDID unique',status='Active'),sid)
+ fid=coi(store,pid,sid,reference='Fictional COI unique')
+ assert any(r['label']=='Fictional WDID unique' for r in store.search('Fictional WDID unique'))
+ assert any('COI (Site)' in r['label'] for r in store.search('Fictional COI unique'))
+ assert all(r['label'] for r in store.search('45.49') if r['type']=='reg_rfactor_periods')
+ w=Window(store);w.project_filter.setCurrentIndex(w.project_filter.findData(pid));assert any(r.get('_source_table')=='reg_wb_sites' and 'Weekly inspection' in r['kind'] for r in w.data['Dashboard']);w.close()

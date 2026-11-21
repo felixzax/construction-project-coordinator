@@ -175,7 +175,8 @@ class Store(ComplianceStore,WaterBoardStore,CityPermitStore,RegulatoryStore,Work
   for table,fields in FIELDS.items():
    cols=[f for f in fields if not f.endswith('_id') and f not in ('archived','included')]
    for row in self.rows(f'SELECT * FROM {table} WHERE '+ ' OR '.join(f'{c} LIKE ?' for c in cols),['%'+query+'%']*len(cols)):
-    result.append({'type':table,'id':row['id'],'project_id':(row['id'] if table=='projects' else self.project_for(table,row)) or '','label':row.get('name',row.get('title',row.get('summary',row.get('original_name',''))))})
+    if row.get('deleted'):continue
+    result.append({'type':table,'id':row['id'],'project_id':(row['id'] if table=='projects' else self.project_for(table,row)) or '','label':row.get('name',row.get('title',row.get('summary',row.get('original_name','')))) or self.regulatory_search_label(table,row)})
   for row in self.rows('SELECT v.*,d.project_id,d.title FROM versions v JOIN documents d ON d.id=v.document_id WHERE v.revision LIKE ? OR v.requirements LIKE ?',('%'+query+'%','%'+query+'%')):
    result.append({'type':'versions','id':row['id'],'project_id':row['project_id'],'label':row['title']+' / '+row['revision']+': '+row['requirements']})
   return result

@@ -1,6 +1,6 @@
 """Manual Water Board workspace using existing forms, Files and recovery."""
 import json,uuid
-from datetime import date
+from datetime import date,timedelta
 from PySide6.QtWidgets import QWidget,QVBoxLayout,QHBoxLayout,QLabel,QTabWidget,QLineEdit,QCheckBox,QAbstractItemView,QMessageBox,QDialog,QTextBrowser,QComboBox,QApplication,QToolButton,QMenu
 from .table import DataTable
 from .water_board import SITE_STATUSES,FILING_TYPES,FILING_STATUSES,READY,annual_dates,water_catalog
@@ -50,6 +50,12 @@ class WaterUI:
   for pid,project in projects.items():
    for row in self.store.regulatory_deadlines(pid):
     extra.append(dict(_source_table=row['table'],_source_id=row['id'],_reg_no_overdue=row['status']=='Waiting on Agency',project_id=pid,project=project['name'],kind='Regulatory',item=row['title'],title=row['title'],deadline=row['deadline'],status=row['status'],responsible=''))
+   site=self.store.water_site(pid)
+   if site:
+    weekly=self.store.water_weekly_progress(pid)
+    if weekly['overdue']:
+     due=(date.today()-timedelta(days=weekly['days_since_weekly']-7)).isoformat() if weekly['days_since_weekly'] is not None else ''
+     extra.append(dict(_source_table='reg_wb_sites',_source_id=site['id'],project_id=pid,project=project['name'],kind='Weekly inspection — Verify',item=weekly['message'],title=weekly['message'],deadline=due,status='Verify inspection record',responsible=''))
   if extra:
    self.fill('Dashboard',sorted(self.data.get('Dashboard',[])+extra,key=lambda r:r.get('deadline') or '9999'))
    self.fill('Timeline',sorted(self.data.get('Timeline',[])+[dict(r,id=None,phase='Regulatory') for r in extra],key=lambda r:r.get('deadline') or '9999'))
