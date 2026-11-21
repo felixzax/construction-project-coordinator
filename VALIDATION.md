@@ -28,6 +28,14 @@ Schema 11 stores manually entered valuation and permit fees. Earlier databases r
 
 ## 1.12.0 regulatory verification (review build)
 
+- [Successful Windows workflow](https://github.com/felixzax/construction-project-coordinator/actions/runs/44880476892): **409 passed in 287.86 seconds**, no failures/errors/skips.
+- Linux: **409 passed in 57.73 seconds**, source smoke exit 0.
+- Tested/build commit: `ca48e877bbe8196ece759bc2ea509c46fc4296c5`.
+- [Verified review artifact](https://github.com/felixzax/construction-project-coordinator/actions/runs/44880476892/artifacts/14698031366): `ConstructionProjectCoordinator-1.12.0-Windows-review`.
+- Artifact ZIP SHA-256: `6b9dd78641cdc38d19d2d79fccdab03f52061c2dcf2c379d27dfd4e782e65d53`.
+- ZIP extraction, isolated offscreen/native Windows launch and the exact downloaded artifact passed. Checks include both bundled source catalogs, seal contact, manual R total and compliance DOCX/HTML. The workflow removed source Python/Qt paths for executable verification. No user-machine walkthrough or live agency/EPA verification is claimed.
+- Main-only release job skipped; PR #1 remains draft. The review artifact is available without merging or creating a GitHub Release.
+
 Automated test evidence for this work is recorded in `review/phase45/`. Windows test/build results are recorded only after the workflow actually finishes. Source testing uses Python 3.12 and offscreen Qt; packaged checks exercise the actual executable with Python/Qt paths removed. Main/PR merging and GitHub Release publication remain pending review.
 
 ### R-factor verification

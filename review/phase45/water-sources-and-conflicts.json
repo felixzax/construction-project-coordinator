@@ -1,0 +1,139 @@
+{
+  "verified_date": "2026-11-20",
+  "sources": {
+    "r": {
+      "title": "R Factor Calculator Guide \u2014 February 2024",
+      "publisher": "California State Water Resources Control Board",
+      "source_kind": "Official Water Board PDF",
+      "document_revision_date": "",
+      "url": "https://www.waterboards.ca.gov/water_issues/programs/stormwater/smarts/construction/docs/rfactor_guide.pdf",
+      "last_verified_date": "2026-11-20",
+      "verification_status": "Verified source; verify applicability",
+      "conflict_notes": "\nUser specification cites 2020-12-30 guide and 2020\u20132022 example totaling 105.14. The retrieved guide is February 2024 and shows 2025\u20132028 periods, 45.49 + 45.49 + 42.13 = 133.11. Keep the requested 105.14 case as a mathematical regression, and the current 133.11 example separately. Neither proves EPA output; manually verify in EPA. Display both revisions.",
+      "notes": "Printed revision appears in title; day is not stated for month-only revisions. Do not invent a day. SHA-256: 52d5a102b9d588fdc6d3e8da3e7a754c9be0407c13abd03a7892754776831d33",
+      "sha256": "52d5a102b9d588fdc6d3e8da3e7a754c9be0407c13abd03a7892754776831d33"
+    },
+    "coi": {
+      "title": "Site COI Guide \u2014 April 2026",
+      "publisher": "California State Water Resources Control Board",
+      "source_kind": "Official Water Board PDF",
+      "document_revision_date": "",
+      "url": "https://www.waterboards.ca.gov/water_issues/programs/stormwater/smarts/construction/docs/cgp_site_coi_help_guide.pdf",
+      "last_verified_date": "2026-11-20",
+      "verification_status": "Verified source; verify applicability",
+      "conflict_notes": "\nApril 2026 Site COI guide certification steps contain NOI and NOT labels in passages otherwise describing COI. Do not copy inconsistent button instructions as requirements. Mark the actual portal workflow Verify; local LRP/DAR/eAuthorization blocker follows the user requirement and the clear guide introduction.\nOrganization guide permits any user to create some organization changes; the requested office policy applies LRP/DAR/eAuthorization checks to COI Ready/Submitted. Enforce the requested local coordination policy; do not represent it as a claim that every organization edit legally requires that role.",
+      "notes": "Printed revision appears in title; day is not stated for month-only revisions. Do not invent a day. SHA-256: c662e34c367118b1c879f5812bfd5369cde3693c5f536f32e1d9c8a51a337c03",
+      "sha256": "c662e34c367118b1c879f5812bfd5369cde3693c5f536f32e1d9c8a51a337c03"
+    },
+    "org": {
+      "title": "Organization COI Guide \u2014 April 2026",
+      "publisher": "California State Water Resources Control Board",
+      "source_kind": "Official Water Board PDF",
+      "document_revision_date": "",
+      "url": "https://www.waterboards.ca.gov/water_issues/programs/stormwater/smarts/construction/docs/org_coi_help_guide.pdf",
+      "last_verified_date": "2026-11-20",
+      "verification_status": "Verified source; verify applicability",
+      "conflict_notes": "\nOrganization guide permits any user to create some organization changes; the requested office policy applies LRP/DAR/eAuthorization checks to COI Ready/Submitted. Enforce the requested local coordination policy; do not represent it as a claim that every organization edit legally requires that role.",
+      "notes": "Printed revision appears in title; day is not stated for month-only revisions. Do not invent a day. SHA-256: 05f3393197be01035232b9a5137c52759d4ad70fd3eb320f0d6035d359fbc454",
+      "sha256": "05f3393197be01035232b9a5137c52759d4ad70fd3eb320f0d6035d359fbc454"
+    },
+    "annual": {
+      "title": "2022 CGP Annual Report Guide \u2014 April 2026",
+      "publisher": "California State Water Resources Control Board",
+      "source_kind": "Official Water Board PDF",
+      "document_revision_date": "",
+      "url": "https://www.waterboards.ca.gov/water_issues/programs/stormwater/smarts/construction/docs/cgp_2022_ar_help_guide.pdf",
+      "last_verified_date": "2026-11-20",
+      "verification_status": "Verified source; verify applicability",
+      "conflict_notes": "\nAnnual guide qualifies applicability to WDID active at least three months in reporting year; dates alone do not establish applicability. Annual records and auto-created next periods remain Verify applicability. No inference from acreage or site status is made.",
+      "notes": "Printed revision appears in title; day is not stated for month-only revisions. Do not invent a day. SHA-256: 3864e83aa0d0d90090148bea3ac810f3dfad442194d58d6a087c5ddd9a436afc",
+      "sha256": "3864e83aa0d0d90090148bea3ac810f3dfad442194d58d6a087c5ddd9a436afc"
+    },
+    "not": {
+      "title": "2022 CGP Notice of Termination Guide \u2014 April 2026",
+      "publisher": "California State Water Resources Control Board",
+      "source_kind": "Official Water Board PDF",
+      "document_revision_date": "",
+      "url": "https://www.waterboards.ca.gov/water_issues/programs/stormwater/smarts/construction/docs/cgp_2022_not_help_guide.pdf",
+      "last_verified_date": "2026-11-20",
+      "verification_status": "Verified source; verify applicability",
+      "conflict_notes": "",
+      "notes": "Printed revision appears in title; day is not stated for month-only revisions. Do not invent a day. SHA-256: e313e191d9666b501132f26c39b4ee3b1157e267c860d93700976baff33e3ca5",
+      "sha256": "e313e191d9666b501132f26c39b4ee3b1157e267c860d93700976baff33e3ca5"
+    },
+    "noi": {
+      "title": "NOI Guide \u2014 February 2024",
+      "publisher": "California State Water Resources Control Board",
+      "source_kind": "Official Water Board PDF",
+      "document_revision_date": "",
+      "url": "https://www.waterboards.ca.gov/water_issues/programs/stormwater/smarts/construction/docs/cgp_noi_help_guide.pdf",
+      "last_verified_date": "2026-11-20",
+      "verification_status": "Verified source; verify applicability",
+      "conflict_notes": "",
+      "notes": "Printed revision appears in title; day is not stated for month-only revisions. Do not invent a day. SHA-256: 893c8c1ff0eda0848c3b1b728062bcefa9cd91778fc1e9692ee89dc1be47ea9b",
+      "sha256": "893c8c1ff0eda0848c3b1b728062bcefa9cd91778fc1e9692ee89dc1be47ea9b"
+    },
+    "waiver": {
+      "title": "Low Erosivity Waiver Guide \u2014 verify printed revision",
+      "publisher": "California State Water Resources Control Board",
+      "source_kind": "Official Water Board PDF",
+      "document_revision_date": "",
+      "url": "https://www.waterboards.ca.gov/water_issues/programs/stormwater/smarts/construction/docs/cgp_waiver_help_guide.pdf",
+      "last_verified_date": "2026-11-20",
+      "verification_status": "Verified source; verify applicability",
+      "conflict_notes": "",
+      "notes": "Printed revision appears in title; day is not stated for month-only revisions. Do not invent a day. SHA-256: 3c5492d960ba66d7523ac3299d9536809d98a9b2963b9897459e47e18ee9ad3c",
+      "sha256": "3c5492d960ba66d7523ac3299d9536809d98a9b2963b9897459e47e18ee9ad3c"
+    },
+    "order": {
+      "title": "Order WQ 2022-0057-DWQ \u2014 adopted September 8, 2022",
+      "publisher": "California State Water Resources Control Board",
+      "source_kind": "Official Water Board PDF",
+      "document_revision_date": "2022-09-08",
+      "url": "https://www.waterboards.ca.gov/board_decisions/adopted_orders/water_quality/2022/wqo_2022-0057-dwq.pdf",
+      "last_verified_date": "2026-11-20",
+      "verification_status": "Verified source; verify applicability",
+      "conflict_notes": "\nWeekly/storm inspection applicability depends on permit conditions; a simple seven-day office flag cannot establish compliance. Show the requested active-site seven-day coordination flag with Verify wording. No precipitation threshold or risk eligibility is inferred.",
+      "notes": "Printed revision appears in title; day is not stated for month-only revisions. Do not invent a day. SHA-256: 0d13064e5ff7d83bdd6bfed662c162fd9b2bbdf8ab2804d3e5380101a5a0c2d6",
+      "sha256": "0d13064e5ff7d83bdd6bfed662c162fd9b2bbdf8ab2804d3e5380101a5a0c2d6"
+    }
+  },
+  "conflicts": [
+    {
+      "sources": [
+        "r"
+      ],
+      "description": "User specification cites 2020-12-30 guide and 2020\u20132022 example totaling 105.14. The retrieved guide is February 2024 and shows 2025\u20132028 periods, 45.49 + 45.49 + 42.13 = 133.11.",
+      "resolution": "Keep the requested 105.14 case as a mathematical regression, and the current 133.11 example separately. Neither proves EPA output; manually verify in EPA. Display both revisions."
+    },
+    {
+      "sources": [
+        "coi"
+      ],
+      "description": "April 2026 Site COI guide certification steps contain NOI and NOT labels in passages otherwise describing COI.",
+      "resolution": "Do not copy inconsistent button instructions as requirements. Mark the actual portal workflow Verify; local LRP/DAR/eAuthorization blocker follows the user requirement and the clear guide introduction."
+    },
+    {
+      "sources": [
+        "org",
+        "coi"
+      ],
+      "description": "Organization guide permits any user to create some organization changes; the requested office policy applies LRP/DAR/eAuthorization checks to COI Ready/Submitted.",
+      "resolution": "Enforce the requested local coordination policy; do not represent it as a claim that every organization edit legally requires that role."
+    },
+    {
+      "sources": [
+        "annual"
+      ],
+      "description": "Annual guide qualifies applicability to WDID active at least three months in reporting year; dates alone do not establish applicability.",
+      "resolution": "Annual records and auto-created next periods remain Verify applicability. No inference from acreage or site status is made."
+    },
+    {
+      "sources": [
+        "order"
+      ],
+      "description": "Weekly/storm inspection applicability depends on permit conditions; a simple seven-day office flag cannot establish compliance.",
+      "resolution": "Show the requested active-site seven-day coordination flag with Verify wording. No precipitation threshold or risk eligibility is inferred."
+    }
+  ]
+}

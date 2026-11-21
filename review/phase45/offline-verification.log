@@ -1,0 +1,10 @@
+{
+  "schema": 12,
+  "empty_and_populated_preserved": true,
+  "backup_restore": true,
+  "source_items": 139,
+  "water_sources": 8,
+  "water_conflicts": 5,
+  "r_total": "105.14",
+  "seal_name": "Fictional Seal Engineer"
+}
