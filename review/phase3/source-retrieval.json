@@ -1,0 +1,121 @@
+{
+  "retrievals": [
+    {
+      "key": "city_forms",
+      "url": "https://www.cityofsacramento.gov/community-development/building/building-forms",
+      "final_url": "https://www.cityofsacramento.gov/community-development/building/building-forms",
+      "sha256": "6faae7c1fb4e3cd7c16cf6281887431a3ca6beacae7ab64959d35b7dd3a68f76",
+      "bytes": 3562557,
+      "retrieved": true
+    },
+    {
+      "key": "quick",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/EPC-Quick-Reference-Submittal-Guide.pdf",
+      "final_url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/EPC-Quick-Reference-Submittal-Guide.pdf",
+      "sha256": "31b878ca35ef8000c6fb973fbaabda3e9b7caea35d3b55a4d709c996f7dbb82e",
+      "bytes": 721513,
+      "retrieved": true
+    },
+    {
+      "key": "316",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/CDD-0316_Electronic-Plan-Check-(EPC)-Submittal-Verification-Checklist.pdf",
+      "final_url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/CDD-0316_Electronic-Plan-Check-(EPC)-Submittal-Verification-Checklist.pdf",
+      "sha256": "f203cdc07217c082651d1586a90951a325e3d80464636302d6c84b60355e372d",
+      "bytes": 204996,
+      "retrieved": true
+    },
+    {
+      "key": "guide",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/EPC-Submittal-Guide-Full-Version.pdf",
+      "final_url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/EPC-Submittal-Guide-Full-Version.pdf",
+      "sha256": "c64097671ed010de91b7bc8c0b36dc47a376137f27a4e75a923074ca48e65064",
+      "bytes": 3299058,
+      "retrieved": true
+    },
+    {
+      "key": "county_forms",
+      "url": "https://development.saccounty.gov/us/en/building-permits-inspection/building-forms-and-documents.html",
+      "final_url": "https://development.saccounty.gov/us/en/building-permits-inspection/building-forms-and-documents.html",
+      "sha256": "038ca21eb67f937022c332580f9085f8fe9f1067ba631690d51e689d2e84c26d",
+      "bytes": 61608,
+      "retrieved": true
+    },
+    {
+      "key": "county_permits",
+      "url": "https://development.saccounty.gov/us/en/building-permits-inspection.html",
+      "final_url": "https://development.saccounty.gov/us/en/building-permits-inspection.html",
+      "sha256": "7c5737512965a479380a8c5dce70b84ac7189f6db029a36701955cfae72d588e",
+      "bytes": 106119,
+      "retrieved": true
+    },
+    {
+      "key": "fire_new",
+      "url": "https://www.cityofsacramento.gov/fire/fire-prevention/new-construction",
+      "final_url": "https://www.cityofsacramento.gov/fire/fire-prevention/new-construction",
+      "sha256": "51be8a3aaabe37c767ec99c4caef1477d2f0b3bf526f9a3179832f2c22a014b0",
+      "bytes": 3536909,
+      "retrieved": true
+    },
+    {
+      "key": "fire_permits",
+      "url": "https://www.cityofsacramento.gov/fire/fire-prevention/fire-permits",
+      "final_url": "https://www.cityofsacramento.gov/fire/fire-prevention/fire-permits",
+      "sha256": "dc0272bf5446421d658158ab60e6ea67ba1e200e6d0c350692051deedf99cbdc",
+      "bytes": 3533603,
+      "retrieved": true
+    },
+    {
+      "key": "fire_code",
+      "url": "https://www.cityofsacramento.gov/fire/fire-prevention/code-enforcement",
+      "final_url": "https://www.cityofsacramento.gov/fire/fire-prevention/code-enforcement",
+      "sha256": "b571feeaa0f6c92ab4ada091fb44ae29b8d637d6e347bc209d1ef583d8217c82",
+      "bytes": 3531560,
+      "retrieved": true
+    },
+    {
+      "key": "0269",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0269_Deferred-Submittal-or-Revision-Intake-Form.pdf",
+      "final_url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0269_Deferred-Submittal-or-Revision-Intake-Form.pdf",
+      "sha256": "9f5372535bd2af92dbe0ab5f14de9e0f40945446472d002b0b2a733015854e3c",
+      "bytes": 1049437,
+      "retrieved": true
+    },
+    {
+      "key": "0270",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0270_Plan-Review-Resubmittal-Form.pdf",
+      "final_url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0270_Plan-Review-Resubmittal-Form.pdf",
+      "sha256": "3a9babd0d84d08fe4f627758981b0ca2281effbb027d2e6af945b4cdaff875ac",
+      "bytes": 1032691,
+      "retrieved": true
+    },
+    {
+      "key": "0224",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0224_Commercial-New-Buildings-and-Additions-Checklist.pdf",
+      "final_url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0224_Commercial-New-Buildings-and-Additions-Checklist.pdf",
+      "sha256": "14a94b95e3ba0e8c60748d8b177ebb53796dce1a9fbc646879f1dd7ff5299a42",
+      "bytes": 464951,
+      "retrieved": true
+    },
+    {
+      "key": "0259",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0259_Master-Plan-Subdivision-and-Production-Permit-Submittal-Checklist.pdf",
+      "final_url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0259_Master-Plan-Subdivision-and-Production-Permit-Submittal-Checklist.pdf",
+      "sha256": "044b44a1f6002e6bdc9bc9ea5e6a1217b35ef24d7dfee7d9a6fca4cb2e67f69a",
+      "bytes": 1144796,
+      "retrieved": true
+    },
+    {
+      "key": "0278",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0278_Applicants-Preliminary-Bldg-Permit-Fee-Estimate-Worksheet.pdf",
+      "final_url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0278_Applicants-Preliminary-Bldg-Permit-Fee-Estimate-Worksheet.pdf",
+      "sha256": "5883a31677e169c1eee0ed9a0075d7e8966505b211b6f37fe882e08d8501a564",
+      "bytes": 351993,
+      "retrieved": true
+    }
+  ],
+  "notes": [
+    "Only user-named documents and official City/County/City Fire pages were used.",
+    "Legacy building.saccounty.gov BuildingPermits.aspx and BuildingForms.aspx now redirect to the official BPI landing page. The official forms page was followed from that landing page.",
+    "PDF revision dates were read from printed footers. Agency pages without a published revision date retain an unknown revision and project applicability stays Verify."
+  ]
+}

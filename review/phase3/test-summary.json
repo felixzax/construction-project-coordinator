@@ -1,0 +1,34 @@
+{
+  "linux": {
+    "tests": 364,
+    "existing_cases": 322,
+    "original_suite_cases": 297,
+    "phase2_cases": 25,
+    "phase3_cases": 42,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 49.178,
+    "python": "3.12.14",
+    "qt_platform": "offscreen"
+  },
+  "windows": {
+    "tests": 364,
+    "existing_cases": 322,
+    "original_suite_cases": 297,
+    "phase2_cases": 25,
+    "phase3_cases": 42,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 282.609,
+    "run_url": "https://github.com/felixzax/construction-project-coordinator/actions/runs/44846250490",
+    "job_url": "https://github.com/felixzax/construction-project-coordinator/actions/runs/44846250490/job/136666563786",
+    "tested_commit": "fc04b8073c2386d2fea4f5e26810312183694864",
+    "python": "3.12.10",
+    "qt_platform": "offscreen",
+    "release_job": "skipped; zero steps",
+    "test_artifact_id": 14683138026,
+    "downloaded_artifact_sha256": "1398e8208799d8df32bfabdce14c3206dc3d6373c22801e92e1cc49f11b41a4e"
+  }
+}
