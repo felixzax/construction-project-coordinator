@@ -60,7 +60,7 @@ class WaterBoardStore:
    if not isinstance(changed,list) or any(not isinstance(v,str) for v in changed):raise ValueError('Changed fields must be a list of labels')
    advanced=data.get('readiness_flag')=='Ready' or data.get('status')=='Submitted'
    certification_required=advanced
-   if old and old[0]['status']=='Submitted' and data.get('status')=='Submitted' and all(data.get(k)==old[0].get(k) for k in ('reason_for_change','certifier_role_id','fields_changed_json')):certification_required=False
+   if old and old[0]['status']=='Submitted' and data.get('status')=='Submitted' and (data.get('readiness_flag')!='Ready' or data.get('readiness_flag')==old[0]['readiness_flag']) and all(data.get(k)==old[0].get(k) for k in ('reason_for_change','certifier_role_id','fields_changed_json')):certification_required=False
    if data['filing_type'].startswith('COI') and certification_required:
     roles=self.rows('SELECT r.*,c.name AS contact_name FROM reg_project_roles r JOIN contacts c ON c.id=r.contact_id WHERE r.id=? AND r.project_id=?',(data.get('certifier_role_id'),data['project_id']))
     if not str(data.get('reason_for_change','')).strip():raise ValueError('COI requires a reason for change. This blocker cannot be overridden.')

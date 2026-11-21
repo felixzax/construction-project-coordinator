@@ -248,3 +248,10 @@ def test_shared_list_exports_use_record_ids_when_titles_repeat(store,pid):
  c1=store.save('contacts',dict(name='First responsible person'));c2=store.save('contacts',dict(name='Second responsible person'))
  first=store.save('reg_project_roles',dict(project_id=pid,contact_id=c1,role='QSP'));second=store.save('reg_project_roles',dict(project_id=pid,contact_id=c2,role='QSP'))
  rows=store.compliance_rows(pid,'Roles',{first});assert any(r['value']=='First responsible person' for r in rows) and not any(r['value']=='Second responsible person' for r in rows)
+
+
+def test_historical_notes_exception_cannot_bypass_new_ready_transition(store,pid):
+ sid=filled(store,pid);role=certifier(store,pid);fid=coi(store,pid,sid,reason_for_change='Original submission',certifier_role_id=role,status='Submitted')
+ contact=store.all('reg_project_roles')[0]['contact_id'];store.delete_records([('contacts',contact)])
+ with pytest.raises(ValueError,match='cannot be overridden'):store.save('reg_filings',dict(readiness_flag='Ready'),fid)
+ assert store.all('reg_filings')[0]['readiness_flag']=='Not Ready'
