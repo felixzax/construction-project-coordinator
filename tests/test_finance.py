@@ -122,7 +122,7 @@ def test_v6_upgrade_and_restore_preserve_existing_data(store,tmp_path):
  with closing(sqlite3.connect(old)) as db:db.executescript((Path(__file__).parent/'fixtures/v6_database.sql').read_text())
  upgraded=Store(old)
  try:
-  assert upgraded.db.execute('PRAGMA user_version').fetchone()[0]==11 and len(upgraded.all('issues'))==2
+  assert upgraded.db.execute('PRAGMA user_version').fetchone()[0]==12 and len(upgraded.all('issues'))==2
   assert upgraded.all('budgets')==[] and upgraded.all('receipts')[0]['include_in_budget']==1
  finally:upgraded.db.close()
  with closing(sqlite3.connect(str(old)+'.before-v1.11.0.sqlite3')) as db:assert db.execute('PRAGMA user_version').fetchone()[0]==6

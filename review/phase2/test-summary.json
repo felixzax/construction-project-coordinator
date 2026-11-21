@@ -1,0 +1,23 @@
+{
+  "baseline": {
+    "tests": "297",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "41.472"
+  },
+  "existing_after_changes": {
+    "tests": "297",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "43.046"
+  },
+  "final_combined": {
+    "tests": "322",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "45.712"
+  }
+}

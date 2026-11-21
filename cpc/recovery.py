@@ -60,6 +60,8 @@ class RecoveryStore:
  def save_draft(self,key,table,row_id,values,extra=None):
   from .store import FIELDS
   if table not in FIELDS and table!='__versions__': raise ValueError('Unknown form type')
+  from .privacy import check_values
+  check_values(values);check_values(extra or {})
   encoded=json.dumps(values,ensure_ascii=False); metadata=json.dumps(extra or {},ensure_ascii=False)
   with self.db:
    self.db.execute('INSERT INTO form_drafts(id,target_table,row_id,payload,extra,updated) VALUES(?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET payload=excluded.payload,extra=excluded.extra,updated=excluded.updated',(key,table,row_id,encoded,metadata,now()))
@@ -80,6 +82,12 @@ class RecoveryStore:
   links=[('approvals','approval_history','approval_id'),('scope_items','custom_fields','scope_item_id'),('contracts','contract_changes','contract_id'),('contracts','finance_files','contract_id'),('budgets','finance_files','budget_id'),('documents','versions','document_id'),('registers','permit_requirements','register_id'),('bid_packages','bids','package_id'),('bids','bid_items','bid_id')]
   for table,fields in FIELDS.items():
    if 'project_id' in fields: links.append(('projects',table,'project_id'))
+  from .regulatory_schema import REG_FIELDS
+  # Include cascading metadata in the plan so polymorphic Files and drafts
+  # are removed and the confirmation lists the actual records affected.
+  for child in REG_FIELDS:
+   for fk in self.db.execute(f'PRAGMA foreign_key_list({child})'):
+    if fk[6]=='CASCADE':links.append((fk[2],child,fk[3]))
   links.append(('projects','activity','project_id'))
   changed=True
   while changed:
@@ -122,8 +130,9 @@ class RecoveryStore:
     self.db.execute(f'UPDATE contracts SET budget_id=NULL WHERE budget_id IN ({marks(batch)})',batch)
     self.db.execute(f'UPDATE receipts SET budget_id=NULL WHERE budget_id IN ({marks(batch)})',batch)
    for batch in chunks(plan.get('contacts',())):
+    self.db.execute(f"UPDATE reg_project_roles SET eauthorization_status='Unknown',eauthorization_date='' WHERE contact_id IN ({marks(batch)})",batch)
     for table,fields in FIELDS.items():
-     for fk in ('contact_id','designer_id','reviewer_id'):
+     for fk in ('contact_id','designer_id','reviewer_id','requested_from_contact_id','prepared_by_contact_id'):
       if fk in fields: self.db.execute(f'UPDATE {table} SET {fk}=NULL WHERE {fk} IN ({marks(batch)})',batch)
     self.db.execute(f'DELETE FROM project_contacts WHERE contact_id IN ({marks(batch)})',batch)
    for batch in chunks(plan.get('registers',())):
@@ -135,7 +144,8 @@ class RecoveryStore:
     self.db.execute(f'DELETE FROM project_section_order WHERE project_id IN ({marks(batch)})',batch)
     self.db.execute(f'DELETE FROM project_sections WHERE project_id IN ({marks(batch)})',batch)
     self.db.execute(f'DELETE FROM project_contacts WHERE project_id IN ({marks(batch)})',batch)
-   order=['finance_files','work_orders','approval_history','approvals','custom_fields','rebates','scope_items','project_profiles','contract_changes','issues','receipts','permit_requirements','bid_items','versions','tasks','communications','milestones','work_packages','registers','meetings','bids','bid_packages','documents','contracts','budgets','activity','projects','contacts']
+   from .regulatory_schema import REG_FIELDS
+   order=['finance_files',*reversed(REG_FIELDS),'work_orders','approval_history','approvals','custom_fields','rebates','scope_items','project_profiles','contract_changes','issues','receipts','permit_requirements','bid_items','versions','tasks','communications','milestones','work_packages','registers','meetings','bids','bid_packages','documents','contracts','budgets','activity','projects','contacts']
    for table in order:
     for batch in chunks(plan.get(table,())): self.db.execute(f'DELETE FROM {table} WHERE id IN ({marks(batch)})',batch)
    for approval_id in changed_approvals-plan.get('approvals',set()):self.approval_evidence_changed(approval_id)

@@ -82,6 +82,8 @@ class FinanceUI:
   def action():
    owner_record=record if record is not None else self.selected(title);owner_table=parent_table or FINANCE_PAGES[title];dlg=QDialog(self);dlg.setWindowTitle(title+' files — '+owner_record.get('title',owner_record.get('name','Project')));dlg.resize(1150,700);layout=QVBoxLayout(dlg)
    hint=QLabel('Add files keeps an original local copy. Save a copy downloads the original bytes; Save all as ZIP includes every file. Text/CSV, basic DOCX and plain XLSX can be edited here. Supported conversions appear in Save as; complex files use their normal Windows app and can be re-imported as revised files.');hint.setWordWrap(True);layout.addWidget(hint)
+   from .regulatory import PRIVACY_NOTE
+   warning=QLabel(PRIVACY_NOTE);warning.setWordWrap(True);layout.addWidget(warning)
    table=DataTable();table.setEditTriggers(QAbstractItemView.NoEditTriggers);layout.addWidget(table);bar=QHBoxLayout();layout.addLayout(bar);rows=[];working_copies={}
    def reload():rows[:]=self.store.finance_files(owner_table,owner_record['id']);self.render_recovery_table(table,[dict(filename=r['original_name'],bytes=r['byte_size'],added=r['added_date'],notes=r['notes']) for r in rows])
    def selected():

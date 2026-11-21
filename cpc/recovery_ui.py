@@ -136,6 +136,18 @@ class RecoveryUI:
     if table=='bids': choices['package_id']=[(p['title'],p['id']) for p in self.store.all('bid_packages')]
     if table=='bid_items': choices['bid_id']=[(p['title'],p['id']) for p in self.store.all('bids')]
     if table=='permit_requirements': choices['register_id']=[(p['title'],p['id']) for p in self.store.all('registers') if p['record_type']=='Permit']
+   from .regulatory_schema import REG_FIELDS
+   if table in REG_FIELDS:
+    from .regulatory_ui import TABLES,EDIT_FIELDS
+    name=next((n for n,t in TABLES.items() if t==table),None)
+    if name:fields=EDIT_FIELDS[name]
+    choices=self.regulatory_choices(values.get('project_id') or self.store.project_for(table,values))
+    if table=='reg_inspection_details':choices['register_id']=[(r['title'],r['id']) for r in self.store.all('registers') if r['record_type']=='Inspection']
+   if table=='project_profiles':
+    from .regulatory import JURISDICTIONS
+    fields=[*fields,'reg_cgp_subject','reg_jurisdiction'];settings=self.store.regulatory_settings(values.get('project_id'))
+    values.setdefault('reg_cgp_subject',settings['cgp_subject']);values.setdefault('reg_jurisdiction',settings['jurisdiction'])
+    choices.update(reg_cgp_subject=['Undecided','Yes','No','Not Applicable'],reg_jurisdiction=JURISDICTIONS)
    form=Form(self,'Recover unfinished form',fields,values,choices)
    if table=='__versions__': form.persist=lambda data:self.store.add_version(extra['document_id'],**data)
    else: form.persist=lambda data:self.store.save(table,data,rid)

@@ -34,10 +34,10 @@ def test_eye_click_hides_without_navigating_and_hidden_eye_restores(window,store
 def test_sidebar_profile_persistence_and_separate_all_projects_preferences(window,store,app):
  w=window;pid=store.all('projects')[0]['id'];other=store.save('projects',{'name':'Another project'});w.refresh();w.hide_sidebar_section('Meetings')
  w.project_filter.setCurrentIndex(w.project_filter.findData(pid));assert 'Meetings' not in w.navigation_hidden();w.hide_sidebar_section('Electrical')
- w.project_filter.setCurrentIndex(w.project_filter.findData(other));assert w.navigation_hidden()==set()
- w.project_filter.setCurrentIndex(0);assert w.navigation_hidden()=={'Meetings'}
- w.close();second=Window(store);assert second.navigation_hidden()=={'Meetings'}
- second.project_filter.setCurrentIndex(second.project_filter.findData(pid));assert second.navigation_hidden()=={'Electrical'};second.close()
+ w.project_filter.setCurrentIndex(w.project_filter.findData(other));assert w.navigation_hidden()=={'Regulatory & Permits'}
+ w.project_filter.setCurrentIndex(0);assert w.navigation_hidden()=={'Meetings','Regulatory & Permits'}
+ w.close();second=Window(store);assert second.navigation_hidden()=={'Meetings','Regulatory & Permits'}
+ second.project_filter.setCurrentIndex(second.project_filter.findData(pid));assert second.navigation_hidden()=={'Electrical','Regulatory & Permits'};second.close()
 
 
 def test_every_category_can_be_hidden_except_single_hidden_drawer(window,store):

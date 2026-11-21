@@ -1,0 +1,1040 @@
+{
+  "baseline_commit": "6ed7592190c940ed21f3819ce2e31a626e819f94",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "cases": {
+    "empty": {
+      "source_sha256_before": "19f265c193131717f5424244047a687c3e9e947ce8f9818c8fab91779a432b57",
+      "source_sha256_after": "19f265c193131717f5424244047a687c3e9e947ce8f9818c8fab91779a432b57",
+      "canonical_rows_sha256_before": "419850746e4ebc65332cdeb54f01eb928883c13a3655ba95cac6dac86fd6f2cc",
+      "canonical_rows_sha256_after": "419850746e4ebc65332cdeb54f01eb928883c13a3655ba95cac6dac86fd6f2cc",
+      "schema_after": 12,
+      "safety_copy_created": true,
+      "safety_copy_schema": 11,
+      "safety_copy_sha256": "16d1454b02275d31eea5e6eb7dd8607f5a00a8b18e84830168bacbea1475192d",
+      "all_original_rows_equal": true,
+      "all_original_columns_unchanged": true,
+      "original_row_counts": {
+        "activity": 0,
+        "app_session": 1,
+        "approval_history": 0,
+        "approvals": 0,
+        "bid_items": 0,
+        "bid_packages": 0,
+        "bids": 0,
+        "budgets": 0,
+        "communications": 0,
+        "contacts": 0,
+        "contract_changes": 0,
+        "contracts": 0,
+        "custom_fields": 0,
+        "documents": 0,
+        "finance_files": 0,
+        "form_drafts": 0,
+        "issues": 0,
+        "meetings": 0,
+        "milestones": 0,
+        "permit_requirements": 0,
+        "project_contacts": 0,
+        "project_profiles": 0,
+        "project_section_order": 0,
+        "project_sections": 0,
+        "projects": 0,
+        "rebates": 0,
+        "receipts": 0,
+        "registers": 0,
+        "scope_items": 0,
+        "tasks": 0,
+        "versions": 0,
+        "work_orders": 0,
+        "work_packages": 0
+      },
+      "hidden_section_rows_before": [],
+      "hidden_section_rows_after": [],
+      "section_order_rows_before": [],
+      "section_order_rows_after": [],
+      "all_21_regulatory_tables_empty": true,
+      "foreign_key_check": [],
+      "integrity": "ok",
+      "rollback": {
+        "opened_by_schema11_application": true,
+        "schema": 11,
+        "integrity": "ok"
+      },
+      "current_app_restore_and_reupgrade_preserved_rows": true
+    },
+    "populated": {
+      "source_sha256_before": "53afaccb0c9ba4ef4f3a99e687cac7525b6fa8d57fd7b52e16fd5dc9c57c112c",
+      "source_sha256_after": "53afaccb0c9ba4ef4f3a99e687cac7525b6fa8d57fd7b52e16fd5dc9c57c112c",
+      "canonical_rows_sha256_before": "0c12ae74418667d58310ace5f206fae9ad0cc0a1c9e32f79d7233593bac56032",
+      "canonical_rows_sha256_after": "0c12ae74418667d58310ace5f206fae9ad0cc0a1c9e32f79d7233593bac56032",
+      "schema_after": 12,
+      "safety_copy_created": true,
+      "safety_copy_schema": 11,
+      "safety_copy_sha256": "fcbfd495ee5814b2706d0d3c115b5a85b768d50eee98d689be22078377f8aed3",
+      "all_original_rows_equal": true,
+      "all_original_columns_unchanged": true,
+      "original_row_counts": {
+        "activity": 42,
+        "app_session": 1,
+        "approval_history": 1,
+        "approvals": 1,
+        "bid_items": 2,
+        "bid_packages": 1,
+        "bids": 2,
+        "budgets": 1,
+        "communications": 1,
+        "contacts": 3,
+        "contract_changes": 0,
+        "contracts": 1,
+        "custom_fields": 0,
+        "documents": 1,
+        "finance_files": 0,
+        "form_drafts": 0,
+        "issues": 2,
+        "meetings": 1,
+        "milestones": 1,
+        "permit_requirements": 2,
+        "project_contacts": 3,
+        "project_profiles": 1,
+        "project_section_order": 74,
+        "project_sections": 2,
+        "projects": 1,
+        "rebates": 1,
+        "receipts": 1,
+        "registers": 2,
+        "scope_items": 1,
+        "tasks": 2,
+        "versions": 2,
+        "work_orders": 1,
+        "work_packages": 6
+      },
+      "hidden_section_rows_before": [
+        [
+          1,
+          "Budgets",
+          1
+        ],
+        [
+          1,
+          "Meetings",
+          1
+        ]
+      ],
+      "hidden_section_rows_after": [
+        [
+          1,
+          "Budgets",
+          1
+        ],
+        [
+          1,
+          "Meetings",
+          1
+        ]
+      ],
+      "section_order_rows_before": [
+        [
+          1,
+          "sidebar",
+          "Projects",
+          0
+        ],
+        [
+          1,
+          "sidebar",
+          "Dashboard",
+          1
+        ],
+        [
+          1,
+          "sidebar",
+          "Hidden sections",
+          2
+        ],
+        [
+          1,
+          "sidebar",
+          "Project Profile",
+          3
+        ],
+        [
+          1,
+          "sidebar",
+          "Scope & Systems",
+          4
+        ],
+        [
+          1,
+          "sidebar",
+          "Custom Information",
+          5
+        ],
+        [
+          1,
+          "sidebar",
+          "Rebates & Incentives",
+          6
+        ],
+        [
+          1,
+          "sidebar",
+          "Corrections",
+          7
+        ],
+        [
+          1,
+          "sidebar",
+          "Violations",
+          8
+        ],
+        [
+          1,
+          "sidebar",
+          "Tasks",
+          9
+        ],
+        [
+          1,
+          "sidebar",
+          "Architecture",
+          10
+        ],
+        [
+          1,
+          "sidebar",
+          "Engineering",
+          11
+        ],
+        [
+          1,
+          "sidebar",
+          "Electrical",
+          12
+        ],
+        [
+          1,
+          "sidebar",
+          "Plumbing",
+          13
+        ],
+        [
+          1,
+          "sidebar",
+          "Mechanical / HVAC",
+          14
+        ],
+        [
+          1,
+          "sidebar",
+          "Site & Civil",
+          15
+        ],
+        [
+          1,
+          "sidebar",
+          "Other Trades",
+          16
+        ],
+        [
+          1,
+          "sidebar",
+          "Meetings",
+          17
+        ],
+        [
+          1,
+          "sidebar",
+          "Contacts",
+          18
+        ],
+        [
+          1,
+          "sidebar",
+          "Communications",
+          19
+        ],
+        [
+          1,
+          "sidebar",
+          "Documents",
+          20
+        ],
+        [
+          1,
+          "sidebar",
+          "RFIs",
+          21
+        ],
+        [
+          1,
+          "sidebar",
+          "Submittals",
+          22
+        ],
+        [
+          1,
+          "sidebar",
+          "Permits",
+          23
+        ],
+        [
+          1,
+          "sidebar",
+          "Inspections",
+          24
+        ],
+        [
+          1,
+          "sidebar",
+          "Punch & Changes",
+          25
+        ],
+        [
+          1,
+          "sidebar",
+          "Bidding",
+          26
+        ],
+        [
+          1,
+          "sidebar",
+          "Work Orders",
+          27
+        ],
+        [
+          1,
+          "sidebar",
+          "Contracts",
+          28
+        ],
+        [
+          1,
+          "sidebar",
+          "Change Orders",
+          29
+        ],
+        [
+          1,
+          "sidebar",
+          "Approvals",
+          30
+        ],
+        [
+          1,
+          "sidebar",
+          "Budgets",
+          31
+        ],
+        [
+          1,
+          "sidebar",
+          "Receipts",
+          32
+        ],
+        [
+          1,
+          "sidebar",
+          "Timeline",
+          33
+        ],
+        [
+          1,
+          "sidebar",
+          "Search",
+          34
+        ],
+        [
+          1,
+          "sidebar",
+          "Backup & Restore",
+          35
+        ],
+        [
+          1,
+          "sidebar",
+          "Recovery & Data",
+          36
+        ],
+        [
+          1,
+          "hidden",
+          "Budgets",
+          0
+        ],
+        [
+          1,
+          "hidden",
+          "Meetings",
+          1
+        ],
+        [
+          1,
+          "hidden",
+          "Dashboard",
+          2
+        ],
+        [
+          1,
+          "hidden",
+          "Projects",
+          3
+        ],
+        [
+          1,
+          "hidden",
+          "Hidden sections",
+          4
+        ],
+        [
+          1,
+          "hidden",
+          "Project Profile",
+          5
+        ],
+        [
+          1,
+          "hidden",
+          "Scope & Systems",
+          6
+        ],
+        [
+          1,
+          "hidden",
+          "Custom Information",
+          7
+        ],
+        [
+          1,
+          "hidden",
+          "Rebates & Incentives",
+          8
+        ],
+        [
+          1,
+          "hidden",
+          "Corrections",
+          9
+        ],
+        [
+          1,
+          "hidden",
+          "Violations",
+          10
+        ],
+        [
+          1,
+          "hidden",
+          "Tasks",
+          11
+        ],
+        [
+          1,
+          "hidden",
+          "Architecture",
+          12
+        ],
+        [
+          1,
+          "hidden",
+          "Engineering",
+          13
+        ],
+        [
+          1,
+          "hidden",
+          "Electrical",
+          14
+        ],
+        [
+          1,
+          "hidden",
+          "Plumbing",
+          15
+        ],
+        [
+          1,
+          "hidden",
+          "Mechanical / HVAC",
+          16
+        ],
+        [
+          1,
+          "hidden",
+          "Site & Civil",
+          17
+        ],
+        [
+          1,
+          "hidden",
+          "Other Trades",
+          18
+        ],
+        [
+          1,
+          "hidden",
+          "Contacts",
+          19
+        ],
+        [
+          1,
+          "hidden",
+          "Communications",
+          20
+        ],
+        [
+          1,
+          "hidden",
+          "Documents",
+          21
+        ],
+        [
+          1,
+          "hidden",
+          "RFIs",
+          22
+        ],
+        [
+          1,
+          "hidden",
+          "Submittals",
+          23
+        ],
+        [
+          1,
+          "hidden",
+          "Permits",
+          24
+        ],
+        [
+          1,
+          "hidden",
+          "Inspections",
+          25
+        ],
+        [
+          1,
+          "hidden",
+          "Punch & Changes",
+          26
+        ],
+        [
+          1,
+          "hidden",
+          "Bidding",
+          27
+        ],
+        [
+          1,
+          "hidden",
+          "Work Orders",
+          28
+        ],
+        [
+          1,
+          "hidden",
+          "Contracts",
+          29
+        ],
+        [
+          1,
+          "hidden",
+          "Change Orders",
+          30
+        ],
+        [
+          1,
+          "hidden",
+          "Approvals",
+          31
+        ],
+        [
+          1,
+          "hidden",
+          "Receipts",
+          32
+        ],
+        [
+          1,
+          "hidden",
+          "Timeline",
+          33
+        ],
+        [
+          1,
+          "hidden",
+          "Search",
+          34
+        ],
+        [
+          1,
+          "hidden",
+          "Backup & Restore",
+          35
+        ],
+        [
+          1,
+          "hidden",
+          "Recovery & Data",
+          36
+        ]
+      ],
+      "section_order_rows_after": [
+        [
+          1,
+          "sidebar",
+          "Projects",
+          0
+        ],
+        [
+          1,
+          "sidebar",
+          "Dashboard",
+          1
+        ],
+        [
+          1,
+          "sidebar",
+          "Hidden sections",
+          2
+        ],
+        [
+          1,
+          "sidebar",
+          "Project Profile",
+          3
+        ],
+        [
+          1,
+          "sidebar",
+          "Scope & Systems",
+          4
+        ],
+        [
+          1,
+          "sidebar",
+          "Custom Information",
+          5
+        ],
+        [
+          1,
+          "sidebar",
+          "Rebates & Incentives",
+          6
+        ],
+        [
+          1,
+          "sidebar",
+          "Corrections",
+          7
+        ],
+        [
+          1,
+          "sidebar",
+          "Violations",
+          8
+        ],
+        [
+          1,
+          "sidebar",
+          "Tasks",
+          9
+        ],
+        [
+          1,
+          "sidebar",
+          "Architecture",
+          10
+        ],
+        [
+          1,
+          "sidebar",
+          "Engineering",
+          11
+        ],
+        [
+          1,
+          "sidebar",
+          "Electrical",
+          12
+        ],
+        [
+          1,
+          "sidebar",
+          "Plumbing",
+          13
+        ],
+        [
+          1,
+          "sidebar",
+          "Mechanical / HVAC",
+          14
+        ],
+        [
+          1,
+          "sidebar",
+          "Site & Civil",
+          15
+        ],
+        [
+          1,
+          "sidebar",
+          "Other Trades",
+          16
+        ],
+        [
+          1,
+          "sidebar",
+          "Meetings",
+          17
+        ],
+        [
+          1,
+          "sidebar",
+          "Contacts",
+          18
+        ],
+        [
+          1,
+          "sidebar",
+          "Communications",
+          19
+        ],
+        [
+          1,
+          "sidebar",
+          "Documents",
+          20
+        ],
+        [
+          1,
+          "sidebar",
+          "RFIs",
+          21
+        ],
+        [
+          1,
+          "sidebar",
+          "Submittals",
+          22
+        ],
+        [
+          1,
+          "sidebar",
+          "Permits",
+          23
+        ],
+        [
+          1,
+          "sidebar",
+          "Inspections",
+          24
+        ],
+        [
+          1,
+          "sidebar",
+          "Punch & Changes",
+          25
+        ],
+        [
+          1,
+          "sidebar",
+          "Bidding",
+          26
+        ],
+        [
+          1,
+          "sidebar",
+          "Work Orders",
+          27
+        ],
+        [
+          1,
+          "sidebar",
+          "Contracts",
+          28
+        ],
+        [
+          1,
+          "sidebar",
+          "Change Orders",
+          29
+        ],
+        [
+          1,
+          "sidebar",
+          "Approvals",
+          30
+        ],
+        [
+          1,
+          "sidebar",
+          "Budgets",
+          31
+        ],
+        [
+          1,
+          "sidebar",
+          "Receipts",
+          32
+        ],
+        [
+          1,
+          "sidebar",
+          "Timeline",
+          33
+        ],
+        [
+          1,
+          "sidebar",
+          "Search",
+          34
+        ],
+        [
+          1,
+          "sidebar",
+          "Backup & Restore",
+          35
+        ],
+        [
+          1,
+          "sidebar",
+          "Recovery & Data",
+          36
+        ],
+        [
+          1,
+          "hidden",
+          "Budgets",
+          0
+        ],
+        [
+          1,
+          "hidden",
+          "Meetings",
+          1
+        ],
+        [
+          1,
+          "hidden",
+          "Dashboard",
+          2
+        ],
+        [
+          1,
+          "hidden",
+          "Projects",
+          3
+        ],
+        [
+          1,
+          "hidden",
+          "Hidden sections",
+          4
+        ],
+        [
+          1,
+          "hidden",
+          "Project Profile",
+          5
+        ],
+        [
+          1,
+          "hidden",
+          "Scope & Systems",
+          6
+        ],
+        [
+          1,
+          "hidden",
+          "Custom Information",
+          7
+        ],
+        [
+          1,
+          "hidden",
+          "Rebates & Incentives",
+          8
+        ],
+        [
+          1,
+          "hidden",
+          "Corrections",
+          9
+        ],
+        [
+          1,
+          "hidden",
+          "Violations",
+          10
+        ],
+        [
+          1,
+          "hidden",
+          "Tasks",
+          11
+        ],
+        [
+          1,
+          "hidden",
+          "Architecture",
+          12
+        ],
+        [
+          1,
+          "hidden",
+          "Engineering",
+          13
+        ],
+        [
+          1,
+          "hidden",
+          "Electrical",
+          14
+        ],
+        [
+          1,
+          "hidden",
+          "Plumbing",
+          15
+        ],
+        [
+          1,
+          "hidden",
+          "Mechanical / HVAC",
+          16
+        ],
+        [
+          1,
+          "hidden",
+          "Site & Civil",
+          17
+        ],
+        [
+          1,
+          "hidden",
+          "Other Trades",
+          18
+        ],
+        [
+          1,
+          "hidden",
+          "Contacts",
+          19
+        ],
+        [
+          1,
+          "hidden",
+          "Communications",
+          20
+        ],
+        [
+          1,
+          "hidden",
+          "Documents",
+          21
+        ],
+        [
+          1,
+          "hidden",
+          "RFIs",
+          22
+        ],
+        [
+          1,
+          "hidden",
+          "Submittals",
+          23
+        ],
+        [
+          1,
+          "hidden",
+          "Permits",
+          24
+        ],
+        [
+          1,
+          "hidden",
+          "Inspections",
+          25
+        ],
+        [
+          1,
+          "hidden",
+          "Punch & Changes",
+          26
+        ],
+        [
+          1,
+          "hidden",
+          "Bidding",
+          27
+        ],
+        [
+          1,
+          "hidden",
+          "Work Orders",
+          28
+        ],
+        [
+          1,
+          "hidden",
+          "Contracts",
+          29
+        ],
+        [
+          1,
+          "hidden",
+          "Change Orders",
+          30
+        ],
+        [
+          1,
+          "hidden",
+          "Approvals",
+          31
+        ],
+        [
+          1,
+          "hidden",
+          "Receipts",
+          32
+        ],
+        [
+          1,
+          "hidden",
+          "Timeline",
+          33
+        ],
+        [
+          1,
+          "hidden",
+          "Search",
+          34
+        ],
+        [
+          1,
+          "hidden",
+          "Backup & Restore",
+          35
+        ],
+        [
+          1,
+          "hidden",
+          "Recovery & Data",
+          36
+        ]
+      ],
+      "all_21_regulatory_tables_empty": true,
+      "foreign_key_check": [],
+      "integrity": "ok",
+      "rollback": {
+        "opened_by_schema11_application": true,
+        "schema": 11,
+        "integrity": "ok"
+      },
+      "attachment_bytes_preserved": true,
+      "attachment_reference_preserved": true,
+      "current_app_restore_and_reupgrade_preserved_rows": true
+    }
+  }
+}

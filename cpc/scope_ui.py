@@ -67,10 +67,15 @@ class ScopeUI:
     if prior:row=prior
    if table=='project_profiles':row.setdefault('title','Project profile')
    fields=SCOPE_FIELDS.get(table)
+   if table=='project_profiles':
+    settings=self.store.regulatory_settings(row.get('project_id'));row.update(reg_cgp_subject=settings['cgp_subject'],reg_jurisdiction=settings['jurisdiction']);fields=[*fields,'reg_cgp_subject','reg_jurisdiction']
    if fields is None:
     from .finance import FINANCE_FIELDS
     fields=FINANCE_FIELDS[table]
    choices=self.choices(table)
+   if table=='project_profiles':
+    from .regulatory import JURISDICTIONS
+    choices.update(reg_cgp_subject=ANSWERS,reg_jurisdiction=JURISDICTIONS)
    if table=='contract_changes':
     choices['contract_id']=[(c['title']+' — '+c['currency'],c['id']) for c in self.store.all('contracts') if not pid or c['project_id']==pid]
     if not choices['contract_id']:raise ValueError('Create a contract for this project first')
