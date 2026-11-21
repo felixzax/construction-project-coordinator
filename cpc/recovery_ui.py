@@ -125,6 +125,8 @@ class RecoveryUI:
    index=self.draft_table.currentRow()
    if index<0: raise ValueError('Select an unfinished form')
    draft=self._draft_rows[index]; table=draft['target_table']; rid=draft['row_id']; values=draft['values']; extra=draft['metadata']
+   if extra.get('city_action'):
+    self.resume_city_draft(draft);return
    if table=='receipts':values.setdefault('include_in_budget',1)
    if table not in FIELDS and table!='__versions__': raise ValueError('Unsupported recovery form type')
    if table!='__versions__' and rid and not self.store.rows(f'SELECT id FROM {table} WHERE id=?',(rid,)):

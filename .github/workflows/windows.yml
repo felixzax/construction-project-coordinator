@@ -3,10 +3,34 @@ on:
   push:
   pull_request:
   workflow_dispatch:
+    inputs:
+      build_release:
+        description: 'Build a release (main only; requires separate approval)'
+        type: boolean
+        default: false
 permissions:
   contents: read
 jobs:
+  windows-tests:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install -r requirements-dev.txt
+      - name: Run all existing and Phase 3 tests (no build)
+        run: python -m pytest -v --junitxml=test-results.xml
+        env:
+          QT_QPA_PLATFORM: offscreen
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Windows-test-results
+          path: test-results.xml
   windows:
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.build_release == true
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,7 +44,7 @@ jobs:
         env:
           QT_QPA_PLATFORM: offscreen
       - name: Build standalone Windows executable
-        run: python -m PyInstaller --noconfirm --clean --windowed --onefile --collect-all shiboken6 --name ConstructionProjectCoordinator main.py
+        run: python -m PyInstaller --noconfirm --clean --windowed --onefile --collect-all shiboken6 --add-data "cpc/permit_catalog.json;cpc" --name ConstructionProjectCoordinator main.py
       - name: Stage standalone executable and checksums
         run: python scripts/portable_build.py stage release
       - name: Verify ZIP extraction in isolated directory

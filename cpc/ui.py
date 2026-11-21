@@ -291,9 +291,10 @@ class BaseWindow(QMainWindow):
    if path and QMessageBox.question(self,'Replace local data?','Restore this backup and replace all current records? A safety backup will be created.')==QMessageBox.Yes: self.store.restore(path); self.refresh(); QMessageBox.information(self,'Restore complete','Database restored successfully.')
   self.guard(action)
 
+from .city_permit_ui import CityPermitUI
 from .regulatory_ui import RegulatoryUI
 
-class Window(RegulatoryUI,ThemeUI,WorkspaceUI,SidebarUI,ExportUI,RecoveryUI,ScopeUI,WorkOrderUI,ApprovalUI,FinanceUI,IssueUI,ReceiptUI,PermitUI,DevelopmentUI,BaseWindow):
+class Window(CityPermitUI,RegulatoryUI,ThemeUI,WorkspaceUI,SidebarUI,ExportUI,RecoveryUI,ScopeUI,WorkOrderUI,ApprovalUI,FinanceUI,IssueUI,ReceiptUI,PermitUI,DevelopmentUI,BaseWindow):
  pass
 
 def main():

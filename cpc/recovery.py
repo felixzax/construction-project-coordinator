@@ -120,6 +120,17 @@ class RecoveryStore:
      pid=row['id'] if table=='projects' else self.project_for(table,row)
      if pid: affected.add(pid)
   with self.db:
+   # Preserve explicit deletion of generated City/County checklist and tracker
+   # items across idempotent Add and future context switches.
+   for table in ('permit_requirements','reg_tracker_steps'):
+    for rid in plan.get(table,()):
+     if table=='permit_requirements':
+      items=self.rows('SELECT r.register_id,d.template_key AS item_key FROM permit_requirements r JOIN reg_requirement_details d ON d.requirement_id=r.id WHERE r.id=? AND d.origin=\'Template\'',(rid,))
+     else:items=self.rows('SELECT register_id,step_key AS item_key FROM reg_tracker_steps WHERE id=? AND template_item_id IS NOT NULL',(rid,))
+     for item in items:
+      if item['register_id'] in plan.get('registers',()):continue
+      pid=self.rows('SELECT project_id FROM registers WHERE id=?',(item['register_id'],))[0]['project_id']
+      self.db.execute('INSERT OR IGNORE INTO reg_template_tombstones(project_id,register_id,template_item_key,reason,occurred) VALUES(?,?,?,?,?)',(pid,item['register_id'],item['item_key'],'User deletion',now()))
    for batch in chunks(plan.get('scope_items',())):self.db.execute(f'UPDATE rebates SET scope_item_id=NULL WHERE scope_item_id IN ({marks(batch)})',batch)
    for batch in chunks(plan.get('bids',())):self.db.execute(f'UPDATE contracts SET bid_id=NULL WHERE bid_id IN ({marks(batch)})',batch)
    for batch in chunks(plan.get('contracts',())):

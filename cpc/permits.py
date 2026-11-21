@@ -67,12 +67,12 @@ class PermitStore:
     data['completed_on']=(old['completed_on'] or date.today().isoformat()) if completed else ''
    else: data['completed_on']=date.today().isoformat() if completed else ''
  def permit_requirements(self,permit_id):
-  return self.rows('SELECT * FROM permit_requirements WHERE register_id=? ORDER BY id',(permit_id,))
+  return self.rows("SELECT r.* FROM permit_requirements r LEFT JOIN reg_requirement_details d ON d.requirement_id=r.id WHERE r.register_id=? AND COALESCE(d.hidden,0)=0 AND COALESCE(d.deleted,0)=0 AND COALESCE(json_extract(d.details_json,'$.context_active'),1)=1 ORDER BY r.id",(permit_id,))
  def set_requirement_completed(self,requirement_id,completed):
   if type(completed) not in (bool,int) or completed not in (0,1): raise ValueError('Use a checked or unchecked state')
   return self.save('permit_requirements',{'completed':int(completed)},requirement_id)
  def permit_progress(self,permit_id):
-  row=self.rows('SELECT count(*) AS total,coalesce(sum(completed),0) AS checked FROM permit_requirements WHERE register_id=?',(permit_id,))[0]
+  items=self.permit_requirements(permit_id);row=dict(total=len(items),checked=sum(r['completed'] for r in items))
   return f'{row["checked"]}/{row["total"]} checked'
  def permit_checklist_report(self,pid):
   e=lambda v:html.escape(str(v if v is not None else ''))

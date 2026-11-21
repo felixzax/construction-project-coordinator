@@ -35,6 +35,8 @@ class RegulatoryUI:
   self.reg_overview=QTextBrowser();self.reg_tabs.addTab(self.reg_overview,'Overview')
   for name in ('City & County','Water Board','Roles','Document Requests','Inspections','Reports','References'):
    tab=QWidget();column=QVBoxLayout(tab);self.reg_tabs.addTab(tab,name.replace('&','&&'))
+   if name=='City & County':
+    self.build_city_tab(column);continue
    if name not in TABLES:
     text={'City & County':'Permit templates and checkers are reserved for Phase 3. Existing permit records remain in Permits.','Water Board':'Site and filing workflows are reserved for Phase 4. Set the CGP choice in Project Profile; no requirements have been added.','Reports':'Compliance CSV/DOCX and project report integration are reserved for Phase 5. Existing exports remain available.'}[name]
     note=QLabel(text);note.setWordWrap(True);column.addWidget(note);column.addStretch();continue

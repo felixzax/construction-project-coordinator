@@ -6,6 +6,7 @@ import shutil
 import uuid
 import tempfile
 from contextlib import closing
+from .city_permits import CityPermitStore
 from .regulatory import RegulatoryStore
 from .regulatory_schema import REG_FIELDS
 from .privacy import check_values, check_attachment
@@ -58,7 +59,7 @@ FIELDS['permit_requirements']=REQUIREMENT_FIELDS+['completed_on']
 for _table,_columns in ADDED_COLUMNS.items():
  FIELDS[_table].extend(_columns)
 
-class Store(RegulatoryStore,WorkOrderStore,ApprovalStore,NavigationStore,ScopeStore,FinanceStore,IssueStore,ReceiptStore,RecoveryStore,PermitStore,DevelopmentStore):
+class Store(CityPermitStore,RegulatoryStore,WorkOrderStore,ApprovalStore,NavigationStore,ScopeStore,FinanceStore,IssueStore,ReceiptStore,RecoveryStore,PermitStore,DevelopmentStore):
  def __init__(self, path):
   self.path=Path(path); self.path.parent.mkdir(parents=True,exist_ok=True)
   self.db=sqlite3.connect(self.path); self.db.row_factory=sqlite3.Row
@@ -117,6 +118,7 @@ class Store(RegulatoryStore,WorkOrderStore,ApprovalStore,NavigationStore,ScopeSt
   self.validate_approval(table,data,row_id)
   self.validate_work_order(table,data,row_id)
   self.validate_regulatory(table,data,row_id)
+  self.validate_city(table,data,row_id)
   for key in ('name','title','summary'):
    if key in FIELDS[table] and not str(data.get(key,'')).strip(): raise ValueError(f'{key.title()} is required')
   for key in ('deadline','follow_up','occurred'):
