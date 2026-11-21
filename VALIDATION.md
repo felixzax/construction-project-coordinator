@@ -1,4 +1,8 @@
-# Verification record — 1.11.0
+# Verification record — 1.12.0 review
+
+Current regulatory results, tested commits, workflow links and artifact verification are recorded in `review/phase45/`. See the 1.12.0 regulatory verification section below for exact R-factor cases and manual checks. Historical release evidence is retained separately below.
+
+## Historical 1.11.0 verification
 
 - [Successful Windows workflow](https://github.com/felixzax/construction-project-coordinator/actions/runs/44827044894)
 - [Download Windows artifact](https://github.com/felixzax/construction-project-coordinator/actions/runs/44827044894/artifacts/14674956843)
