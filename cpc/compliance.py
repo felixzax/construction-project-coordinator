@@ -24,11 +24,12 @@ class ComplianceStore:
   settings=self.regulatory_settings(pid)
   if any(groups.values()):groups['Project applicability']=[settings]
   return groups
- def compliance_rows(self,pid,section='All'):
+ def compliance_rows(self,pid,section='All',record_ids=None):
   groups=self.compliance_groups(pid);sources={r['id']:r for r in self.all('reg_sources')};contacts={r['id']:r['name'] for r in self.all('contacts')};rows=[]
   for kind,records in groups.items():
    if section!='All' and kind!=section:continue
    for record in records:
+    if record_ids is not None and record.get('id') not in record_ids:continue
     discipline=record.get('discipline','')
     rid=record.get('register_id') or record.get('permit_register_id')
     if kind=='Inspections':rid=record['id']

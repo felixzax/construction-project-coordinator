@@ -242,3 +242,9 @@ def test_new_records_have_readable_search_labels_and_weekly_dashboard_warning(st
  assert any('COI (Site)' in r['label'] for r in store.search('Fictional COI unique'))
  assert all(r['label'] for r in store.search('45.49') if r['type']=='reg_rfactor_periods')
  w=Window(store);w.project_filter.setCurrentIndex(w.project_filter.findData(pid));assert any(r.get('_source_table')=='reg_wb_sites' and 'Weekly inspection' in r['kind'] for r in w.data['Dashboard']);w.close()
+
+
+def test_shared_list_exports_use_record_ids_when_titles_repeat(store,pid):
+ c1=store.save('contacts',dict(name='First responsible person'));c2=store.save('contacts',dict(name='Second responsible person'))
+ first=store.save('reg_project_roles',dict(project_id=pid,contact_id=c1,role='QSP'));second=store.save('reg_project_roles',dict(project_id=pid,contact_id=c2,role='QSP'))
+ rows=store.compliance_rows(pid,'Roles',{first});assert any(r['value']=='First responsible person' for r in rows) and not any(r['value']=='Second responsible person' for r in rows)

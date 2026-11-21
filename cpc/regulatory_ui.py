@@ -131,6 +131,6 @@ class RegulatoryUI:
    if name=='References':rows=[{k:v for k,v in r.items() if k!='id'} for r in self.reg_rows[name]]
    else:
     pid=self.selected_project_id();ids={r['id'] for r in self.reg_rows[name]};titles={r.get('title',r.get('role','')) for r in self.reg_rows[name]}
-    rows=[r for r in self.store.compliance_rows(pid,name) if r['title'] in titles]
+    rows=self.store.compliance_rows(pid,name,ids)
    self.export_rows_dialog(name,rows,kind)
   self.guard(action)
