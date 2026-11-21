@@ -1,0 +1,84 @@
+{
+  "head_sha": "fc04b8073c2386d2fea4f5e26810312183694864",
+  "run_id": 44846250490,
+  "run_url": "https://github.com/felixzax/construction-project-coordinator/actions/runs/44846250490",
+  "status": "completed",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "id": 136666563786,
+      "name": "windows-tests",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/felixzax/construction-project-coordinator/actions/runs/44846250490/job/136666563786",
+      "runner_name": "GitHub Actions 1000000043",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-python@v5",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run python -m pip install -r requirements-dev.txt",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run all existing and Phase 3 tests (no build)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-python@v5",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 136666565613,
+      "name": "windows",
+      "status": "completed",
+      "conclusion": "skipped",
+      "html_url": "https://github.com/felixzax/construction-project-coordinator/actions/runs/44846250490/job/136666565613",
+      "runner_name": null,
+      "steps": []
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 14683138026,
+      "name": "Windows-test-results",
+      "expired": false,
+      "digest": "sha256:1398e8208799d8df32bfabdce14c3206dc3d6373c22801e92e1cc49f11b41a4e",
+      "size_in_bytes": 8384
+    }
+  ],
+  "application_release_built": false
+}
+

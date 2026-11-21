@@ -90,7 +90,7 @@ def test_eye_controls_and_shortcuts_work_after_reordering(window,app):
 
 def test_reset_order_preserves_hidden_flags_and_records(window,store):
  w=window;pid=store.all('projects')[0]['id'];w.project_filter.setCurrentIndex(w.project_filter.findData(pid));before=store.all('tasks');drop(w.nav,'Tasks',QPoint(10,2));w.hide_sidebar_section('Electrical');w.reset_section_order()
- assert w.saved_section_order('sidebar')==list(w.navigation) and w.navigation_hidden()=={'Electrical'} and store.all('tasks')==before
+ assert w.saved_section_order('sidebar')==list(w.navigation) and w.navigation_hidden()=={'Electrical','Regulatory & Permits'} and store.all('tasks')==before
 
 
 def test_backup_restore_keeps_project_orders_and_delete_cleans_preferences(store,tmp_path):
@@ -105,7 +105,7 @@ def test_v8_upgrade_preserves_data_and_visibility_and_old_backup_restore(store,t
  with closing(sqlite3.connect(old)) as db:db.executescript((Path(__file__).parent/'fixtures/v8_database.sql').read_text())
  upgraded=Store(old)
  try:
-  assert upgraded.db.execute('PRAGMA user_version').fetchone()[0]==11 and len(upgraded.all('contracts'))==1
+  assert upgraded.db.execute('PRAGMA user_version').fetchone()[0]==12 and len(upgraded.all('contracts'))==1
   pid=upgraded.all('projects')[0]['id'];assert upgraded.hidden_sections(pid)=={'Electrical','Plumbing'} and upgraded.rows('SELECT * FROM project_section_order')==[]
  finally:upgraded.db.close()
  safety=str(old)+'.before-v1.11.0.sqlite3'

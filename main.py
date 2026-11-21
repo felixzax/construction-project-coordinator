@@ -18,6 +18,8 @@ def smoke_test():
             window.show()
             app.processEvents()
             for index in range(window.nav.count()):
+                if window.nav.item(index).isHidden():
+                    continue
                 window.nav.setCurrentRow(index)
                 app.processEvents()
                 if window.stack.currentIndex() != window.navigation.index(window.nav.item(index).data(Qt.UserRole)):
@@ -317,6 +319,27 @@ def smoke_test():
             from cpc.theme import saved_theme
             if saved_theme(window.appearance_settings) != 'dark' or len(store.all('projects')) != before_count:
                 raise RuntimeError('Appearance persistence/data smoke check failed')
+            # Verify both bundled catalogs, manual R arithmetic and seal metadata
+            # in the actual frozen executable, in addition to Python unit tests.
+            from cpc.water_board import water_catalog
+            from cpc.city_permits import catalog as city_catalog, CITY, metadata
+            if not water_catalog()['items'] or not city_catalog()['items']:
+                raise RuntimeError('Bundled regulatory catalogs are missing')
+            reg_pid=store.save('projects',dict(name='Regulatory smoke project'))
+            seal_contact=store.save('contacts',dict(name='Fictional seal professional'))
+            permit_id=store.configure_city_permit(dict(project_id=reg_pid,title='Smoke permit',jurisdiction_key=CITY,occupancy_type='Commercial',work_type='New Construction',permit_family='Building',seal_contact_id=seal_contact,seal_discipline='Structural'))
+            if metadata(store.city_details(permit_id))['seal_person_name']!='Fictional seal professional':
+                raise RuntimeError('Seal contact smoke check failed')
+            store.set_regulatory_settings(reg_pid,cgp_subject='Yes')
+            site_id=store.save('reg_wb_sites',dict(project_id=reg_pid,construction_start='2020-11-01',final_stabilization='2022-12-28'))
+            store.generate_water_periods(site_id)
+            for period,value in zip(store.water_periods(site_id),['45.49','45.49','14.16']):
+                store.save_r_period(dict(r_value_text=value),period['id'])
+            if store.water_r_summary(site_id)['total']!='105.14':
+                raise RuntimeError('R-factor frozen arithmetic smoke check failed')
+            write_docx(Path(folder)/'compliance.docx','Compliance',store.compliance_rows(reg_pid))
+            if '105.14' not in store.report(reg_pid):
+                raise RuntimeError('Compliance report smoke check failed')
             window.close()
             app.processEvents()
         finally:

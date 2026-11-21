@@ -1,0 +1,141 @@
+{
+  "version": "1.12.0",
+  "schema": 12,
+  "run_id": 44880476892,
+  "run_url": "https://github.com/felixzax/construction-project-coordinator/actions/runs/44880476892",
+  "run_conclusion": "success",
+  "tested_build_commit": "ca48e877bbe8196ece759bc2ea509c46fc4296c5",
+  "download_url": "https://github.com/felixzax/construction-project-coordinator/actions/runs/44880476892/artifacts/14698031366",
+  "artifact": {
+    "id": 14698031366,
+    "name": "ConstructionProjectCoordinator-1.12.0-Windows-review",
+    "size_in_bytes": 56619964,
+    "sha256": "sha256:6b9dd78641cdc38d19d2d79fccdab03f52061c2dcf2c379d27dfd4e782e65d53",
+    "expires_at": "2027-02-19T07:29:28Z"
+  },
+  "jobs": [
+    {
+      "id": 136774484599,
+      "name": "windows-tests",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/felixzax/construction-project-coordinator/actions/runs/44880476892/job/136774484599",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-python@v5",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run python -m pip install -r requirements-dev.txt",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run all persistence, desktop and regulatory tests (no build)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-python@v5",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 136774485486,
+      "name": "windows",
+      "status": "completed",
+      "conclusion": "skipped",
+      "html_url": "https://github.com/felixzax/construction-project-coordinator/actions/runs/44880476892/job/136774485486",
+      "steps": []
+    },
+    {
+      "id": 136775789710,
+      "name": "review-build",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/felixzax/construction-project-coordinator/actions/runs/44880476892/job/136775789710",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-python@v5",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run python -m pip install -r requirements-dev.txt",
+          "conclusion": "success"
+        },
+        {
+          "name": "Package review executable after successful Windows tests",
+          "conclusion": "success"
+        },
+        {
+          "name": "Stage review package and checksums",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify extracted review package",
+          "conclusion": "success"
+        },
+        {
+          "name": "Smoke test executable with isolated Python and Qt paths",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/download-artifact@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify the exact downloadable artifact",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-python@v5",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "exact_downloaded_artifact_verified": true,
+  "isolated_offscreen_and_native_windows_smoke_passed": true,
+  "github_release_published": false,
+  "main_merged": false
+}
+

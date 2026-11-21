@@ -48,6 +48,8 @@ class IssueStore:
   if clauses:sql+=' WHERE '+' AND '.join(clauses)
   return self.rows(sql+' ORDER BY i.id DESC',args)
  def attach_issue(self,issue_id,path):
+  from .privacy import check_attachment
+  check_attachment(path)
   if not self.rows('SELECT id FROM issues WHERE id=?',(issue_id,)): raise ValueError('Correction or violation not found')
   source=Path(path)
   if not source.is_file():raise ValueError('Evidence file does not exist')

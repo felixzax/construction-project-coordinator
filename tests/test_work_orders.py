@@ -120,7 +120,7 @@ def test_schema10_upgrade_preserves_approvals_parts_and_order(store,tmp_path):
  with closing(sqlite3.connect(old)) as db:db.executescript((Path(__file__).parent/'fixtures/v10_database.sql').read_text())
  upgraded=Store(old)
  try:
-  assert upgraded.db.execute('PRAGMA user_version').fetchone()[0]==11 and upgraded.all('work_orders')==[] and len(upgraded.all('approvals'))==1
+  assert upgraded.db.execute('PRAGMA user_version').fetchone()[0]==12 and upgraded.all('work_orders')==[] and len(upgraded.all('approvals'))==1
   pid=upgraded.all('projects')[0]['id'];assert upgraded.section_order(pid,'sidebar')[0]=='Contracts' and 'Work Orders' in upgraded.section_order(pid,'sidebar')
   assert upgraded.all('receipts')[0]['actual_amount']=='1295.50'
  finally:upgraded.db.close()

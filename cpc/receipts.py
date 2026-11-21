@@ -80,6 +80,8 @@ class ReceiptStore:
   for row in rows: row.update(variance_amount=receipt_variance(row),comparison=receipt_comparison(row))
   return rows
  def attach_receipt(self,receipt_id,path):
+  from .privacy import check_attachment
+  check_attachment(path)
   if not self.rows('SELECT id FROM receipts WHERE id=?',(receipt_id,)): raise ValueError('Receipt not found')
   source=Path(path)
   if not source.is_file(): raise ValueError('Attachment file does not exist')

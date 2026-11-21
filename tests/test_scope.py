@@ -85,7 +85,8 @@ def test_section_visibility_persists_per_project_without_deleting_data(store,pro
  assert any(r['type']=='scope_items' for r in store.search('Hybrid'))
  w.show_hidden_scope.setChecked(True);assert w.tables['Scope & Systems'].rowCount()==1
  w.project_filter.setCurrentIndex(w.project_filter.findData(other));assert not w.nav.item(w.navigation.index('Electrical')).isHidden()
- w.project_filter.setCurrentIndex(0);assert all(not w.nav.item(i).isHidden() for i in range(w.nav.count()))
+ from PySide6.QtCore import Qt
+ w.project_filter.setCurrentIndex(0);assert all(w.nav.item(i).isHidden()==(w.nav.item(i).data(Qt.UserRole)=='Regulatory & Permits') for i in range(w.nav.count()))
  w.close();reopened=Store(store.path)
  try:assert reopened.hidden_sections(project)=={'Scope & Systems','Rebates & Incentives','Electrical'} and len(reopened.all('scope_items'))==1
  finally:reopened.db.close()
@@ -163,7 +164,7 @@ def test_v7_upgrade_retains_attachment_ids_bytes_and_finance(store,tmp_path):
   db.executescript((Path(__file__).parent/'fixtures/v7_database.sql').read_text());db.execute('UPDATE finance_files SET file_path=?',(str(legacy),));db.commit()
  upgraded=Store(old)
  try:
-  assert upgraded.db.execute('PRAGMA user_version').fetchone()[0]==11
+  assert upgraded.db.execute('PRAGMA user_version').fetchone()[0]==12
   fid=upgraded.all('finance_files')[0]['id'];copy=tmp_path/'saved.txt';upgraded.save_finance_copy(fid,copy);assert copy.read_bytes()==legacy.read_bytes()
   assert len(upgraded.all('contracts'))==1 and upgraded.all('scope_items')==[]
   assert upgraded.all('finance_files')[0]['owner_table']==''

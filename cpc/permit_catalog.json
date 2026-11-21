@@ -1,0 +1,2347 @@
+{
+  "verified_date": "2026-11-20",
+  "sources": {
+    "city_forms": {
+      "title": "City Building Forms directory",
+      "publisher": "City of Sacramento",
+      "source_kind": "Official agency page",
+      "document_revision_date": "",
+      "url": "https://www.cityofsacramento.gov/community-development/building/building-forms",
+      "last_verified_date": "2026-11-20",
+      "verification_status": "Verified",
+      "conflict_notes": "",
+      "notes": "Retrieved and reviewed for the quoted scope only. No published revision date on this page.",
+      "sha256": "6faae7c1fb4e3cd7c16cf6281887431a3ca6beacae7ab64959d35b7dd3a68f76"
+    },
+    "quick": {
+      "title": "EPC Quick Reference, version 10.17.24",
+      "publisher": "City of Sacramento",
+      "source_kind": "Official agency PDF",
+      "document_revision_date": "2024-10-17",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/EPC-Quick-Reference-Submittal-Guide.pdf",
+      "last_verified_date": "2026-11-20",
+      "verification_status": "Verified",
+      "conflict_notes": "\nGuide v27 p32 has an MP example ending REPY, while its p33 naming examples and the newer Quick Reference use REPLY. Use REPLY; retain this discrepancy in the source register.\nQuick Reference says to resubmit complete PLANS. Guide v27 p34 says files unaffected by correction comments should not be uploaded; revised files must be complete. Warn to send a complete revised PLANS set and complete SUPP if affected; verify an unaffected-file exception with intake. No automated submission or blocker.\nQuick Reference (2024-10-17), p3, describes each PLANS page as bookmarked; CDD-0316 (2024-12-10), p1, explicitly calls for bookmarks for files with more than 20 pages, and section/document bookmarks elsewhere. Use the newer CDD-0316 minimum as the warning reference; bookmark/page coverage remains a manual Verify item. More extensive bookmarks may satisfy both; confirm the submission format with intake.",
+      "notes": "Retrieved official PDF; revision read from its printed footer.",
+      "sha256": "31b878ca35ef8000c6fb973fbaabda3e9b7caea35d3b55a4d709c996f7dbb82e"
+    },
+    "316": {
+      "title": "CDD-0316 EPC Submittal Verification Checklist",
+      "publisher": "City of Sacramento",
+      "source_kind": "Official agency PDF",
+      "document_revision_date": "2024-12-10",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/CDD-0316_Electronic-Plan-Check-(EPC)-Submittal-Verification-Checklist.pdf",
+      "last_verified_date": "2026-11-20",
+      "verification_status": "Verified",
+      "conflict_notes": "\nEPC Guide v27 (2020), p11, recommends approximately 400 MB per PDF. CDD-0316 (2024-12-10) states APP 50 MB, PLANS 300 MB, SUPP 150 MB. Use the newer per-file limits as editable warning defaults; coordinate oversized plans with intake. REPLY has no verified size limit in CDD-0316. Prefer CDD-0316; never silently apply 400 MB or invent a REPLY limit.\nQuick Reference (2024-10-17), p3, describes each PLANS page as bookmarked; CDD-0316 (2024-12-10), p1, explicitly calls for bookmarks for files with more than 20 pages, and section/document bookmarks elsewhere. Use the newer CDD-0316 minimum as the warning reference; bookmark/page coverage remains a manual Verify item. More extensive bookmarks may satisfy both; confirm the submission format with intake.",
+      "notes": "Retrieved official PDF; revision read from its printed footer.",
+      "sha256": "f203cdc07217c082651d1586a90951a325e3d80464636302d6c84b60355e372d"
+    },
+    "guide": {
+      "title": "EPC Building Permit Submittal Requirements, version 27",
+      "publisher": "City of Sacramento",
+      "source_kind": "Official agency PDF",
+      "document_revision_date": "2020-02-12",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/EPC-Submittal-Guide-Full-Version.pdf",
+      "last_verified_date": "2026-11-20",
+      "verification_status": "Verified",
+      "conflict_notes": "\nEPC Guide v27 (2020), p11, recommends approximately 400 MB per PDF. CDD-0316 (2024-12-10) states APP 50 MB, PLANS 300 MB, SUPP 150 MB. Use the newer per-file limits as editable warning defaults; coordinate oversized plans with intake. REPLY has no verified size limit in CDD-0316. Prefer CDD-0316; never silently apply 400 MB or invent a REPLY limit.\nGuide v27 p32 has an MP example ending REPY, while its p33 naming examples and the newer Quick Reference use REPLY. Use REPLY; retain this discrepancy in the source register.\nQuick Reference says to resubmit complete PLANS. Guide v27 p34 says files unaffected by correction comments should not be uploaded; revised files must be complete. Warn to send a complete revised PLANS set and complete SUPP if affected; verify an unaffected-file exception with intake. No automated submission or blocker.",
+      "notes": "Retrieved official PDF; revision read from its printed footer.",
+      "sha256": "c64097671ed010de91b7bc8c0b36dc47a376137f27a4e75a923074ca48e65064"
+    },
+    "county_forms": {
+      "title": "County Building Forms & Documents directory",
+      "publisher": "Sacramento County",
+      "source_kind": "Official agency page",
+      "document_revision_date": "",
+      "url": "https://development.saccounty.gov/us/en/building-permits-inspection/building-forms-and-documents.html",
+      "last_verified_date": "2026-11-20",
+      "verification_status": "Verified",
+      "conflict_notes": "",
+      "notes": "Retrieved and reviewed for the quoted scope only. No published revision date on this page.",
+      "sha256": "038ca21eb67f937022c332580f9085f8fe9f1067ba631690d51e689d2e84c26d"
+    },
+    "county_permits": {
+      "title": "County Building Permits & Inspection",
+      "publisher": "Sacramento County",
+      "source_kind": "Official agency page",
+      "document_revision_date": "",
+      "url": "https://development.saccounty.gov/us/en/building-permits-inspection.html",
+      "last_verified_date": "2026-11-20",
+      "verification_status": "Verified",
+      "conflict_notes": "",
+      "notes": "Retrieved and reviewed for the quoted scope only. No published revision date on this page.",
+      "sha256": "7c5737512965a479380a8c5dce70b84ac7189f6db029a36701955cfae72d588e"
+    },
+    "fire_new": {
+      "title": "City Fire Prevention \u2013 Development Services / New Construction",
+      "publisher": "City of Sacramento",
+      "source_kind": "Official agency page",
+      "document_revision_date": "",
+      "url": "https://www.cityofsacramento.gov/fire/fire-prevention/new-construction",
+      "last_verified_date": "2026-11-20",
+      "verification_status": "Verified",
+      "conflict_notes": "",
+      "notes": "Retrieved and reviewed for the quoted scope only. No published revision date on this page.",
+      "sha256": "51be8a3aaabe37c767ec99c4caef1477d2f0b3bf526f9a3179832f2c22a014b0"
+    },
+    "fire_permits": {
+      "title": "City Fire \u2013 Operational Permit Inspections",
+      "publisher": "City of Sacramento",
+      "source_kind": "Official agency page",
+      "document_revision_date": "",
+      "url": "https://www.cityofsacramento.gov/fire/fire-prevention/fire-permits",
+      "last_verified_date": "2026-11-20",
+      "verification_status": "Verified",
+      "conflict_notes": "",
+      "notes": "Retrieved and reviewed for the quoted scope only. No published revision date on this page.",
+      "sha256": "dc0272bf5446421d658158ab60e6ea67ba1e200e6d0c350692051deedf99cbdc"
+    },
+    "fire_code": {
+      "title": "City Fire \u2013 Code Enforcement",
+      "publisher": "City of Sacramento",
+      "source_kind": "Official agency page",
+      "document_revision_date": "",
+      "url": "https://www.cityofsacramento.gov/fire/fire-prevention/code-enforcement",
+      "last_verified_date": "2026-11-20",
+      "verification_status": "Verified",
+      "conflict_notes": "",
+      "notes": "Retrieved and reviewed for the quoted scope only. No published revision date on this page.",
+      "sha256": "b571feeaa0f6c92ab4ada091fb44ae29b8d637d6e347bc209d1ef583d8217c82"
+    },
+    "0269": {
+      "title": "CDD-0269 Deferred / Revision Intake Form",
+      "publisher": "City of Sacramento",
+      "source_kind": "Official agency PDF",
+      "document_revision_date": "2026-01-01",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0269_Deferred-Submittal-or-Revision-Intake-Form.pdf",
+      "last_verified_date": "2026-11-20",
+      "verification_status": "Verified",
+      "conflict_notes": "",
+      "notes": "Retrieved official PDF; revision read from its printed footer.",
+      "sha256": "9f5372535bd2af92dbe0ab5f14de9e0f40945446472d002b0b2a733015854e3c"
+    },
+    "0270": {
+      "title": "CDD-0270 Plan Review Resubmittal",
+      "publisher": "City of Sacramento",
+      "source_kind": "Official agency PDF",
+      "document_revision_date": "2023-01-14",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0270_Plan-Review-Resubmittal-Form.pdf",
+      "last_verified_date": "2026-11-20",
+      "verification_status": "Verified",
+      "conflict_notes": "\nGuide v27 p32 has an MP example ending REPY, while its p33 naming examples and the newer Quick Reference use REPLY. Use REPLY; retain this discrepancy in the source register.",
+      "notes": "Retrieved official PDF; revision read from its printed footer.",
+      "sha256": "3a9babd0d84d08fe4f627758981b0ca2281effbb027d2e6af945b4cdaff875ac"
+    },
+    "0224": {
+      "title": "CDD-0224 Commercial New Buildings and Additions Checklist",
+      "publisher": "City of Sacramento",
+      "source_kind": "Official agency PDF",
+      "document_revision_date": "2026-01-01",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0224_Commercial-New-Buildings-and-Additions-Checklist.pdf",
+      "last_verified_date": "2026-11-20",
+      "verification_status": "Verified",
+      "conflict_notes": "\nThe earlier supplied specification named CDD-0224 revision 2024-02-29; the currently retrieved official PDF is revised 2026-01-01. Link the retrieved 2026-01-01 version. Earlier PDF was not available for a line-by-line comparison.",
+      "notes": "Retrieved official PDF; revision read from its printed footer.",
+      "sha256": "14a94b95e3ba0e8c60748d8b177ebb53796dce1a9fbc646879f1dd7ff5299a42"
+    },
+    "0259": {
+      "title": "CDD-0259 Master Plan / Subdivision / Production Checklist",
+      "publisher": "City of Sacramento",
+      "source_kind": "Official agency PDF",
+      "document_revision_date": "2026-01-01",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0259_Master-Plan-Subdivision-and-Production-Permit-Submittal-Checklist.pdf",
+      "last_verified_date": "2026-11-20",
+      "verification_status": "Verified",
+      "conflict_notes": "",
+      "notes": "Retrieved official PDF; revision read from its printed footer.",
+      "sha256": "044b44a1f6002e6bdc9bc9ea5e6a1217b35ef24d7dfee7d9a6fca4cb2e67f69a"
+    },
+    "0278": {
+      "title": "CDD-0278 Preliminary Building Permit Fee Estimate Worksheet",
+      "publisher": "City of Sacramento",
+      "source_kind": "Official agency PDF",
+      "document_revision_date": "2026-07-12",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0278_Applicants-Preliminary-Bldg-Permit-Fee-Estimate-Worksheet.pdf",
+      "last_verified_date": "2026-11-20",
+      "verification_status": "Verified",
+      "conflict_notes": "",
+      "notes": "Retrieved official PDF; revision read from its printed footer.",
+      "sha256": "5883a31677e169c1eee0ed9a0075d7e8966505b211b6f37fe882e08d8501a564"
+    }
+  },
+  "conflicts": [
+    {
+      "key": "file-size",
+      "sources": [
+        "guide",
+        "316"
+      ],
+      "description": "EPC Guide v27 (2020), p11, recommends approximately 400 MB per PDF. CDD-0316 (2024-12-10) states APP 50 MB, PLANS 300 MB, SUPP 150 MB. Use the newer per-file limits as editable warning defaults; coordinate oversized plans with intake. REPLY has no verified size limit in CDD-0316.",
+      "resolution": "Prefer CDD-0316; never silently apply 400 MB or invent a REPLY limit."
+    },
+    {
+      "key": "commercial-form-revision",
+      "sources": [
+        "0224"
+      ],
+      "description": "The earlier supplied specification named CDD-0224 revision 2024-02-29; the currently retrieved official PDF is revised 2026-01-01.",
+      "resolution": "Link the retrieved 2026-01-01 version. Earlier PDF was not available for a line-by-line comparison."
+    },
+    {
+      "key": "reply-typo",
+      "sources": [
+        "guide",
+        "quick",
+        "0270"
+      ],
+      "description": "Guide v27 p32 has an MP example ending REPY, while its p33 naming examples and the newer Quick Reference use REPLY.",
+      "resolution": "Use REPLY; retain this discrepancy in the source register."
+    },
+    {
+      "key": "plans-resubmittal-scope",
+      "sources": [
+        "quick",
+        "guide"
+      ],
+      "description": "Quick Reference says to resubmit complete PLANS. Guide v27 p34 says files unaffected by correction comments should not be uploaded; revised files must be complete.",
+      "resolution": "Warn to send a complete revised PLANS set and complete SUPP if affected; verify an unaffected-file exception with intake. No automated submission or blocker."
+    },
+    {
+      "key": "bookmark-scope",
+      "sources": [
+        "quick",
+        "316"
+      ],
+      "description": "Quick Reference (2024-10-17), p3, describes each PLANS page as bookmarked; CDD-0316 (2024-12-10), p1, explicitly calls for bookmarks for files with more than 20 pages, and section/document bookmarks elsewhere.",
+      "resolution": "Use the newer CDD-0316 minimum as the warning reference; bookmark/page coverage remains a manual Verify item. More extensive bookmarks may satisfy both; confirm the submission format with intake."
+    }
+  ],
+  "items": [
+    {
+      "key": "city.track.account",
+      "title": "Confirm a basic public portal account exists (do not store login details)",
+      "source": "316",
+      "check_kind": "Tracker",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "p1",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/CDD-0316_Electronic-Plan-Check-(EPC)-Submittal-Verification-Checklist.pdf"
+    },
+    {
+      "key": "city.track.package",
+      "title": "Prepare APP, PLANS and SUPP PDFs",
+      "source": "316",
+      "check_kind": "Tracker",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "p1\u20132",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/CDD-0316_Electronic-Plan-Check-(EPC)-Submittal-Verification-Checklist.pdf"
+    },
+    {
+      "key": "city.track.planning",
+      "title": "Obtain Planning clearance through a PLN record",
+      "source": "quick",
+      "check_kind": "Tracker",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "p2\u20133",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/EPC-Quick-Reference-Submittal-Guide.pdf"
+    },
+    {
+      "key": "city.track.sub",
+      "title": "Record the SUB number for uploads and resubmittals",
+      "source": "guide",
+      "check_kind": "Tracker",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "p1, p5\u20136",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/EPC-Submittal-Guide-Full-Version.pdf"
+    },
+    {
+      "key": "city.track.intake",
+      "title": "Track intake response: incomplete or accepted",
+      "source": "guide",
+      "check_kind": "Tracker",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "EPC Guide v27 p49",
+      "notes": "The guide describes a 24-hour intake-response goal, excluding weekends/holidays; it is not an automatic deadline.",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/EPC-Submittal-Guide-Full-Version.pdf"
+    },
+    {
+      "key": "city.track.payment",
+      "title": "Record permit record creation and submittal-fee payment before formal review",
+      "source": "guide",
+      "check_kind": "Tracker",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "EPC Guide v27 p1, p5, p49\u201350",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/EPC-Submittal-Guide-Full-Version.pdf"
+    },
+    {
+      "key": "city.track.review",
+      "title": "Coordinate discipline comments for the review cycle",
+      "source": "0270",
+      "check_kind": "Tracker",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "p1",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0270_Plan-Review-Resubmittal-Form.pdf"
+    },
+    {
+      "key": "city.track.resubmit",
+      "title": "Wait for Plan Check Wait; prepare complete revised files and REPLY for Cycle 2+",
+      "source": "guide",
+      "check_kind": "Tracker",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "p33\u201334",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/EPC-Submittal-Guide-Full-Version.pdf"
+    },
+    {
+      "key": "city.track.processing",
+      "title": "Track approval, Verify and Processing, final fees and conditions",
+      "source": "guide",
+      "check_kind": "Tracker",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "EPC Guide v27 p55",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/EPC-Submittal-Guide-Full-Version.pdf"
+    },
+    {
+      "key": "city.track.issue",
+      "title": "Record Ready to Issue and Issued",
+      "source": "guide",
+      "check_kind": "Tracker",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "EPC Guide v27 p55",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/EPC-Submittal-Guide-Full-Version.pdf"
+    },
+    {
+      "key": "city.track.job-set",
+      "title": "Download approved Job Set; verify on-site color plans",
+      "source": "guide",
+      "check_kind": "Tracker",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "EPC Guide v27 p55\u201358",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/EPC-Submittal-Guide-Full-Version.pdf"
+    },
+    {
+      "key": "city.track.inspections",
+      "title": "Coordinate inspections and final status",
+      "source": "guide",
+      "check_kind": "Tracker",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "p46",
+      "notes": "Generic coordination step; verify required inspections with the City. No inspection schedule is inferred.",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/EPC-Submittal-Guide-Full-Version.pdf"
+    },
+    {
+      "key": "city.check.application",
+      "title": "CDD-0200: complete page 2 and reconcile scope, areas, occupancy and construction type with title sheet",
+      "source": "316",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "p1\u20132",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/CDD-0316_Electronic-Plan-Check-(EPC)-Submittal-Verification-Checklist.pdf"
+    },
+    {
+      "key": "city.check.agent-owner",
+      "title": "CDD-0204: agent authorization for owner, if applicable",
+      "source": "quick",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "File contents / resubmittal sections",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/EPC-Quick-Reference-Submittal-Guide.pdf"
+    },
+    {
+      "key": "city.check.agent-contractor",
+      "title": "CDD-0196: agent authorization for contractor, if applicable",
+      "source": "quick",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "File contents / resubmittal sections",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/EPC-Quick-Reference-Submittal-Guide.pdf"
+    },
+    {
+      "key": "city.check.address",
+      "title": "CDD-0104: address request, if applicable",
+      "source": "quick",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "File contents / resubmittal sections",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/EPC-Quick-Reference-Submittal-Guide.pdf"
+    },
+    {
+      "key": "city.check.planning-stamp",
+      "title": "Include Planning approval/exemption stamp and any supplied exemption form",
+      "source": "316",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "p1\u20132",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/CDD-0316_Electronic-Plan-Check-(EPC)-Submittal-Verification-Checklist.pdf"
+    },
+    {
+      "key": "city.check.t24",
+      "title": "Include T-24 compliance documents in PLANS",
+      "source": "316",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "p1\u20132",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/CDD-0316_Electronic-Plan-Check-(EPC)-Submittal-Verification-Checklist.pdf"
+    },
+    {
+      "key": "city.check.bookmarks",
+      "title": "Manually verify bookmarks, including files over 20 pages",
+      "source": "316",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "p1\u20132",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/CDD-0316_Electronic-Plan-Check-(EPC)-Submittal-Verification-Checklist.pdf"
+    },
+    {
+      "key": "city.check.orientation",
+      "title": "Manually verify orientation and legibility",
+      "source": "316",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "p1\u20132",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/CDD-0316_Electronic-Plan-Check-(EPC)-Submittal-Verification-Checklist.pdf"
+    },
+    {
+      "key": "city.check.flatten",
+      "title": "Manually verify flattened layers and comments",
+      "source": "316",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "p1\u20132",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/CDD-0316_Electronic-Plan-Check-(EPC)-Submittal-Verification-Checklist.pdf"
+    },
+    {
+      "key": "city.check.scale-north",
+      "title": "Manually verify prescribed scale and visible north arrow",
+      "source": "316",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "p1\u20132",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/CDD-0316_Electronic-Plan-Check-(EPC)-Submittal-Verification-Checklist.pdf"
+    },
+    {
+      "key": "city.check.pdf-security",
+      "title": "Manually verify no PDF security or portfolios; use vector-origin PDF where possible",
+      "source": "guide",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "File contents / resubmittal sections",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/EPC-Submittal-Guide-Full-Version.pdf"
+    },
+    {
+      "key": "city.check.wet-forms",
+      "title": "Manually verify required forms are wet signed and scanned",
+      "source": "quick",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "File contents / resubmittal sections",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/EPC-Quick-Reference-Submittal-Guide.pdf"
+    },
+    {
+      "key": "city.check.engineering",
+      "title": "Structural, truss, soils and sprinkler calculations/reports in SUPP, as applicable",
+      "source": "quick",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "File contents / resubmittal sections",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/EPC-Quick-Reference-Submittal-Guide.pdf"
+    },
+    {
+      "key": "city.check.cycle2-sign",
+      "title": "Cycle 2+: design professional stamps signed; no Preliminary / Bid Set Only / Not for Construction limitations",
+      "source": "guide",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "File contents / resubmittal sections",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/EPC-Submittal-Guide-Full-Version.pdf"
+    },
+    {
+      "key": "city.check.reply",
+      "title": "Cycle 2+: discipline-organized REPLY and CDD-0270; APP again only if changed",
+      "source": "quick",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "File contents / resubmittal sections",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/EPC-Quick-Reference-Submittal-Guide.pdf"
+    },
+    {
+      "key": "city.check.special-inspection",
+      "title": "CDD-0197 special inspection form for resubmittals, if applicable",
+      "source": "quick",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "File contents / resubmittal sections",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/EPC-Quick-Reference-Submittal-Guide.pdf"
+    },
+    {
+      "key": "city.form.0312",
+      "title": "CDD-0312: New residential (1\u20132 units) checklist; verify scope applicability",
+      "source": "316",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [
+        "Residential"
+      ],
+      "works": [
+        "New Construction"
+      ],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0312_New-Residential-Building-1-2-Units-Submittal-Checklist.pdf"
+    },
+    {
+      "key": "city.form.0253",
+      "title": "CDD-0253: Residential addition / interior remodel intake sheet; verify scope applicability",
+      "source": "316",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [
+        "Residential"
+      ],
+      "works": [
+        "Addition",
+        "Remodel / TI",
+        "Kitchen / Bath"
+      ],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0253_Residential-Addition-Interior-Remodel-Take-in-Sheet.pdf"
+    },
+    {
+      "key": "city.form.0183",
+      "title": "CDD-0183: Residential CALGreen mandatory requirements; verify scope applicability",
+      "source": "316",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [
+        "Residential"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0183_Residential-Construction-CalGreen-Mandatory-Code-Reqs.pdf"
+    },
+    {
+      "key": "city.form.0180",
+      "title": "CDD-0180: Residential VOC / formaldehyde limits; verify scope applicability",
+      "source": "316",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [
+        "Residential"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0180_VOC-and-Formaldehyde-Residential-GreenCode-Limits.pdf"
+    },
+    {
+      "key": "city.form.0227",
+      "title": "CDD-0227: Site Drainage and Encroachment Questionnaire (1\u20132 units); verify scope applicability",
+      "source": "quick",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [
+        "Residential"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0227_Site-Drainage-and-Encroachment-Questionnaire.pdf"
+    },
+    {
+      "key": "city.form.0252",
+      "title": "CDD-0252: Owner Certification of Residential Lot Lines / Location / Setbacks (1\u20132 units); verify scope applicability",
+      "source": "quick",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [
+        "Residential"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0252_Res-Lot-Lines-Bldg-Locations-and-Reqd-Setbacks-Owner-Certification.pdf"
+    },
+    {
+      "key": "city.form.0224",
+      "title": "CDD-0224: Commercial new buildings and additions checklist; verify scope applicability",
+      "source": "0224",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [
+        "Commercial"
+      ],
+      "works": [
+        "New Construction",
+        "Addition"
+      ],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0224_Commercial-New-Buildings-and-Additions-Checklist.pdf"
+    },
+    {
+      "key": "city.form.0231",
+      "title": "CDD-0231: Commercial remodel / tenant improvement checklist; verify scope applicability",
+      "source": "316",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [
+        "Commercial"
+      ],
+      "works": [
+        "Remodel / TI"
+      ],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0231_Remodel-and-Tenant-Improvement-Submittal-Checklist-Commercial.pdf"
+    },
+    {
+      "key": "city.form.0420",
+      "title": "CDD-0420: Cannabis occupancy submittal requirements; verify scope applicability",
+      "source": "316",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [
+        "Commercial"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0420_Cannabis-Occupancies-Commercial-Code-Reqs.pdf"
+    },
+    {
+      "key": "city.form.0421",
+      "title": "CDD-0421: Cannabis cultivation / manufacturing remodel checklist; verify scope applicability",
+      "source": "316",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [
+        "Commercial"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0421_Cannabis-Cultivation-Manufacturing-Facilities-Comm-Remodel-Checklist.pdf"
+    },
+    {
+      "key": "city.form.0181",
+      "title": "CDD-0181: Commercial new construction CALGreen; verify scope applicability",
+      "source": "316",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [
+        "Commercial"
+      ],
+      "works": [
+        "New Construction"
+      ],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0181_Commercial-New-Construction-CalGreen-Code-Reqs.pdf"
+    },
+    {
+      "key": "city.form.0165",
+      "title": "CDD-0165: Commercial additions / alterations CALGreen; verify scope applicability",
+      "source": "316",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [
+        "Commercial"
+      ],
+      "works": [
+        "Addition",
+        "Remodel / TI"
+      ],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0165_Comm-Additions-and-Remodels-CALGreen-Mandatory-Reqs.pdf"
+    },
+    {
+      "key": "city.form.0182",
+      "title": "CDD-0182: Commercial VOC / formaldehyde limits; verify scope applicability",
+      "source": "316",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [
+        "Commercial"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0182_VOC-and-Formaldehyde-Commercial-GreenCode-Limits.pdf"
+    },
+    {
+      "key": "city.form.0201",
+      "title": "CDD-0201: Accessibility upgrades for existing non-residential buildings; verify scope applicability",
+      "source": "quick",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [
+        "Commercial"
+      ],
+      "works": [
+        "Remodel / TI",
+        "Addition"
+      ],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0201_Accessiblity-Upgrade-Requirements-for-Existing-Non-Residential-Buildings.pdf"
+    },
+    {
+      "key": "city.commercial.water-test",
+      "title": "Water supply test at formal commercial submittal",
+      "source": "0224",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [
+        "Commercial"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "CDD-0224 p3",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0224_Commercial-New-Buildings-and-Additions-Checklist.pdf"
+    },
+    {
+      "key": "city.commercial.deferred-cover",
+      "title": "List approved deferred submittals on cover sheet",
+      "source": "guide",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [
+        "Commercial"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/EPC-Submittal-Guide-Full-Version.pdf"
+    },
+    {
+      "key": "city.commercial.smud",
+      "title": "Verify SMUD commitment letter for new/upgraded electrical service",
+      "source": "0224",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [
+        "Commercial"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0224_Commercial-New-Buildings-and-Additions-Checklist.pdf"
+    },
+    {
+      "key": "city.commercial.food-health",
+      "title": "Verify County Environmental Health submittal proof for food service",
+      "source": "0224",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [
+        "Commercial"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0224_Commercial-New-Buildings-and-Additions-Checklist.pdf"
+    },
+    {
+      "key": "city.commercial.swpp",
+      "title": "SWPP in SUPP; related Water Board item is a cross-link only",
+      "source": "quick",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [
+        "Commercial"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/EPC-Quick-Reference-Submittal-Guide.pdf"
+    },
+    {
+      "key": "city.commercial.valuation",
+      "title": "Record manual addition / remodel / total job valuations",
+      "source": "0224",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [
+        "Commercial"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0224_Commercial-New-Buildings-and-Additions-Checklist.pdf"
+    },
+    {
+      "key": "city.master",
+      "title": "CDD-0259 master plan path: verify separate set per model",
+      "source": "0259",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [
+        "Master Plan"
+      ],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0259_Master-Plan-Subdivision-and-Production-Permit-Submittal-Checklist.pdf"
+    },
+    {
+      "key": "city.charge.fire",
+      "title": "Fire plan review fee",
+      "source": "0278",
+      "check_kind": "Charge",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "p2\u20134",
+      "notes": "Manual amount and paid date only. No fee calculator, payment or automatic budget posting.",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0278_Applicants-Preliminary-Bldg-Permit-Fee-Estimate-Worksheet.pdf"
+    },
+    {
+      "key": "city.charge.debris",
+      "title": "Construction debris / C&D",
+      "source": "0278",
+      "check_kind": "Charge",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "p2\u20134",
+      "notes": "Manual amount and paid date only. No fee calculator, payment or automatic budget posting.",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0278_Applicants-Preliminary-Bldg-Permit-Fee-Estimate-Worksheet.pdf"
+    },
+    {
+      "key": "city.charge.sanitation",
+      "title": "County Regional Sanitation",
+      "source": "0278",
+      "check_kind": "Charge",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "p2\u20134",
+      "notes": "Manual amount and paid date only. No fee calculator, payment or automatic budget posting.",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0278_Applicants-Preliminary-Bldg-Permit-Fee-Estimate-Worksheet.pdf"
+    },
+    {
+      "key": "city.charge.school",
+      "title": "School district fees",
+      "source": "0278",
+      "check_kind": "Charge",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "p2\u20134",
+      "notes": "Manual amount and paid date only. No fee calculator, payment or automatic budget posting.",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0278_Applicants-Preliminary-Bldg-Permit-Fee-Estimate-Worksheet.pdf"
+    },
+    {
+      "key": "city.charge.smud",
+      "title": "SMUD \u2013 verify charge/applicability",
+      "source": "0278",
+      "check_kind": "Charge",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "p2\u20134",
+      "notes": "Manual amount and paid date only. No fee calculator, payment or automatic budget posting.",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Forms/CDD-0278_Applicants-Preliminary-Bldg-Permit-Fee-Estimate-Worksheet.pdf"
+    },
+    {
+      "key": "county.track.account",
+      "title": "Confirm portal account exists; do not store login details \u2014 verify with County BPI",
+      "source": "county_permits",
+      "check_kind": "Tracker",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/us/en/building-permits-inspection.html"
+    },
+    {
+      "key": "county.track.upload",
+      "title": "Upload application and plans electronically \u2014 verify with County BPI",
+      "source": "county_permits",
+      "check_kind": "Tracker",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/us/en/building-permits-inspection.html"
+    },
+    {
+      "key": "county.track.review",
+      "title": "Track review and corrections \u2014 verify with County BPI",
+      "source": "county_permits",
+      "check_kind": "Tracker",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/us/en/building-permits-inspection.html"
+    },
+    {
+      "key": "county.track.conditions",
+      "title": "Verify County conditions and fees \u2014 verify with County BPI",
+      "source": "county_permits",
+      "check_kind": "Tracker",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/us/en/building-permits-inspection.html"
+    },
+    {
+      "key": "county.track.issued",
+      "title": "Record issued permit \u2014 verify with County BPI",
+      "source": "county_permits",
+      "check_kind": "Tracker",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/us/en/building-permits-inspection.html"
+    },
+    {
+      "key": "county.track.inspections",
+      "title": "Schedule inspections and record results \u2014 verify with County BPI",
+      "source": "county_permits",
+      "check_kind": "Tracker",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/us/en/building-permits-inspection.html"
+    },
+    {
+      "key": "county.track.final",
+      "title": "Verify final status with County BPI \u2014 verify with County BPI",
+      "source": "county_permits",
+      "check_kind": "Tracker",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/us/en/building-permits-inspection.html"
+    },
+    {
+      "key": "county.check.electronic",
+      "title": "County accepts electronic submittal and review only",
+      "source": "county_permits",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/us/en/building-permits-inspection.html"
+    },
+    {
+      "key": "county.check.code",
+      "title": "Verify applicable code edition: County page states 2025 standards for submissions on/after 2026-01-01",
+      "source": "county_permits",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/us/en/building-permits-inspection.html"
+    },
+    {
+      "key": "county.check.fire",
+      "title": "Confirm which fire district reviews this project (OA-24); no district checklist imported",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/us/en/building-permits-inspection/building-forms-and-documents.html"
+    },
+    {
+      "key": "county.form.AP-36",
+      "title": "AP-36: Contractor Declaration \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/content/dam/cd/building/docs/transition/AP-36%20Contractor%20Declaration.pdf"
+    },
+    {
+      "key": "county.form.AP-17",
+      "title": "AP-17: Agent Authorization \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Residential",
+        "Commercial"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/content/dam/cd/building/docs/transition/AP-17%20Authorization%20of%20Agent%20to%20Act%20on%20Property%20Owner%27s%20Behalf.pdf"
+    },
+    {
+      "key": "county.form.AP-16",
+      "title": "AP-16: Owner-Builder \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Residential"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/content/dam/cd/building/docs/transition/AP-16%20Notice%20To%20Property%20Owner%20as%20Owner%20Builder.pdf"
+    },
+    {
+      "key": "county.form.AP-14",
+      "title": "AP-14: Production Home \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Residential"
+      ],
+      "works": [
+        "Master Plan"
+      ],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/content/dam/cd/building/docs/transition/AP-14%20Production%20Home%20Building%20Permit%20Application.pdf"
+    },
+    {
+      "key": "county.form.CO-06",
+      "title": "CO-06: New buildings / additions \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Residential"
+      ],
+      "works": [
+        "New Construction",
+        "Addition"
+      ],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/content/dam/cd/building/docs/transition/CO-06%20Residential%20New%20Buildings%20and%20Additions%20Submittal%20List.pdf"
+    },
+    {
+      "key": "county.form.CO-42",
+      "title": "CO-42: Alteration \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Residential"
+      ],
+      "works": [
+        "Remodel / TI"
+      ],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/content/dam/cd/building/docs/transition/CO-42%20Residential%20Alteration%20Submittal%20List.pdf"
+    },
+    {
+      "key": "county.form.CO-36",
+      "title": "CO-36: Garage conversion \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Residential"
+      ],
+      "works": [
+        "Garage Conversion"
+      ],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/content/dam/cd/building/docs/transition/CO-36%20Garage%20Conversion%20Submittal%20List.pdf"
+    },
+    {
+      "key": "county.form.CO-47",
+      "title": "CO-47: ADU submittal \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Residential"
+      ],
+      "works": [
+        "ADU"
+      ],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/content/dam/cd/building/docs/transition/CO-47%20ADU%20Submittal%20Requirements.pdf"
+    },
+    {
+      "key": "county.form.CO-44",
+      "title": "CO-44: Patio cover \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Residential"
+      ],
+      "works": [
+        "Patio Cover"
+      ],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/content/dam/cd/building/docs/transition/CO-44%20Patio%20Cover%20Submittal%20List.pdf"
+    },
+    {
+      "key": "county.form.CO-48",
+      "title": "CO-48: Fence / block wall \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Residential"
+      ],
+      "works": [
+        "Fence / Block Wall"
+      ],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/content/dam/cd/building/docs/transition/CO-48%20Fence-Block%20wall.pdf"
+    },
+    {
+      "key": "county.form.CO-49",
+      "title": "CO-49: Kitchen and bath \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Residential"
+      ],
+      "works": [
+        "Kitchen / Bath"
+      ],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/content/dam/cd/building/docs/transition/CO-49%20Residential%20Kitchen%20and%20Bath%20Checklist.pdf"
+    },
+    {
+      "key": "county.form.CO-43",
+      "title": "CO-43: Manufactured home \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Residential"
+      ],
+      "works": [
+        "Manufactured Home"
+      ],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/content/dam/cd/building/docs/transition/CO-43%20Manufactured%20Home%20Submittal%20List.pdf"
+    },
+    {
+      "key": "county.form.AP-33",
+      "title": "AP-33: Residential stormwater measures; optional Water Board cross-link \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Residential"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/content/dam/cd/building/docs/transition/AP-33%20Residential%20Mandatory%20Measures%20Storm%20Water%20Pollution%20Prevention%20Requirements.pdf"
+    },
+    {
+      "key": "county.form.GI-29",
+      "title": "GI-29: Plot plan example \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Residential"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/content/dam/cd/building/docs/transition/GI-29%20Plot%20Plan%20Example.pdf"
+    },
+    {
+      "key": "county.form.OA-02",
+      "title": "OA-02: School districts \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Residential"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/content/dam/cd/building/docs/transition/OA-02%20School%20Districts.pdf"
+    },
+    {
+      "key": "county.form.OA-24",
+      "title": "OA-24: Confirm fire district \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Residential",
+        "Commercial"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/content/dam/cd/building/docs/transition/OA-24%20Fire%20Districts.pdf"
+    },
+    {
+      "key": "county.form.EC-23",
+      "title": "EC-23: Roof-mounted PV / verify SolarAPP+ path \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Residential"
+      ],
+      "works": [
+        "Solar"
+      ],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/content/dam/cd/building/docs/transition/EC-23%20Residential%20Roof%20Mount%20PV.pdf"
+    },
+    {
+      "key": "county.form.EC-07",
+      "title": "EC-07: EV charging \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Residential"
+      ],
+      "works": [
+        "EV Charging"
+      ],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/content/dam/cd/building/docs/transition/EC-07%20Electric%20Vehicle%20Charging%20Station.pdf"
+    },
+    {
+      "key": "county.form.SP-08",
+      "title": "SP-08: Pool \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Residential"
+      ],
+      "works": [
+        "Pool"
+      ],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/content/dam/cd/building/docs/transition/SP-08%20Residential%20Pool%20Requirements.pdf"
+    },
+    {
+      "key": "county.form.CO-33",
+      "title": "CO-33: Smoke / CO self-certification \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Residential"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/content/dam/cd/building/docs/transition/CO-33%20R-3%20Self-Cert%20Smoke%20and%20Carbon%20Monoxide%20Alarms.pdf"
+    },
+    {
+      "key": "county.form.RS-22.1",
+      "title": "RS-22.1: Window replacement \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Residential"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/us/en/building-permits-inspection/building-forms-and-documents.html"
+    },
+    {
+      "key": "county.form.AP-24",
+      "title": "AP-24: Accessibility exception \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Residential",
+        "Commercial"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/us/en/building-permits-inspection/building-forms-and-documents.html"
+    },
+    {
+      "key": "county.form.AP-26",
+      "title": "AP-26: Utility connection \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Residential"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/content/dam/cd/building/docs/transition/AP-26%20Early-Temporary%20Utility%20Connection%20Agreement.pdf"
+    },
+    {
+      "key": "county.form.AP-32",
+      "title": "AP-32: Utilities request \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Residential"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/content/dam/cd/building/docs/transition/AP-32%20Request%20for%20Utilities.pdf"
+    },
+    {
+      "key": "county.form.GI-21",
+      "title": "GI-21: Check work exempt from permit first \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Residential"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/content/dam/cd/building/docs/transition/GI-21%20Work%20Exempt%20from%20Permit.pdf"
+    },
+    {
+      "key": "county.form.GI-22",
+      "title": "GI-22: Check agricultural exemption first \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Residential"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/content/dam/cd/building/docs/transition/GI-22%20Agricultural%20Exempt%20Building%20Permit%20Requirements.pdf"
+    },
+    {
+      "key": "county.form.GI-20",
+      "title": "GI-20: Accessory structures \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Residential"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/content/dam/cd/building/docs/transition/GI-20%20Residential%20Accessory%20Structures.pdf"
+    },
+    {
+      "key": "county.form.AP-34",
+      "title": "AP-34: Non-residential stormwater measures; optional Water Board cross-link \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Commercial"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/content/dam/cd/building/docs/transition/AP-34%20Non-Residential%20Mandatory%20Measures%20Storm%20Water%20Pollution%20Prevention%20Requirements.pdf"
+    },
+    {
+      "key": "county.form.ST-13",
+      "title": "ST-13: Steel storage racks \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Commercial"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/content/dam/cd/building/docs/transition/ST-13%20Steel%20Storage%20Racks.pdf"
+    },
+    {
+      "key": "county.form.ST-14",
+      "title": "ST-14: Structural observation \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Commercial"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/content/dam/cd/building/docs/transition/ST-14%20Structural%20Observation.pdf"
+    },
+    {
+      "key": "county.form.ST-16",
+      "title": "ST-16: Structural tests / inspection schedule \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Commercial"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/content/dam/cd/building/docs/transition/ST-16%20Structural%20Tests%20and%20Inspection%20Schedule.pdf"
+    },
+    {
+      "key": "county.form.ST-17",
+      "title": "ST-17: Approved special inspection firm list \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Commercial"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/content/dam/cd/building/docs/transition/ST-17%20Approved%20Special%20Inspection%20Firm%20List.pdf"
+    },
+    {
+      "key": "county.form.EC-07.1",
+      "title": "EC-07.1: Commercial EV charging \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Commercial"
+      ],
+      "works": [
+        "EV Charging"
+      ],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/us/en/building-permits-inspection/building-forms-and-documents.html"
+    },
+    {
+      "key": "county.form.CO-50",
+      "title": "CO-50: Hydrogen fueling station \u2014 verify applicability with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Commercial"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/content/dam/cd/building/docs/forms/CO-50%20Commercial%20Hydrogen%20Fueling%20Station.pdf"
+    },
+    {
+      "key": "county.adu.ab2234",
+      "title": "ADU / Duplex / Townhome AB2234 document; shelf-ready ADU option \u2014 verify",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Residential"
+      ],
+      "works": [
+        "ADU"
+      ],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/us/en/building-permits-inspection/building-forms-and-documents.html"
+    },
+    {
+      "key": "county.commercial.verify",
+      "title": "Commercial submittal requirements: verify with County BPI",
+      "source": "county_forms",
+      "check_kind": "Checklist",
+      "jurisdiction": "Sacramento County unincorporated",
+      "uses": [
+        "Commercial"
+      ],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://development.saccounty.gov/us/en/building-permits-inspection/building-forms-and-documents.html"
+    },
+    {
+      "key": "city.fire.needed",
+      "title": "Confirm fire review needed \u2014 verify with City Fire",
+      "source": "fire_new",
+      "check_kind": "Tracker",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Fire Development Services"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/fire/fire-prevention/new-construction"
+    },
+    {
+      "key": "city.fire.plans",
+      "title": "Prepare fire plans and calculations \u2014 verify with City Fire",
+      "source": "fire_new",
+      "check_kind": "Tracker",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Fire Development Services"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/fire/fire-prevention/new-construction"
+    },
+    {
+      "key": "city.fire.review",
+      "title": "Track fire review \u2014 verify with City Fire",
+      "source": "fire_new",
+      "check_kind": "Tracker",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Fire Development Services"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/fire/fire-prevention/new-construction"
+    },
+    {
+      "key": "city.fire.corrections",
+      "title": "Coordinate fire corrections \u2014 verify with City Fire",
+      "source": "fire_new",
+      "check_kind": "Tracker",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Fire Development Services"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/fire/fire-prevention/new-construction"
+    },
+    {
+      "key": "city.fire.approval",
+      "title": "Verify fire approval \u2014 verify with City Fire",
+      "source": "fire_new",
+      "check_kind": "Tracker",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Fire Development Services"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/fire/fire-prevention/new-construction"
+    },
+    {
+      "key": "city.fire.inspection",
+      "title": "Coordinate inspections \u2014 verify with City Fire",
+      "source": "fire_new",
+      "check_kind": "Tracker",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Fire Development Services"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/fire/fire-prevention/new-construction"
+    },
+    {
+      "key": "city.fire.final",
+      "title": "Verify fire final \u2014 verify with City Fire",
+      "source": "fire_new",
+      "check_kind": "Tracker",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Fire Development Services"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verify",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/fire/fire-prevention/new-construction"
+    },
+    {
+      "key": "city.fire.scope",
+      "title": "Verify fire protection systems, fire access and water supply scope with Development Services",
+      "source": "fire_new",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Fire Development Services"
+      ],
+      "if_applicable": 1,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/fire/fire-prevention/new-construction"
+    },
+    {
+      "key": "city.check.epc-checklist",
+      "title": "Include a copy of CDD-0316 in APP; verify the current checklist version",
+      "source": "316",
+      "check_kind": "Checklist",
+      "jurisdiction": "City of Sacramento",
+      "uses": [],
+      "works": [],
+      "families": [
+        "Building"
+      ],
+      "if_applicable": 0,
+      "verify_label": "Verified source / verify applicability",
+      "last_verified_date": "2026-11-20",
+      "locator": "CDD-0316 p1",
+      "notes": "",
+      "url": "https://www.cityofsacramento.gov/content/dam/portal/cdd/Building/Plan-Review/Electronic-Plan-Check/CDD-0316_Electronic-Plan-Check-(EPC)-Submittal-Verification-Checklist.pdf"
+    }
+  ]
+}
