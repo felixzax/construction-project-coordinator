@@ -113,7 +113,13 @@ class CityPermitUI:
  def edit_city_row(self,name,existing=False,values=None,draft_key=None):
   def action():
    rid=self.city_selected_id();d=self.store.city_details(rid);p=self.city_parent();row=dict(self.city_selected_row(name)) if existing else dict(project_id=p['project_id'],register_id=rid,permit_register_id=rid)
-   if values:row.update(values)
+   if values:
+    if values.get('id'):
+     table_name={'Tracker':'reg_tracker_steps','Checklist':'permit_requirements','Review Cycles':'reg_review_cycles','City Records':'reg_city_records','Manual Charges':'reg_manual_charges'}[name]
+     prior=self.store.rows(f'SELECT * FROM {table_name} WHERE id=?',(values['id'],))
+     if not prior:raise ValueError('The original record was deleted; restore its recovery snapshot first')
+     row.update(prior[0])
+    row.update(values)
    if name=='Checklist':
     fields=['title','source_url','completed','notes','source_id','last_verified_date','if_applicable','verify_label'];table='permit_requirements';save=lambda v:self.store.save_city_checklist(rid,v,row.get('id'))
    elif name=='Tracker':
@@ -230,7 +236,16 @@ class CityPermitUI:
   self.guard(action)
  def resume_city_draft(self,draft):
   values=draft['values'];extra=draft['metadata'];action=extra['city_action'];rid=extra.get('register_id') or draft['row_id']
-  if action=='config':return self.edit_city_config(bool(draft['row_id']),values,draft['id'])
+  if action=='config':
+   pid=values.get('project_id')
+   if draft['row_id']:
+    parent=self.store.rows('SELECT project_id FROM registers WHERE id=?',(draft['row_id'],))
+    if not parent:raise ValueError('The permit was deleted; restore its recovery snapshot first')
+    pid=parent[0]['project_id']
+   if self.project_filter.findData(pid)<0:raise ValueError('The project was deleted; restore its recovery snapshot first')
+   self.project_filter.setCurrentIndex(self.project_filter.findData(pid))
+   if draft['row_id']:self.city_permit_select.setCurrentIndex(self.city_permit_select.findData(draft['row_id']))
+   return self.edit_city_config(bool(draft['row_id']),values,draft['id'])
   pid=self.store.rows('SELECT project_id FROM registers WHERE id=?',(rid,))
   if not pid:raise ValueError('The permit was deleted; restore a recovery snapshot first')
   self.project_filter.setCurrentIndex(self.project_filter.findData(pid[0]['project_id']));self.city_permit_select.setCurrentIndex(self.city_permit_select.findData(rid))

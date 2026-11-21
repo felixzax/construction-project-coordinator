@@ -258,3 +258,27 @@ def test_deleted_charge_id_reuse_does_not_hide_new_user_charge_on_county(store,p
  new=store.save('reg_manual_charges',dict(project_id=pid,register_id=rid,title='User manual charge'))
  store.configure_city_permit(config(pid,COUNTY),rid,True)
  assert new in [r['id'] for r in store.city_charges(rid)]
+
+
+def test_city_draft_resume_from_all_projects_preserves_template_step_key(store,pid,monkeypatch):
+ from PySide6.QtWidgets import QApplication
+ from cpc.ui import Window,Form
+ app=QApplication.instance() or QApplication([]);rid=permit(store,pid);step=store.city_steps(rid)[0]
+ values={k:step[k] for k in ('title','status','deadline','occurred_date','contact_id','notes','source_id','last_verified_date','if_applicable','verify_label')};values['notes']='Recovered edit'
+ store.save_draft('city-step','reg_tracker_steps',step['id'],values,dict(city_action='row',city_name='Tracker',register_id=rid))
+ w=Window(store)
+ def accept(form):form.persist(form.values());form.clear_recovery_draft();return 1
+ monkeypatch.setattr(Form,'exec',accept);w.reload_recovery_lists();w.draft_table.selectRow(0);w.resume_draft()
+ saved=next(s for s in store.city_steps(rid) if s['id']==step['id']);assert saved['step_key']==step['step_key'] and saved['notes']=='Recovered edit'
+ assert not store.drafts();w.close()
+
+
+def test_city_new_config_draft_resume_selects_original_project(store,pid,monkeypatch):
+ from PySide6.QtWidgets import QApplication
+ from cpc.ui import Window,Form
+ app=QApplication.instance() or QApplication([]);values=config(pid,COUNTY);values['title']='Recovered County permit'
+ store.save_draft('city-config','registers',None,values,dict(city_action='config'));w=Window(store)
+ def accept(form):form.persist(form.values());form.clear_recovery_draft();return 1
+ monkeypatch.setattr(Form,'exec',accept);w.reload_recovery_lists();w.draft_table.selectRow(0);w.resume_draft()
+ r=next(r for r in store.all('registers') if r['title']=='Recovered County permit');assert r['project_id']==pid and store.city_details(r['id'])['jurisdiction_key']==COUNTY
+ assert not store.drafts();w.close()
