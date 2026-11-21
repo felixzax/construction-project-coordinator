@@ -6,6 +6,8 @@ import shutil
 import uuid
 import tempfile
 from contextlib import closing
+from .compliance import ComplianceStore
+from .water_board import WaterBoardStore
 from .city_permits import CityPermitStore
 from .regulatory import RegulatoryStore
 from .regulatory_schema import REG_FIELDS
@@ -59,7 +61,7 @@ FIELDS['permit_requirements']=REQUIREMENT_FIELDS+['completed_on']
 for _table,_columns in ADDED_COLUMNS.items():
  FIELDS[_table].extend(_columns)
 
-class Store(CityPermitStore,RegulatoryStore,WorkOrderStore,ApprovalStore,NavigationStore,ScopeStore,FinanceStore,IssueStore,ReceiptStore,RecoveryStore,PermitStore,DevelopmentStore):
+class Store(ComplianceStore,WaterBoardStore,CityPermitStore,RegulatoryStore,WorkOrderStore,ApprovalStore,NavigationStore,ScopeStore,FinanceStore,IssueStore,ReceiptStore,RecoveryStore,PermitStore,DevelopmentStore):
  def __init__(self, path):
   self.path=Path(path); self.path.parent.mkdir(parents=True,exist_ok=True)
   self.db=sqlite3.connect(self.path); self.db.row_factory=sqlite3.Row
@@ -100,6 +102,7 @@ class Store(CityPermitStore,RegulatoryStore,WorkOrderStore,ApprovalStore,Navigat
  def save(self,table,data,row_id=None):
   if table not in FIELDS: raise ValueError('Unknown table')
   check_values(data)
+  water_recalculated=bool(data.get('water_recalculated',False))
   profile_settings={k[4:]:v for k,v in data.items() if k in ('reg_cgp_subject','reg_jurisdiction')} if table=='project_profiles' else {}
   if profile_settings:
    from .regulatory import JURISDICTIONS
@@ -119,6 +122,7 @@ class Store(CityPermitStore,RegulatoryStore,WorkOrderStore,ApprovalStore,Navigat
   self.validate_work_order(table,data,row_id)
   self.validate_regulatory(table,data,row_id)
   self.validate_city(table,data,row_id)
+  self.validate_water(table,data,row_id,water_recalculated)
   for key in ('name','title','summary'):
    if key in FIELDS[table] and not str(data.get(key,'')).strip(): raise ValueError(f'{key.title()} is required')
   for key in ('deadline','follow_up','occurred'):
@@ -130,6 +134,7 @@ class Store(CityPermitStore,RegulatoryStore,WorkOrderStore,ApprovalStore,Navigat
     self.db.execute(f'UPDATE {table} SET '+','.join(f'{k}=?' for k in data)+' WHERE id=?',[*data.values(),row_id])
    else:
     row_id=self.db.execute(f'INSERT INTO {table} ('+','.join(data)+') VALUES ('+','.join('?' for _ in data)+')',list(data.values())).lastrowid
+   self.water_after_save(table,data,row_id)
    if profile_settings:
     self.db.execute('INSERT OR IGNORE INTO reg_project_settings(project_id) VALUES(?)',(data['project_id'],))
     self.db.execute('UPDATE reg_project_settings SET '+','.join(k+'=?' for k in profile_settings)+' WHERE project_id=?', [*profile_settings.values(),data['project_id']])
@@ -236,7 +241,7 @@ class Store(CityPermitStore,RegulatoryStore,WorkOrderStore,ApprovalStore,Navigat
   for title,rows in [('Outstanding tasks',self.outstanding(pid)),('Documents',self.rows('SELECT d.title,v.revision,v.status,v.requirements,v.resubmission FROM documents d LEFT JOIN versions v ON v.id=(SELECT MAX(id) FROM versions WHERE document_id=d.id) WHERE d.project_id=?',(pid,))),('Milestones',self.rows('SELECT title,phase,deadline,status FROM milestones WHERE project_id=? ORDER BY deadline',(pid,))),('Communication',self.rows('SELECT occurred,summary,follow_up,status FROM communications WHERE project_id=? ORDER BY occurred DESC',(pid,)))]:
    out+=f'<h2>{title}</h2>'
    for r in rows: out+='<p>'+' | '.join(f'{e(k)}: {e(v)}' for k,v in r.items() if k not in ('id','project_id','contact_id'))+'</p>'
-  return out+self.development_report(pid)+self.permit_checklist_report(pid)+self.receipt_report(pid)+self.issue_report(pid)+self.finance_report(pid)+self.scope_report(pid)+self.approval_report(pid)+self.work_order_report(pid)
+  return out+self.development_report(pid)+self.permit_checklist_report(pid)+self.receipt_report(pid)+self.issue_report(pid)+self.finance_report(pid)+self.scope_report(pid)+self.approval_report(pid)+self.work_order_report(pid)+self.compliance_report(pid)
  def draft(self,comm):
   p=self.rows('SELECT name FROM projects WHERE id=?',(comm['project_id'],))[0]
   c=self.rows('SELECT name,email FROM contacts WHERE id=?',(comm['contact_id'],))

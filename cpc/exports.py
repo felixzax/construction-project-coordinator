@@ -83,6 +83,7 @@ def department_rows(store,disciplines,project_id=None,query=''):
   if not links and not project_id: links=[{'project_id':None}]
   for link in links:
    add('Contact',dict(contact,project_id=link['project_id'],contact_id=contact['id']),f'{contact["role"]} | {contact["company"]} | {contact["email"]} | {contact["phone"]}')
+ result+=store.compliance_department_rows(disciplines,project_id,query)
  return result
 
 

@@ -1,0 +1,411 @@
+{
+  "verified_date": "2026-11-20",
+  "sources": {
+    "r": {
+      "title": "R Factor Calculator Guide \u2014 February 2024",
+      "publisher": "California State Water Resources Control Board",
+      "source_kind": "Official Water Board PDF",
+      "document_revision_date": "",
+      "url": "https://www.waterboards.ca.gov/water_issues/programs/stormwater/smarts/construction/docs/rfactor_guide.pdf",
+      "last_verified_date": "2026-11-20",
+      "verification_status": "Verified source; verify applicability",
+      "conflict_notes": "\nUser specification cites 2020-12-30 guide and 2020\u20132022 example totaling 105.14. The retrieved guide is February 2024 and shows 2025\u20132028 periods, 45.49 + 45.49 + 42.13 = 133.11. Keep the requested 105.14 case as a mathematical regression, and the current 133.11 example separately. Neither proves EPA output; manually verify in EPA. Display both revisions.",
+      "notes": "Printed revision appears in title; day is not stated for month-only revisions. Do not invent a day. SHA-256: 52d5a102b9d588fdc6d3e8da3e7a754c9be0407c13abd03a7892754776831d33",
+      "sha256": "52d5a102b9d588fdc6d3e8da3e7a754c9be0407c13abd03a7892754776831d33"
+    },
+    "coi": {
+      "title": "Site COI Guide \u2014 April 2026",
+      "publisher": "California State Water Resources Control Board",
+      "source_kind": "Official Water Board PDF",
+      "document_revision_date": "",
+      "url": "https://www.waterboards.ca.gov/water_issues/programs/stormwater/smarts/construction/docs/cgp_site_coi_help_guide.pdf",
+      "last_verified_date": "2026-11-20",
+      "verification_status": "Verified source; verify applicability",
+      "conflict_notes": "\nApril 2026 Site COI guide certification steps contain NOI and NOT labels in passages otherwise describing COI. Do not copy inconsistent button instructions as requirements. Mark the actual portal workflow Verify; local LRP/DAR/eAuthorization blocker follows the user requirement and the clear guide introduction.\nOrganization guide permits any user to create some organization changes; the requested office policy applies LRP/DAR/eAuthorization checks to COI Ready/Submitted. Enforce the requested local coordination policy; do not represent it as a claim that every organization edit legally requires that role.",
+      "notes": "Printed revision appears in title; day is not stated for month-only revisions. Do not invent a day. SHA-256: c662e34c367118b1c879f5812bfd5369cde3693c5f536f32e1d9c8a51a337c03",
+      "sha256": "c662e34c367118b1c879f5812bfd5369cde3693c5f536f32e1d9c8a51a337c03"
+    },
+    "org": {
+      "title": "Organization COI Guide \u2014 April 2026",
+      "publisher": "California State Water Resources Control Board",
+      "source_kind": "Official Water Board PDF",
+      "document_revision_date": "",
+      "url": "https://www.waterboards.ca.gov/water_issues/programs/stormwater/smarts/construction/docs/org_coi_help_guide.pdf",
+      "last_verified_date": "2026-11-20",
+      "verification_status": "Verified source; verify applicability",
+      "conflict_notes": "\nOrganization guide permits any user to create some organization changes; the requested office policy applies LRP/DAR/eAuthorization checks to COI Ready/Submitted. Enforce the requested local coordination policy; do not represent it as a claim that every organization edit legally requires that role.",
+      "notes": "Printed revision appears in title; day is not stated for month-only revisions. Do not invent a day. SHA-256: 05f3393197be01035232b9a5137c52759d4ad70fd3eb320f0d6035d359fbc454",
+      "sha256": "05f3393197be01035232b9a5137c52759d4ad70fd3eb320f0d6035d359fbc454"
+    },
+    "annual": {
+      "title": "2022 CGP Annual Report Guide \u2014 April 2026",
+      "publisher": "California State Water Resources Control Board",
+      "source_kind": "Official Water Board PDF",
+      "document_revision_date": "",
+      "url": "https://www.waterboards.ca.gov/water_issues/programs/stormwater/smarts/construction/docs/cgp_2022_ar_help_guide.pdf",
+      "last_verified_date": "2026-11-20",
+      "verification_status": "Verified source; verify applicability",
+      "conflict_notes": "\nAnnual guide qualifies applicability to WDID active at least three months in reporting year; dates alone do not establish applicability. Annual records and auto-created next periods remain Verify applicability. No inference from acreage or site status is made.",
+      "notes": "Printed revision appears in title; day is not stated for month-only revisions. Do not invent a day. SHA-256: 3864e83aa0d0d90090148bea3ac810f3dfad442194d58d6a087c5ddd9a436afc",
+      "sha256": "3864e83aa0d0d90090148bea3ac810f3dfad442194d58d6a087c5ddd9a436afc"
+    },
+    "not": {
+      "title": "2022 CGP Notice of Termination Guide \u2014 April 2026",
+      "publisher": "California State Water Resources Control Board",
+      "source_kind": "Official Water Board PDF",
+      "document_revision_date": "",
+      "url": "https://www.waterboards.ca.gov/water_issues/programs/stormwater/smarts/construction/docs/cgp_2022_not_help_guide.pdf",
+      "last_verified_date": "2026-11-20",
+      "verification_status": "Verified source; verify applicability",
+      "conflict_notes": "",
+      "notes": "Printed revision appears in title; day is not stated for month-only revisions. Do not invent a day. SHA-256: e313e191d9666b501132f26c39b4ee3b1157e267c860d93700976baff33e3ca5",
+      "sha256": "e313e191d9666b501132f26c39b4ee3b1157e267c860d93700976baff33e3ca5"
+    },
+    "noi": {
+      "title": "NOI Guide \u2014 February 2024",
+      "publisher": "California State Water Resources Control Board",
+      "source_kind": "Official Water Board PDF",
+      "document_revision_date": "",
+      "url": "https://www.waterboards.ca.gov/water_issues/programs/stormwater/smarts/construction/docs/cgp_noi_help_guide.pdf",
+      "last_verified_date": "2026-11-20",
+      "verification_status": "Verified source; verify applicability",
+      "conflict_notes": "",
+      "notes": "Printed revision appears in title; day is not stated for month-only revisions. Do not invent a day. SHA-256: 893c8c1ff0eda0848c3b1b728062bcefa9cd91778fc1e9692ee89dc1be47ea9b",
+      "sha256": "893c8c1ff0eda0848c3b1b728062bcefa9cd91778fc1e9692ee89dc1be47ea9b"
+    },
+    "waiver": {
+      "title": "Low Erosivity Waiver Guide \u2014 verify printed revision",
+      "publisher": "California State Water Resources Control Board",
+      "source_kind": "Official Water Board PDF",
+      "document_revision_date": "",
+      "url": "https://www.waterboards.ca.gov/water_issues/programs/stormwater/smarts/construction/docs/cgp_waiver_help_guide.pdf",
+      "last_verified_date": "2026-11-20",
+      "verification_status": "Verified source; verify applicability",
+      "conflict_notes": "",
+      "notes": "Printed revision appears in title; day is not stated for month-only revisions. Do not invent a day. SHA-256: 3c5492d960ba66d7523ac3299d9536809d98a9b2963b9897459e47e18ee9ad3c",
+      "sha256": "3c5492d960ba66d7523ac3299d9536809d98a9b2963b9897459e47e18ee9ad3c"
+    },
+    "order": {
+      "title": "Order WQ 2022-0057-DWQ \u2014 adopted September 8, 2022",
+      "publisher": "California State Water Resources Control Board",
+      "source_kind": "Official Water Board PDF",
+      "document_revision_date": "2022-09-08",
+      "url": "https://www.waterboards.ca.gov/board_decisions/adopted_orders/water_quality/2022/wqo_2022-0057-dwq.pdf",
+      "last_verified_date": "2026-11-20",
+      "verification_status": "Verified source; verify applicability",
+      "conflict_notes": "\nWeekly/storm inspection applicability depends on permit conditions; a simple seven-day office flag cannot establish compliance. Show the requested active-site seven-day coordination flag with Verify wording. No precipitation threshold or risk eligibility is inferred.",
+      "notes": "Printed revision appears in title; day is not stated for month-only revisions. Do not invent a day. SHA-256: 0d13064e5ff7d83bdd6bfed662c162fd9b2bbdf8ab2804d3e5380101a5a0c2d6",
+      "sha256": "0d13064e5ff7d83bdd6bfed662c162fd9b2bbdf8ab2804d3e5380101a5a0c2d6"
+    }
+  },
+  "conflicts": [
+    {
+      "sources": [
+        "r"
+      ],
+      "description": "User specification cites 2020-12-30 guide and 2020\u20132022 example totaling 105.14. The retrieved guide is February 2024 and shows 2025\u20132028 periods, 45.49 + 45.49 + 42.13 = 133.11.",
+      "resolution": "Keep the requested 105.14 case as a mathematical regression, and the current 133.11 example separately. Neither proves EPA output; manually verify in EPA. Display both revisions."
+    },
+    {
+      "sources": [
+        "coi"
+      ],
+      "description": "April 2026 Site COI guide certification steps contain NOI and NOT labels in passages otherwise describing COI.",
+      "resolution": "Do not copy inconsistent button instructions as requirements. Mark the actual portal workflow Verify; local LRP/DAR/eAuthorization blocker follows the user requirement and the clear guide introduction."
+    },
+    {
+      "sources": [
+        "org",
+        "coi"
+      ],
+      "description": "Organization guide permits any user to create some organization changes; the requested office policy applies LRP/DAR/eAuthorization checks to COI Ready/Submitted.",
+      "resolution": "Enforce the requested local coordination policy; do not represent it as a claim that every organization edit legally requires that role."
+    },
+    {
+      "sources": [
+        "annual"
+      ],
+      "description": "Annual guide qualifies applicability to WDID active at least three months in reporting year; dates alone do not establish applicability.",
+      "resolution": "Annual records and auto-created next periods remain Verify applicability. No inference from acreage or site status is made."
+    },
+    {
+      "sources": [
+        "order"
+      ],
+      "description": "Weekly/storm inspection applicability depends on permit conditions; a simple seven-day office flag cannot establish compliance.",
+      "resolution": "Show the requested active-site seven-day coordination flag with Verify wording. No precipitation threshold or risk eligibility is inferred."
+    }
+  ],
+  "items": [
+    {
+      "kind": "checklist",
+      "key": "water.checklist.risk",
+      "title": "Determine risk level",
+      "body": "Verify risk level with QSD; no thresholds are calculated.",
+      "source": "noi",
+      "role": "",
+      "verify_label": "Verify with current permit / Regional Water Board"
+    },
+    {
+      "kind": "checklist",
+      "key": "water.checklist.r",
+      "title": "R factor for each period",
+      "body": "Run EPA manually and enter each result; verify guide revision.",
+      "source": "r",
+      "role": "",
+      "verify_label": "Verify with current permit / Regional Water Board"
+    },
+    {
+      "kind": "checklist",
+      "key": "water.checklist.kls",
+      "title": "K and LS factors",
+      "body": "Manual optional inputs only; verify against the current permit.",
+      "source": "r",
+      "role": "",
+      "verify_label": "Verify with current permit / Regional Water Board"
+    },
+    {
+      "kind": "checklist",
+      "key": "water.checklist.swppp",
+      "title": "SWPPP by QSD",
+      "body": "Verify the SWPPP, preparation responsibility and applicable documents.",
+      "source": "order",
+      "role": "",
+      "verify_label": "Verify with current permit / Regional Water Board"
+    },
+    {
+      "kind": "checklist",
+      "key": "water.checklist.noi",
+      "title": "NOI, site map and manual fee",
+      "body": "Coordinate supporting material; app does not submit or calculate a fee.",
+      "source": "noi",
+      "role": "",
+      "verify_label": "Verify with current permit / Regional Water Board"
+    },
+    {
+      "kind": "checklist",
+      "key": "water.checklist.post",
+      "title": "Post-construction calculations",
+      "body": "Verify applicability and calculations with QSD.",
+      "source": "order",
+      "role": "",
+      "verify_label": "Verify with current permit / Regional Water Board"
+    },
+    {
+      "kind": "checklist",
+      "key": "water.checklist.ceqa",
+      "title": "CEQA document",
+      "body": "Verify applicability; a County CEQA Notice of Determination is separate from a Water Board NOT.",
+      "source": "noi",
+      "role": "",
+      "verify_label": "Verify with current permit / Regional Water Board"
+    },
+    {
+      "kind": "checklist",
+      "key": "water.checklist.eauth",
+      "title": "eAuthorization on file flag",
+      "body": "Record only Yes/No/Unknown and date on the assigned role. Do not store the form or secrets.",
+      "source": "coi",
+      "role": "",
+      "verify_label": "Verify with current permit / Regional Water Board"
+    },
+    {
+      "kind": "checklist",
+      "key": "water.checklist.weekly",
+      "title": "Weekly QSP inspections",
+      "body": "Track performed inspections in the existing Inspections register; verify applicability.",
+      "source": "order",
+      "role": "",
+      "verify_label": "Verify with current permit / Regional Water Board"
+    },
+    {
+      "kind": "checklist",
+      "key": "water.checklist.storm",
+      "title": "Storm-event inspections",
+      "body": "Track pre/during/post-storm observations and qualifying-event flag; verify trigger and applicability.",
+      "source": "order",
+      "role": "",
+      "verify_label": "Verify with current permit / Regional Water Board"
+    },
+    {
+      "kind": "checklist",
+      "key": "water.checklist.annual",
+      "title": "Annual report period and September 1 due date",
+      "body": "July 1\u2013June 30; verify applicability including active WDID duration.",
+      "source": "annual",
+      "role": "",
+      "verify_label": "Verify with current permit / Regional Water Board"
+    },
+    {
+      "kind": "checklist",
+      "key": "water.checklist.coi",
+      "title": "COI when information changes",
+      "body": "Verify site/organization, scope, schedule, acreage and risk changes.",
+      "source": "coi",
+      "role": "",
+      "verify_label": "Verify with current permit / Regional Water Board"
+    },
+    {
+      "kind": "checklist",
+      "key": "water.checklist.final",
+      "title": "Final stabilization",
+      "body": "Verify evidence and conditions with the Regional Water Board.",
+      "source": "not",
+      "role": "",
+      "verify_label": "Verify with current permit / Regional Water Board"
+    },
+    {
+      "kind": "checklist",
+      "key": "water.checklist.not",
+      "title": "Notice of Termination",
+      "body": "Verify termination grounds and documentation; NOT is not CEQA Notice of Determination.",
+      "source": "not",
+      "role": "",
+      "verify_label": "Verify with current permit / Regional Water Board"
+    },
+    {
+      "kind": "rules",
+      "key": "water.rules.r",
+      "title": "Manual EPA values over annual periods",
+      "body": "EPA runs are manual, at most one year per period; sum values for the overall R entered in NOI/COI.",
+      "source": "r",
+      "role": "",
+      "verify_label": "Verify with current permit / Regional Water Board"
+    },
+    {
+      "kind": "rules",
+      "key": "water.rules.duration",
+      "title": "Construction dates",
+      "body": "Initial earth disturbance, including vertical build, through final stabilization; verify the site schedule.",
+      "source": "r",
+      "role": "",
+      "verify_label": "Verify with current permit / Regional Water Board"
+    },
+    {
+      "kind": "rules",
+      "key": "water.rules.leap",
+      "title": "Leap-year ambiguity",
+      "body": "Guide warns Dec 31 in leap years may fail and suggests Dec 30. Never change dates silently; Feb 29 / >365-day windows require manual verification.",
+      "source": "r",
+      "role": "",
+      "verify_label": "Verify with current permit / Regional Water Board"
+    },
+    {
+      "kind": "rules",
+      "key": "water.rules.change",
+      "title": "COI information changes",
+      "body": "Verify site information, risk, inactivity/reactivation and other changed fields.",
+      "source": "coi",
+      "role": "",
+      "verify_label": "Verify with current permit / Regional Water Board"
+    },
+    {
+      "kind": "rules",
+      "key": "water.rules.certifier",
+      "title": "COI certifier policy",
+      "body": "Ready/Submitted requires reason plus assigned LRP/DAR and eAuthorization Yes. DEP may prepare. This is a local blocker, not agency submission.",
+      "source": "coi",
+      "role": "",
+      "verify_label": "Verify with current permit / Regional Water Board"
+    },
+    {
+      "kind": "rules",
+      "key": "water.rules.reason",
+      "title": "COI reason for change",
+      "body": "Record a meaningful reason and the revised fields.",
+      "source": "coi",
+      "role": "",
+      "verify_label": "Verify with current permit / Regional Water Board"
+    },
+    {
+      "kind": "rules",
+      "key": "water.rules.attachments",
+      "title": "COI attachment warnings",
+      "body": "Guide states 100 MB and 30-character file-name limit with no special characters. Required attachments depend on changed fields; verify.",
+      "source": "coi",
+      "role": "",
+      "verify_label": "Verify with current permit / Regional Water Board"
+    },
+    {
+      "kind": "rules",
+      "key": "water.rules.fee",
+      "title": "Acreage increase fee",
+      "body": "A disturbed-acreage increase may require a COI fee; enter the verified amount manually.",
+      "source": "coi",
+      "role": "",
+      "verify_label": "Verify with current permit / Regional Water Board"
+    },
+    {
+      "kind": "rules",
+      "key": "water.rules.decision",
+      "title": "COI decisions / remand",
+      "body": "Track Approved, Returned, Denied or Remanded manually; verify actual agency action.",
+      "source": "coi",
+      "role": "",
+      "verify_label": "Verify with current permit / Regional Water Board"
+    },
+    {
+      "kind": "rules",
+      "key": "water.rules.lanes",
+      "title": "Site vs organization COI",
+      "body": "Keep Site and Organization COI records separate; verify the correct action.",
+      "source": "org",
+      "role": "",
+      "verify_label": "Verify with current permit / Regional Water Board"
+    },
+    {
+      "kind": "rules",
+      "key": "water.rules.annual",
+      "title": "Annual report calendar",
+      "body": "July 1\u2013June 30 period; September 1 due date. Verify annual applicability.",
+      "source": "annual",
+      "role": "",
+      "verify_label": "Verify with current permit / Regional Water Board"
+    },
+    {
+      "kind": "rules",
+      "key": "water.rules.inspection",
+      "title": "Weekly and storm-event inspections",
+      "body": "Use existing inspections and corrections; verify frequency/qualifying-event conditions in the permit.",
+      "source": "order",
+      "role": "",
+      "verify_label": "Verify with current permit / Regional Water Board"
+    },
+    {
+      "kind": "rules",
+      "key": "water.rules.reap",
+      "title": "REAP replaced in 2022 CGP",
+      "body": "Permit fact sheet describes replacement of REAP. Do not add a REAP checklist requirement; verify current conditions.",
+      "source": "order",
+      "role": "",
+      "verify_label": "Verify with current permit / Regional Water Board"
+    },
+    {
+      "kind": "rules",
+      "key": "water.rules.termination",
+      "title": "NOT and CEQA are different",
+      "body": "Water Board NOT means Notice of Termination; County CEQA Notice of Determination is a separate lane.",
+      "source": "not",
+      "role": "",
+      "verify_label": "Verify with current permit / Regional Water Board"
+    },
+    {
+      "kind": "rules",
+      "key": "water.rules.dates",
+      "title": "Order dates",
+      "body": "Order adopted 2022-09-08; effective 2023-09-01; expires 2028-08-31 as printed. Verify amendments/current status.",
+      "source": "order",
+      "role": "",
+      "verify_label": "Verify with current permit / Regional Water Board"
+    },
+    {
+      "kind": "rules",
+      "key": "water.rules.browser",
+      "title": "SMARTS browser compatibility",
+      "body": "Chrome / Edge compatibility from the earlier specification is not independently established by the reviewed pages; verify with the current portal.",
+      "source": "coi",
+      "role": "",
+      "verify_label": "Verify with current permit / Regional Water Board"
+    }
+  ]
+}

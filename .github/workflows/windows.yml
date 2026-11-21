@@ -20,7 +20,7 @@ jobs:
           python-version: '3.12'
           cache: pip
       - run: python -m pip install -r requirements-dev.txt
-      - name: Run all existing and Phase 3 tests (no build)
+      - name: Run all persistence, desktop and regulatory tests (no build)
         run: python -m pytest -v --junitxml=test-results.xml
         env:
           QT_QPA_PLATFORM: offscreen
@@ -44,7 +44,7 @@ jobs:
         env:
           QT_QPA_PLATFORM: offscreen
       - name: Build standalone Windows executable
-        run: python -m PyInstaller --noconfirm --clean --windowed --onefile --collect-all shiboken6 --add-data "cpc/permit_catalog.json;cpc" --name ConstructionProjectCoordinator main.py
+        run: python -m PyInstaller --noconfirm --clean --windowed --onefile --collect-all shiboken6 --add-data "cpc/permit_catalog.json;cpc" --add-data "cpc/water_catalog.json;cpc" --name ConstructionProjectCoordinator main.py
       - name: Stage standalone executable and checksums
         run: python scripts/portable_build.py stage release
       - name: Verify ZIP extraction in isolated directory
@@ -52,7 +52,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         id: application
         with:
-          name: ConstructionProjectCoordinator-1.11.0-Windows
+          name: ConstructionProjectCoordinator-1.12.0-Windows
           path: release/*
           if-no-files-found: error
           retention-days: 90
@@ -93,3 +93,37 @@ jobs:
         with:
           name: test-results
           path: test-results.xml
+
+  review-build:
+    needs: windows-tests
+    if: github.event_name == 'push' && github.ref == 'refs/heads/feature/regulatory-phase-2'
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install -r requirements-dev.txt
+      - name: Package review executable after successful Windows tests
+        run: python -m PyInstaller --noconfirm --clean --windowed --onefile --collect-all shiboken6 --add-data "cpc/permit_catalog.json;cpc" --add-data "cpc/water_catalog.json;cpc" --name ConstructionProjectCoordinator main.py
+      - name: Stage review package and checksums
+        run: python scripts/portable_build.py stage release
+      - name: Verify extracted review package
+        run: python scripts/portable_build.py zip-check release
+      - name: Smoke test executable with isolated Python and Qt paths
+        run: python scripts/portable_build.py verify release
+      - uses: actions/upload-artifact@v4
+        id: review-artifact
+        with:
+          name: ConstructionProjectCoordinator-1.12.0-Windows-review
+          path: release/*
+          retention-days: 90
+          if-no-files-found: error
+      - uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ steps.review-artifact.outputs.artifact-id }}
+          path: downloaded-review
+          merge-multiple: true
+      - name: Verify the exact downloadable artifact
+        run: python scripts/portable_build.py verify downloaded-review

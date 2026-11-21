@@ -125,6 +125,8 @@ class RecoveryUI:
    index=self.draft_table.currentRow()
    if index<0: raise ValueError('Select an unfinished form')
    draft=self._draft_rows[index]; table=draft['target_table']; rid=draft['row_id']; values=draft['values']; extra=draft['metadata']
+   if extra.get('water_action'):
+    self.resume_water_draft(draft);return
    if extra.get('city_action'):
     self.resume_city_draft(draft);return
    if table=='receipts':values.setdefault('include_in_budget',1)
@@ -151,6 +153,8 @@ class RecoveryUI:
     values.setdefault('reg_cgp_subject',settings['cgp_subject']);values.setdefault('reg_jurisdiction',settings['jurisdiction'])
     choices.update(reg_cgp_subject=['Undecided','Yes','No','Not Applicable'],reg_jurisdiction=JURISDICTIONS)
    form=Form(self,'Recover unfinished form',fields,values,choices)
+   if table=='reg_filing_changes':
+    values['filing_id']=extra.get('filing_id',values.get('filing_id'));fields=['filing_id','field_name','previous_value','revised_value','notes'];choices['filing_id']=[(str(values['filing_id']),values['filing_id'])];form=Form(self,'Recover revised field',fields,values,choices)
    if table=='__versions__': form.persist=lambda data:self.store.add_version(extra['document_id'],**data)
    else: form.persist=lambda data:self.store.save(table,data,rid)
    form.enable_draft(table,rid,extra,key=draft['id'])

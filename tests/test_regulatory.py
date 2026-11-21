@@ -151,7 +151,7 @@ def test_archive_sensitive_entry_rejected(store,pid,tmp_path):
 def test_water_board_gated_and_filing_workflow_deferred(store,pid):
  with pytest.raises(ValueError):store.save('reg_wb_sites',dict(project_id=pid))
  store.set_regulatory_settings(pid,cgp_subject='Yes');site=store.save('reg_wb_sites',dict(project_id=pid))
- with pytest.raises(ValueError,match='Phase 4'):store.save('reg_filings',dict(project_id=pid,wb_site_id=site,filing_type='COI (Site)',status='Submitted'))
+ with pytest.raises(ValueError,match='reason for change'):store.save('reg_filings',dict(project_id=pid,wb_site_id=site,filing_type='COI (Site)',status='Submitted'))
  assert not store.all('reg_filings')
 
 

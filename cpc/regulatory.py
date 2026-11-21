@@ -80,7 +80,7 @@ class RegulatoryStore:
   if table=='reg_wb_sites' and self.regulatory_settings(pid)['cgp_subject']!='Yes':raise ValueError('Set Subject to CA Construction General Permit to Yes first')
   # Later phases own these workflows. Do not allow direct API use to bypass
   # certification checks which have not been implemented or verified yet.
-  if table=='reg_filings' and (data.get('status','Draft')!='Draft' or data.get('readiness_flag','Not Ready')!='Not Ready'):raise ValueError('Filing workflow is reserved for Phase 4; only drafts may be stored')
+
   for key in ('amount','manual_fee','valuation_total','valuation_addition','valuation_remodel','r_value_text','k_text','ls_text','total_acres','disturbed_acres'):
    if data.get(key):
     try:value=Decimal(str(data[key]))

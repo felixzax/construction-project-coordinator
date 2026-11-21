@@ -9,7 +9,7 @@ from .regulatory import JURISDICTIONS,DISCLAIMER,PRIVACY_NOTE
 from .permits import validate_url
 from .table import DataTable
 
-CONFIG_FIELDS=['project_id','title','jurisdiction_key','occupancy_type','work_type','permit_family','local_reference','fire_district','stage','valuation_total','valuation_addition','valuation_remodel','currency','related_wb_site_id','related_wb_filing_id','notes']
+CONFIG_FIELDS=['project_id','title','jurisdiction_key','occupancy_type','work_type','permit_family','local_reference','fire_district','seal_contact_id','seal_discipline','seal_notes','stage','valuation_total','valuation_addition','valuation_remodel','currency','related_wb_site_id','related_wb_filing_id','notes']
 
 class CityPermitUI:
  def build_city_tab(self,layout):
@@ -19,7 +19,7 @@ class CityPermitUI:
   for label,action in [('Add standard checklist / tracker',self.add_city_prompts),('Open official portal',self.open_city_portal),('Source / revision register',self.show_city_sources),('Delete permit',self.delete_city_permit)]:menu.addAction(label,action)
   more.setMenu(menu);bar.addWidget(more)
   self.city_context=QLabel('Select a project, then create or select a permit. Existing permits can be explicitly set up here.');self.city_context.setWordWrap(True);layout.addWidget(self.city_context)
-  self.city_inner_tabs=QTabWidget();layout.addWidget(self.city_inner_tabs);self.city_tables={};self.city_rows={};self.city_filters={};self.city_hidden={}
+  self.city_inner_tabs=QTabWidget();layout.addWidget(self.city_inner_tabs);self.city_tables={};self.city_rows={};self.city_filters={};self.city_hidden={};self._city_exports={}
   for name in ('Tracker','Checklist','Review Cycles','City Records','Manual Charges'):
    page=QWidget();column=QVBoxLayout(page);self.city_inner_tabs.addTab(page,name);actions=QHBoxLayout();column.addLayout(actions)
    self.button(actions,'New',lambda _,n=name:self.edit_city_row(n));self.button(actions,'Edit',lambda _,n=name:self.edit_city_row(n,True))
@@ -30,7 +30,9 @@ class CityPermitUI:
      menu.addAction('Hide / show selected',lambda checked=False,n=name:self.city_toggle_hidden(n));menu.addAction('Open source',lambda checked=False,n=name:self.open_city_item_source(n))
     if name=='Checklist':menu.addAction('Check / uncheck selected',self.city_toggle_completed)
     menu.addAction('Files',lambda checked=False,n=name:self.city_row_files(n));menu.addAction('Delete selected',lambda checked=False,n=name:self.city_delete_row(n));more.setMenu(menu);actions.addWidget(more)
-   actions.addStretch()
+   export=QToolButton(page);export.setText('Export');export.setPopupMode(QToolButton.InstantPopup);exports=QMenu(export)
+   for kind in ('csv','docx'):exports.addAction(kind.upper(),lambda checked=False,n=name,k=kind:self.export_rows_dialog(n,self._city_exports.get(n,[]),k))
+   export.setMenu(exports);actions.addWidget(export);actions.addStretch()
    entry=QLineEdit();entry.setPlaceholderText('Filter records…');entry.textChanged.connect(self.refresh_city_lists);column.addWidget(entry);self.city_filters[name]=entry
    if name in ('Tracker','Checklist'):
     hidden=QCheckBox('Include hidden items for this template');hidden.toggled.connect(self.refresh_city_lists);column.addWidget(hidden);self.city_hidden[name]=hidden
@@ -55,7 +57,7 @@ class CityPermitUI:
   rid=self.city_permit_select.currentData();rows={n:[] for n in self.city_tables}
   details=self.store.rows('SELECT * FROM reg_permit_details WHERE register_id=?',(rid,)) if rid else []
   if details:
-   d=details[0];self.city_context.setText(' | '.join(d[k] for k in ('jurisdiction_key','occupancy_type','work_type','permit_family'))+'\n'+DISCLAIMER)
+   d=details[0];self.city_context.setText(' | '.join(d[k] for k in ('jurisdiction_key','occupancy_type','work_type','permit_family'))+'\n'+DISCLAIMER+(' | Person Responsible for Seal: '+metadata(d)['seal_person_name'] if metadata(d).get('seal_person_name') else ''))
    rows={'Tracker':self.store.city_steps(rid,self.city_hidden['Tracker'].isChecked()),'Checklist':self.store.city_checklist(rid,self.city_hidden['Checklist'].isChecked()),'Review Cycles':self.store.city_cycles(rid),'City Records':self.store.rows('SELECT * FROM reg_city_records WHERE permit_register_id=?',(rid,)) if d['jurisdiction_key']==CITY else [],'Manual Charges':self.store.city_charges(rid)}
   else:self.city_context.setText('Use Set up / Edit to choose one jurisdiction for this permit. No standard items are added automatically.')
   for name,table in self.city_tables.items():
@@ -68,13 +70,14 @@ class CityPermitUI:
     if name=='City Records':
      parents=[p['reference'] or 'SUB' for p in rows[name] if p['id']==r['parent_sub_id']];r['parent_sub_reference']=parents[0] if parents else ''
     display.append({k:r.get(k) if r.get(k) is not None else '' for k in columns[name]})
-   self.render_recovery_table(table,display)
+   self._city_exports[name]=display;self.render_recovery_table(table,display)
  def city_selected_row(self,name):
   i=self.city_tables[name].currentRow()
   if i<0:raise ValueError('Select a '+name+' record')
   return self.city_rows[name][i]
  def city_choices(self):
   pid=self.project_filter.currentData();choices=self.regulatory_choices(pid);rid=self.city_permit_select.currentData()
+  choices['seal_contact_id']=[('Unassigned',None)]+[(c['name'],c['id']) for c in self.store.all('contacts')]
   choices.update(currency=['USD','CAD','EUR','GBP','AUD'],jurisdiction_key=JURISDICTIONS,occupancy_type=USES,work_type=WORK_TYPES,permit_family=FAMILIES,register_id=[(self.city_permit_select.currentText(),rid)],permit_register_id=[(self.city_permit_select.currentText(),rid)],status=STEP_STATUS,record_kind=['PLN','SUB','COM','RES','FPP','MP'],parent_sub_id=[('No parent SUB',None)]+[(r['reference'] or 'SUB #'+str(r['id']),r['id']) for r in self.store.rows("SELECT * FROM reg_city_records WHERE permit_register_id=? AND record_kind='SUB'",(rid,))],related_wb_site_id=[('None / Phase 4',None)]+[(r['wdid'],r['id']) for r in self.store.all('reg_wb_sites') if r['project_id']==pid],related_wb_filing_id=[('None / Phase 4',None)]+[(r['reference'] or r['filing_type'],r['id']) for r in self.store.all('reg_filings') if r['project_id']==pid])
   return choices
  def edit_city_config(self,existing=False,values=None,draft_key=None):
@@ -82,7 +85,8 @@ class CityPermitUI:
    pid=self.selected_project_id();parent=self.city_parent() if existing else None;rid=parent['id'] if parent else None
    old=self.store.rows('SELECT * FROM reg_permit_details WHERE register_id=?',(rid,)) if rid else []
    row=dict(project_id=pid,title=parent['title'] if parent else '',jurisdiction_key=self.store.regulatory_settings(pid)['jurisdiction'],occupancy_type='Residential',work_type='Other',permit_family='Building',currency='USD')
-   if old:row.update(old[0])
+   if old:
+    row.update(old[0]);row.update({k:metadata(old[0]).get(k,'') for k in ('seal_contact_id','seal_discipline','seal_notes')})
    if values:row.update(values)
    self.city_config_form(row,rid,draft_key)
   self.guard(action)

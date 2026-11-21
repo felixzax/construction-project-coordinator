@@ -97,6 +97,10 @@ class RecoveryStore:
      ids={r['id'] for r in self.rows(f'SELECT id FROM {child} WHERE {fk} IN ({marks(batch)})',batch)}
      new=ids-plan.get(child,set())
      if new: plan.setdefault(child,set()).update(new); changed=True
+   for sid in plan.get('reg_wb_sites',()):
+    records={r['id'] for r in self.rows("SELECT id FROM reg_tracker_steps WHERE json_extract(details_json,'$.water_site_id')=?",(sid,))}
+    new=records-plan.get('reg_tracker_steps',set())
+    if new:plan.setdefault('reg_tracker_steps',set()).update(new);changed=True
    for parent,ids in list(plan.items()):
     for batch in chunks(ids):
      files={r['id'] for r in self.rows(f'SELECT id FROM finance_files WHERE owner_table=? AND owner_id IN ({marks(batch)})',[parent,*batch])}
@@ -110,6 +114,12 @@ class RecoveryStore:
   plan=self._delete_plan(targets)
   if not plan and not all_data: return None
   backup=self.recovery_snapshot('before-delete')
+  soft_rules=set();soft_steps=set()
+  if not all_data:
+   soft_rules={rid for rid in plan.get('reg_rules',()) if self.rows('SELECT id FROM reg_rules WHERE id=? AND builtin=1',(rid,))}
+   soft_steps={rid for rid in plan.get('reg_tracker_steps',()) if self.rows("SELECT id FROM reg_tracker_steps WHERE id=? AND step_key LIKE 'water.checklist.%'",(rid,)) and self.project_for('reg_tracker_steps',self.rows('SELECT * FROM reg_tracker_steps WHERE id=?',(rid,))[0]) not in plan.get('projects',set()) and json.loads(self.rows('SELECT details_json FROM reg_tracker_steps WHERE id=?',(rid,))[0]['details_json']).get('water_site_id') not in plan.get('reg_wb_sites',set())}
+   for table,ids in [('reg_rules',soft_rules),('reg_tracker_steps',soft_steps)]:
+    if table in plan:plan[table]-=ids
   changed_approvals=set()
   for batch in chunks(plan.get('finance_files',())):
    changed_approvals.update(r['owner_id'] for r in self.rows(f"SELECT owner_id FROM finance_files WHERE owner_table='approvals' AND id IN ({marks(batch)})",batch))
@@ -120,6 +130,8 @@ class RecoveryStore:
      pid=row['id'] if table=='projects' else self.project_for(table,row)
      if pid: affected.add(pid)
   with self.db:
+   for table,ids in [('reg_rules',soft_rules),('reg_tracker_steps',soft_steps)]:
+    for rid in ids:self.db.execute(f'UPDATE {table} SET deleted=1 WHERE id=?',(rid,))
    # Preserve explicit deletion of generated City/County checklist and tracker
    # items across idempotent Add and future context switches.
    for table in ('permit_requirements','reg_tracker_steps'):
@@ -151,6 +163,11 @@ class RecoveryStore:
     self.db.execute(f'UPDATE contracts SET budget_id=NULL WHERE budget_id IN ({marks(batch)})',batch)
     self.db.execute(f'UPDATE receipts SET budget_id=NULL WHERE budget_id IN ({marks(batch)})',batch)
    for batch in chunks(plan.get('contacts',())):
+    for detail in self.rows('SELECT id,details_json FROM reg_permit_details'):
+     config=json.loads(detail['details_json'])
+     if config.get('seal_contact_id') in batch:
+      config['seal_contact_id']=None;self.db.execute('UPDATE reg_permit_details SET details_json=? WHERE id=?',(json.dumps(config),detail['id']))
+    self.db.execute(f"UPDATE reg_filings SET readiness_flag='Not Ready' WHERE certifier_role_id IN(SELECT id FROM reg_project_roles WHERE contact_id IN ({marks(batch)})) AND status IN('Draft','Not Submitted','Returned','Remanded')",batch)
     self.db.execute(f"UPDATE reg_project_roles SET eauthorization_status='Unknown',eauthorization_date='' WHERE contact_id IN ({marks(batch)})",batch)
     for table,fields in FIELDS.items():
      for fk in ('contact_id','designer_id','reviewer_id','requested_from_contact_id','prepared_by_contact_id'):

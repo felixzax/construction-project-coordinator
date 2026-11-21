@@ -32,6 +32,7 @@ class CityPermitStore:
    data={**{k:v for k,v in prior[0].items() if k in FIELDS[table]},**data}
   self.validate_development(table,data,row_id);self.validate_permit(table,data,row_id);self.validate_regulatory(table,data,row_id)
   self.validate_city(table,data,row_id,context_change=True)
+  self.validate_water(table,data,row_id)
   for k in ('title',)+{'reg_tracker_steps':('step_key',),'reg_templates':('template_key',),'reg_template_items':('item_key',)}.get(table,()):
    if k in FIELDS[table] and not str(data.get(k,'')).strip():raise ValueError(k.replace('_',' ').title()+' is required')
   if row_id:self.db.execute(f'UPDATE {table} SET '+','.join(k+'=?' for k in data)+' WHERE id=?',[*data.values(),row_id]);return row_id
@@ -90,6 +91,15 @@ class CityPermitStore:
   previous=self.rows('SELECT * FROM reg_permit_details WHERE register_id=?',(register_id,)) if register_id else []
   old=previous[0] if previous else None
   data={**(old or {}),**{k:v for k,v in values.items() if k not in ('id','register_id')}}
+  config=metadata(old or {})
+  for key in ('seal_contact_id','seal_discipline','seal_notes'):
+   if key in values:config[key]=values[key]
+  if config.get('seal_contact_id'):
+   contact=self.rows('SELECT name FROM contacts WHERE id=?',(config['seal_contact_id'],))
+   if not contact:raise ValueError('Select an existing person responsible for seal')
+   config['seal_person_name']=contact[0]['name']
+  elif 'seal_contact_id' in values:config['seal_person_name']=''
+  data['details_json']=json.dumps(config)
   data.setdefault('jurisdiction_key',OTHER);data.setdefault('occupancy_type','Residential');data.setdefault('work_type','Other');data.setdefault('permit_family','Building')
   changed=bool(old and any(data[k]!=old[k] for k in CONTEXT_FIELDS))
   if changed and not confirmed:raise ValueError('Confirm jurisdiction/template swap before saving')

@@ -1,7 +1,7 @@
 """Optional shared tracker. Later-phase tabs deliberately contain no agency text."""
 from PySide6.QtCore import Qt,QUrl
 from PySide6.QtGui import QDesktopServices
-from PySide6.QtWidgets import QWidget,QVBoxLayout,QHBoxLayout,QLabel,QTabWidget,QTextBrowser,QLineEdit,QAbstractItemView,QMessageBox
+from PySide6.QtWidgets import QWidget,QVBoxLayout,QHBoxLayout,QLabel,QTabWidget,QTextBrowser,QLineEdit,QAbstractItemView,QToolButton,QMenu,QMessageBox
 from .table import DataTable
 from .regulatory import REG_SECTION,DISCLAIMER,PRIVACY_NOTE,JURISDICTIONS,ROLES,REQUEST_STATUSES,INSPECTION_KINDS
 from .regulatory_schema import REG_FIELDS
@@ -35,6 +35,10 @@ class RegulatoryUI:
   self.reg_overview=QTextBrowser();self.reg_tabs.addTab(self.reg_overview,'Overview')
   for name in ('City & County','Water Board','Roles','Document Requests','Inspections','Reports','References'):
    tab=QWidget();column=QVBoxLayout(tab);self.reg_tabs.addTab(tab,name.replace('&','&&'))
+   if name=='Water Board':
+    self.build_water_tab(column);continue
+   if name=='Reports':
+    self.build_compliance_tab(column);continue
    if name=='City & County':
     self.build_city_tab(column);continue
    if name not in TABLES:
@@ -54,6 +58,9 @@ class RegulatoryUI:
     hint=QLabel('One contact may hold several roles. eAuthorization stores only Unknown / Yes / No and a date. Do not attach an authorization form.');hint.setWordWrap(True);column.addWidget(hint)
    if name=='Inspections':
     hint=QLabel('New inspection uses the existing Inspections register. Select it here to add result details; inspector, deadline and register status are edited in Inspections. Photos use that same record’s Files.');hint.setWordWrap(True);column.addWidget(hint)
+   export=QToolButton(tab);export.setText('Export');export.setPopupMode(QToolButton.InstantPopup);menu=QMenu(export)
+   for kind in ('csv','docx'):menu.addAction(kind.upper(),lambda checked=False,n=name,k=kind:self.export_shared_regulatory(n,k))
+   export.setMenu(menu);bar.addWidget(export)
    entry=QLineEdit();entry.setPlaceholderText('Filter…');entry.textChanged.connect(self.refresh_regulatory);column.addWidget(entry);self.reg_filters[name]=entry
    table=DataTable();table.setEditTriggers(QAbstractItemView.NoEditTriggers);table.setAlternatingRowColors(True);table.doubleClicked.connect(lambda _,n=name:self.edit_regulatory(n,True));table.delete_selected=lambda n=name:self.delete_regulatory(n);table.delete_listed=lambda n=name:self.delete_regulatory(n,True);column.addWidget(table);self.reg_tables[name]=table
   self.stack.addWidget(page)
@@ -117,4 +124,13 @@ class RegulatoryUI:
    url=self.selected_regulatory('References')['url'];validate_url(url)
    if not url:raise ValueError('Add a source URL first')
    if QMessageBox.question(self,'Open external source?',url+'\n\nOpen in your browser? No data is submitted by this app.',QMessageBox.Yes|QMessageBox.No,QMessageBox.No)==QMessageBox.Yes:QDesktopServices.openUrl(QUrl(url))
+  self.guard(action)
+
+ def export_shared_regulatory(self,name,kind):
+  def action():
+   if name=='References':rows=[{k:v for k,v in r.items() if k!='id'} for r in self.reg_rows[name]]
+   else:
+    pid=self.selected_project_id();ids={r['id'] for r in self.reg_rows[name]};titles={r.get('title',r.get('role','')) for r in self.reg_rows[name]}
+    rows=[r for r in self.store.compliance_rows(pid,name) if r['title'] in titles]
+   self.export_rows_dialog(name,rows,kind)
   self.guard(action)
