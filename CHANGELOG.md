@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.12.1 — 2026-11-21 (review build)
+
+- Added per-section sidebar color markers with presets, custom color picker and per-section/all-section reset.
+- Added optional suggested colors for all categories, including hidden categories.
+- Persisted colors across projects in the local appearance settings while retaining theme, hide/restore and drag/reorder behavior. No database/schema changes.
+
 ## 1.12.0 — 2026-11-20 (review build)
 
 - Added optional Regulatory & Permits: isolated City/County templates, confirmed context swaps, cycles, checklist provenance, warnings and manual revision guidance.

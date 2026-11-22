@@ -1,4 +1,4 @@
-# Verification record — 1.12.0 review
+# Verification record — 1.12.1 review
 
 Current regulatory results, tested commits, workflow links and artifact verification are recorded in `review/phase45/`. See the 1.12.0 regulatory verification section below for exact R-factor cases and manual checks. Historical release evidence is retained separately below.
 
@@ -60,3 +60,8 @@ Manual EPA checklist (not performed automatically and not claimed verified):
 Only the previously permitted sources and official agency pages/PDFs were used. The retrieved R guide is February 2024, not the requested 2020-12-30 copy; both example fixtures are retained and distinguished. Site COI and annual guides are April 2026. The COI guide has inconsistent NOI/NOT labels in certification passages, which remain Verify rather than copied button instructions. Organization changes may have different agency permissions; the requested LRP/DAR/eAuthorization blocker is an office policy for Ready/Submitted COIs. Annual applicability includes active-WDID duration; next-period creation does not establish applicability. Weekly flags are coordination only; risk-specific inspection conditions still require verification. Month-only source revision dates remain month-only in source titles/notes, with no invented day.
 
 Ordinary signed/stamped PDF, DOCX and text mentioning “password” were accepted and saved back unchanged. The harmless sentence “Password: do not put one in this form” is a reported false positive. Binary contents and opaque archives are not guaranteed credential-free. No real credentials, certificate files, eAuthorization forms or sensitive payment information are used in test fixtures.
+
+
+## 1.12.1 section color verification
+
+`tests/test_section_colors.py` exercises presets/custom picker/cancel/reset, persistence across restart, hide/restore/order/theme/F5/project changes, invalid saved settings, record preservation, and actual marker rendering in both themes. The new frozen smoke check sets/resets a color in the packaged executable. Results and artifact links are recorded in `review/section-colors/` only after the commands/workflow actually finish. Section colors live in appearance.ini and do not add/change SQLite tables or columns.

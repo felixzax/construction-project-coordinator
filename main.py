@@ -16,6 +16,14 @@ def smoke_test():
             store.seed()
             window = Window(store)
             window.show()
+            from cpc.section_colors import COLOR_ROLE
+            from cpc import __version__
+            if not window.windowTitle().endswith(__version__):
+                raise RuntimeError('Displayed version does not match package version')
+            window.set_section_color('Tasks','#60a5fa')
+            if window.nav_item('Tasks').data(COLOR_ROLE)!='#60a5fa':
+                raise RuntimeError('Section color persistence smoke check failed')
+            window.set_section_color('Tasks',None)
             app.processEvents()
             for index in range(window.nav.count()):
                 if window.nav.item(index).isHidden():

@@ -1,14 +1,18 @@
-# Construction Project Coordinator 1.12.0
+# Construction Project Coordinator 1.12.1
 
 A local Windows desktop workspace for construction and property development coordination, consultant disciplines, drawing registers, meetings and detailed bid estimates. Python 3.12, PySide6 and SQLite. No cloud subscription, email connection or account is required to use the app.
 
 ## Download and run
 
-**[Download verified Windows 1.12.0 review ZIP](https://github.com/felixzax/construction-project-coordinator/actions/runs/44880476892/artifacts/14698031366)** · [Successful tests and build](https://github.com/felixzax/construction-project-coordinator/actions/runs/44880476892). All **409 Windows tests passed**, followed by packaged and exact-downloaded-artifact checks. Built from `ca48e877bbe8196ece759bc2ea509c46fc4296c5`; later review-evidence changes do not alter application code.
-
-Open [GitHub Actions](https://github.com/felixzax/construction-project-coordinator/actions/workflows/windows.yml) and choose a successful 1.12.0 review build. Download **ConstructionProjectCoordinator-1.12.0-Windows-review** from its artifacts. GitHub may require sign-in. Extract the ZIP once into a fresh folder, then run `ConstructionProjectCoordinator.exe`. Python and a companion `_internal` folder are not required. The artifact contains the executable, README, changelog and SHA-256 checksums; artifacts expire after 90 days. The executable is unsigned, so Windows may show a reputation prompt.
+Open [GitHub Actions](https://github.com/felixzax/construction-project-coordinator/actions/workflows/windows.yml) and choose a successful 1.12.1 review build. Download **ConstructionProjectCoordinator-1.12.1-Windows-review** from its artifacts. GitHub may require sign-in. Extract the ZIP once into a fresh folder, then run `ConstructionProjectCoordinator.exe`. Python and a companion `_internal` folder are not required. The artifact contains the executable, README, changelog and SHA-256 checksums; artifacts expire after 90 days. The executable is unsigned, so Windows may show a reputation prompt.
 
 PR #1 remains a draft for review; a downloadable review artifact is not a merged/published GitHub Release. Windows tests must pass before the review packaging job runs. Check its successful smoke/manifest verification steps and VALIDATION.md before using a build. Back up the database and the documents folder before upgrading. Opening schema 11 creates a `.before-v1.12.0.sqlite3` safety copy; schema remains 12 for the regulatory features. Do not open a schema-12 database with an older executable.
+
+## Section color coding
+
+Right-click a section in the sidebar or Hidden sections and choose **Section color**. Pick a preset or **Custom color…**. A narrow color marker identifies the section while keeping its text, selection and hide/restore eye readable in either theme. **No color** resets one section. **Use suggested colors for all sections** colors every category; **Clear all section colors** removes the markers.
+
+Colors stay with each section when dragged, hidden/restored, refreshed or switched between light/dark mode. They apply across projects in this local data folder and are saved in `appearance.ini`, alongside the theme. Database-only backup/restore does not include this file; copy it too when moving appearance preferences. Colors do not change records, reports, deadlines, schema, section order or visibility.
 
 ## Regulatory & Permits (optional)
 
@@ -83,9 +87,9 @@ The setting is remembered in `appearance.ini` beside the database, separately fo
 
 ## Fix for the Shiboken startup error
 
-If an older folder build reports `shiboken6\libshiboken does not exist`, use the new standalone 1.12.0 review build above. The published 1.5.0 archive contains `_internal/shiboken6`, but the error occurs if that package folder is missing from the extracted copy. Do not create an empty libshiboken folder or install Python to work around it. The standalone build bundles its Qt/Shiboken runtime and extracts it automatically to a temporary directory when it starts.
+If an older folder build reports `shiboken6\libshiboken does not exist`, use the new standalone 1.12.1 review build above. The published 1.5.0 archive contains `_internal/shiboken6`, but the error occurs if that package folder is missing from the extracted copy. Do not create an empty libshiboken folder or install Python to work around it. The standalone build bundles its Qt/Shiboken runtime and extracts it automatically to a temporary directory when it starts.
 
-Close the old app, extract the new ZIP into a fresh folder and launch the new executable. Project data stays in the same local data directory. Version 1.12.0 uses schema 12 for regulatory coordination and retains work orders, job valuations and permit fees. Older databases get a pre-upgrade safety copy. All project features remain available.
+Close the old app, extract the new ZIP into a fresh folder and launch the new executable. Project data stays in the same local data directory. Version 1.12.1 uses schema 12 for regulatory coordination and retains work orders, job valuations and permit fees. Older databases get a pre-upgrade safety copy. All project features remain available.
 
 If a runtime cannot load, the app gives a clear pre-Qt startup message and records `startup-error.txt` under `%LOCALAPPDATA%/Construction Project Coordinator/`. It does not alter project records in that failure path.
 
@@ -93,10 +97,10 @@ If a runtime cannot load, the app gives a clear pre-Qt startup message and recor
 
 1. In the old app, use Backup & Restore to back up your database. Also copy its adjacent `documents` folder to your backup location. Close all old app instances.
 2. Extract the new build into a new application folder. Keep the old executable until you verify the upgrade.
-3. Launch version 1.12.0 from the same Windows account. It uses the same Local AppData location, preserves existing projects, contacts, tasks and approved document revisions, and adds the new tables and fields automatically. It creates a `.before-v1.12.0.sqlite3` safety copy before upgrading a v1–v11 database.
+3. Launch version 1.12.1 from the same Windows account. It uses the same Local AppData location, preserves existing projects, contacts, tasks and approved document revisions, and adds the new tables and fields automatically. It creates a `.before-v1.12.0.sqlite3` safety copy before upgrading a v1–v11 database.
 4. Existing work is not replaced with demonstration data. New sections begin empty for existing users. Fresh workspaces may load fictional examples at the welcome prompt.
 
-The upgrade is one way: the new schema is version 12. To roll back, close the new app and restore the matching pre-upgrade database before running an older app. Do not open the upgraded database with the old app. Version 1.12.0 can restore v1–v12 backups; older backups are upgraded in a temporary copy before replacing live records.
+The upgrade is one way: the new schema is version 12. To roll back, close the new app and restore the matching pre-upgrade database before running an older app. Do not open the upgraded database with the old app. Version 1.12.1 can restore v1–v12 backups; older backups are upgraded in a temporary copy before replacing live records.
 
 ## Project-specific scope and a simpler workspace
 
