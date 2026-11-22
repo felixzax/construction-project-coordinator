@@ -1,0 +1,28 @@
+{
+  "linux": {
+    "tests": 413,
+    "previous_cases": 409,
+    "color_cases": 4,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "junit_seconds": 62.756,
+    "console_seconds": 62.78
+  },
+  "windows": {
+    "tests": 413,
+    "previous_cases": 409,
+    "color_cases": 4,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "junit_seconds": 287.196,
+    "console_seconds": 287.31
+  },
+  "version": "1.12.1",
+  "schema": 12,
+  "tested_commit": "fe4b64a60a225561f242f792cffe958a98eeaf57",
+  "windows_run_url": "https://github.com/felixzax/construction-project-coordinator/actions/runs/44995013084",
+  "test_artifact_id": 14742688947,
+  "source_smoke_exit_code": 0
+}

@@ -4,6 +4,8 @@ A local Windows desktop workspace for construction and property development coor
 
 ## Download and run
 
+[Download the verified 1.12.1 Windows review ZIP](https://github.com/felixzax/construction-project-coordinator/actions/runs/44995013084/artifacts/14743129576). All 413 Windows tests and packaged/downloaded executable checks passed.
+
 Open [GitHub Actions](https://github.com/felixzax/construction-project-coordinator/actions/workflows/windows.yml) and choose a successful 1.12.1 review build. Download **ConstructionProjectCoordinator-1.12.1-Windows-review** from its artifacts. GitHub may require sign-in. Extract the ZIP once into a fresh folder, then run `ConstructionProjectCoordinator.exe`. Python and a companion `_internal` folder are not required. The artifact contains the executable, README, changelog and SHA-256 checksums; artifacts expire after 90 days. The executable is unsigned, so Windows may show a reputation prompt.
 
 PR #1 remains a draft for review; a downloadable review artifact is not a merged/published GitHub Release. Windows tests must pass before the review packaging job runs. Check its successful smoke/manifest verification steps and VALIDATION.md before using a build. Back up the database and the documents folder before upgrading. Opening schema 11 creates a `.before-v1.12.0.sqlite3` safety copy; schema remains 12 for the regulatory features. Do not open a schema-12 database with an older executable.

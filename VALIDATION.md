@@ -65,3 +65,8 @@ Ordinary signed/stamped PDF, DOCX and text mentioning “password” were accept
 ## 1.12.1 section color verification
 
 `tests/test_section_colors.py` exercises presets/custom picker/cancel/reset, persistence across restart, hide/restore/order/theme/F5/project changes, invalid saved settings, record preservation, and actual marker rendering in both themes. The new frozen smoke check sets/resets a color in the packaged executable. Results and artifact links are recorded in `review/section-colors/` only after the commands/workflow actually finish. Section colors live in appearance.ini and do not add/change SQLite tables or columns.
+
+
+Verified results: **413/413 passed on Windows** (287.31 seconds) and **413/413 passed locally on Linux** (62.78 seconds), including four new color tests. Source smoke exited 0. [Successful Windows workflow](https://github.com/felixzax/construction-project-coordinator/actions/runs/44995013084) built commit `fe4b64a60a225561f242f792cffe958a98eeaf57`. Extracted ZIP, isolated native/offscreen executable checks and verification of the exact downloaded artifact all passed.
+
+[Download 1.12.1 Windows review ZIP](https://github.com/felixzax/construction-project-coordinator/actions/runs/44995013084/artifacts/14743129576) (GitHub sign-in may be required; expires February 20, 2027). Artifact SHA-256: `5bd89d6a563d3381e5bc8ff0be8d2149f91fb7b496605cdf2b5436b87d9a0911`. No schema change; schema remains 12. PR #1 remains draft.

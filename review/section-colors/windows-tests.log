@@ -1,0 +1,670 @@
+﻿2026-11-22T06:43:33.3468546Z Current runner version: '2.338.2'
+2026-11-22T06:43:33.3491405Z ##[group]Runner Image Provisioner
+2026-11-22T06:43:33.3491928Z Hosted Compute Agent
+2026-11-22T06:43:33.3492281Z Version: 20261111.635
+2026-11-22T06:43:33.3492639Z Commit: b8a594ea514ff44cadb5342986c68b1eac6e22ed
+2026-11-22T06:43:33.3493046Z Build Date: 2026-11-11T01:49:01Z
+2026-11-22T06:43:33.3493467Z Worker ID: {fcbcb295-adfe-406f-84ab-09e5199e8969}
+2026-11-22T06:43:33.3493904Z Region: centralus
+2026-11-22T06:43:33.3494219Z Cloud: Azure
+2026-11-22T06:43:33.3494553Z ##[endgroup]
+2026-11-22T06:43:33.3495314Z ##[group]Operating System
+2026-11-22T06:43:33.3495681Z Microsoft Windows Server 2025
+2026-11-22T06:43:33.3496026Z 10.0.26100
+2026-11-22T06:43:33.3496311Z Datacenter
+2026-11-22T06:43:33.3496613Z ##[endgroup]
+2026-11-22T06:43:33.3496919Z ##[group]Runner Image
+2026-11-22T06:43:33.3497260Z Image: windows-2025-vs2026
+2026-11-22T06:43:33.3497605Z Version: 20261116.315.1
+2026-11-22T06:43:33.3498470Z Included Software: https://github.com/actions/runner-images/blob/win25-vs2026/20261116.315/images/windows/Windows2025-VS2026-Readme.md
+2026-11-22T06:43:33.3499380Z Image Release: https://github.com/actions/runner-images/releases/tag/win25-vs2026%2F20261116.315
+2026-11-22T06:43:33.3499945Z ##[endgroup]
+2026-11-22T06:43:33.3500609Z ##[group]GITHUB_TOKEN Permissions
+2026-11-22T06:43:33.3504539Z Contents: read
+2026-11-22T06:43:33.3504950Z Metadata: read
+2026-11-22T06:43:33.3505289Z ##[endgroup]
+2026-11-22T06:43:33.3507912Z Secret source: Actions
+2026-11-22T06:43:33.3509135Z Cache mode: write
+2026-11-22T06:43:33.3509838Z Prepare workflow directory
+2026-11-22T06:43:33.3882485Z Prepare all required actions
+2026-11-22T06:43:33.3920116Z Getting action download info
+2026-11-22T06:43:33.6276033Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-11-22T06:43:33.7318148Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-11-22T06:43:33.8671171Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-11-22T06:43:34.1400951Z Complete job name: windows-tests
+2026-11-22T06:43:34.2618084Z ##[group]Run actions/checkout@v4
+2026-11-22T06:43:34.2618866Z with:
+2026-11-22T06:43:34.2619169Z   repository: felixzax/construction-project-coordinator
+2026-11-22T06:43:34.2622276Z   token: ***
+2026-11-22T06:43:34.2622641Z   ssh-strict: true
+2026-11-22T06:43:34.2622994Z   ssh-user: git
+2026-11-22T06:43:34.2623353Z   persist-credentials: true
+2026-11-22T06:43:34.2623800Z   clean: true
+2026-11-22T06:43:34.2624173Z   sparse-checkout-cone-mode: true
+2026-11-22T06:43:34.2624594Z   fetch-depth: 1
+2026-11-22T06:43:34.2624946Z   fetch-tags: false
+2026-11-22T06:43:34.2625316Z   show-progress: true
+2026-11-22T06:43:34.2625683Z   lfs: false
+2026-11-22T06:43:34.2626046Z   submodules: false
+2026-11-22T06:43:34.2626399Z   set-safe-directory: true
+2026-11-22T06:43:34.2626764Z   allow-unsafe-pr-checkout: false
+2026-11-22T06:43:34.2627363Z ##[endgroup]
+2026-11-22T06:43:34.3791753Z Syncing repository: felixzax/construction-project-coordinator
+2026-11-22T06:43:34.3793513Z ##[group]Getting Git version info
+2026-11-22T06:43:34.3794326Z Working directory is 'D:\a\construction-project-coordinator\construction-project-coordinator'
+2026-11-22T06:43:34.4613319Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-11-22T06:43:34.7531154Z git version 2.56.1.windows.1
+2026-11-22T06:43:34.7576879Z ##[endgroup]
+2026-11-22T06:43:34.7599081Z Temporarily overriding HOME='D:\a\_temp\32af1ead-a0b8-4432-b4bc-93d5094b99c0' before making global git config changes
+2026-11-22T06:43:34.7599844Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-22T06:43:34.7610235Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\construction-project-coordinator\construction-project-coordinator
+2026-11-22T06:43:34.8266509Z Deleting the contents of 'D:\a\construction-project-coordinator\construction-project-coordinator'
+2026-11-22T06:43:34.8270948Z ##[group]Initializing the repository
+2026-11-22T06:43:34.8277779Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\construction-project-coordinator\construction-project-coordinator
+2026-11-22T06:43:34.9054713Z Initialized empty Git repository in D:/a/construction-project-coordinator/construction-project-coordinator/.git/
+2026-11-22T06:43:34.9101622Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/felixzax/construction-project-coordinator
+2026-11-22T06:43:34.9762004Z ##[endgroup]
+2026-11-22T06:43:34.9763013Z ##[group]Disabling automatic garbage collection
+2026-11-22T06:43:34.9767014Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+2026-11-22T06:43:35.0109201Z ##[endgroup]
+2026-11-22T06:43:35.0110456Z ##[group]Setting up auth
+2026-11-22T06:43:35.0122149Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-11-22T06:43:35.0490650Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-11-22T06:43:36.3228938Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-22T06:43:36.3563838Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-11-22T06:43:36.8278404Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-22T06:43:36.8649064Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-11-22T06:43:37.3841370Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+2026-11-22T06:43:37.4159397Z ##[endgroup]
+2026-11-22T06:43:37.4163218Z ##[group]Fetching the repository
+2026-11-22T06:43:37.4171118Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +fe4b64a60a225561f242f792cffe958a98eeaf57:refs/remotes/origin/feature/regulatory-phase-2
+2026-11-22T06:43:39.3288127Z From https://github.com/felixzax/construction-project-coordinator
+2026-11-22T06:43:39.3288983Z  * [new ref]         fe4b64a60a225561f242f792cffe958a98eeaf57 -> origin/feature/regulatory-phase-2
+2026-11-22T06:43:39.3323547Z ##[endgroup]
+2026-11-22T06:43:39.3324287Z ##[group]Determining the checkout info
+2026-11-22T06:43:39.3325477Z ##[endgroup]
+2026-11-22T06:43:39.3333380Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+2026-11-22T06:43:39.3760746Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+2026-11-22T06:43:39.4089717Z ##[group]Checking out the ref
+2026-11-22T06:43:39.4095967Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force -B feature/regulatory-phase-2 refs/remotes/origin/feature/regulatory-phase-2
+2026-11-22T06:43:39.5019226Z Switched to a new branch 'feature/regulatory-phase-2'
+2026-11-22T06:43:39.5042391Z branch 'feature/regulatory-phase-2' set up to track 'origin/feature/regulatory-phase-2'.
+2026-11-22T06:43:39.5080383Z ##[endgroup]
+2026-11-22T06:43:39.5444215Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+2026-11-22T06:43:39.5726249Z fe4b64a60a225561f242f792cffe958a98eeaf57
+2026-11-22T06:43:39.6195538Z ##[group]Run actions/setup-python@v5
+2026-11-22T06:43:39.6195911Z with:
+2026-11-22T06:43:39.6196044Z   python-version: 3.12
+2026-11-22T06:43:39.6196194Z   cache: pip
+2026-11-22T06:43:39.6196328Z   check-latest: false
+2026-11-22T06:43:39.6197989Z   token: ***
+2026-11-22T06:43:39.6198760Z   update-environment: true
+2026-11-22T06:43:39.6198900Z   allow-prereleases: false
+2026-11-22T06:43:39.6199032Z   freethreaded: false
+2026-11-22T06:43:39.6199146Z ##[endgroup]
+2026-11-22T06:43:39.7451610Z ##[group]Installed versions
+2026-11-22T06:43:39.9077266Z (node:7068) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-22T06:43:39.9077988Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-22T06:43:39.9078378Z Successfully set up CPython (3.12.10)
+2026-11-22T06:43:39.9079447Z ##[endgroup]
+2026-11-22T06:43:43.3259813Z Cache hit for: setup-python-Windows-x64-python-3.12.10-pip-f93ef56609866169ea7980bf69ec3db1c7cca70c5eb1bffe30b8360e2219dda7
+2026-11-22T06:43:43.3345076Z (node:7068) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-11-22T06:43:44.9185280Z Received 134217728 of 209371505 (64.1%), 90.6 MBs/sec
+2026-11-22T06:43:45.6903737Z Received 209371505 of 209371505 (100.0%), 91.3 MBs/sec
+2026-11-22T06:43:45.6906497Z Cache Size: ~200 MB (209371505 B)
+2026-11-22T06:43:45.7005001Z [command]"C:\Program Files\Git\usr\bin\tar.exe" -xf D:/a/_temp/16fa94c8-2ab8-4270-96eb-51dac7522e43/cache.tzst -P -C D:/a/construction-project-coordinator/construction-project-coordinator --force-local --use-compress-program "zstd -d"
+2026-11-22T06:43:46.2244120Z Cache restored successfully
+2026-11-22T06:43:46.2409036Z Cache restored from key: setup-python-Windows-x64-python-3.12.10-pip-f93ef56609866169ea7980bf69ec3db1c7cca70c5eb1bffe30b8360e2219dda7
+2026-11-22T06:43:46.2726860Z ##[group]Run python -m pip install -r requirements-dev.txt
+2026-11-22T06:43:46.2727255Z [36;1mpython -m pip install -r requirements-dev.txt[0m
+2026-11-22T06:43:46.3328491Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-11-22T06:43:46.3328733Z env:
+2026-11-22T06:43:46.3328936Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:43:46.3329224Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-11-22T06:43:46.3329494Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:43:46.3329913Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:43:46.3330153Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:43:46.3330342Z ##[endgroup]
+2026-11-22T06:43:49.1301911Z Collecting PySide6==6.8.3 (from -r D:\a\construction-project-coordinator\construction-project-coordinator\requirements.txt (line 1))
+2026-11-22T06:43:49.1322067Z   Using cached PySide6-6.8.3-cp39-abi3-win_amd64.whl.metadata (5.7 kB)
+2026-11-22T06:43:49.1586366Z Collecting python-docx==1.2.0 (from -r D:\a\construction-project-coordinator\construction-project-coordinator\requirements.txt (line 2))
+2026-11-22T06:43:49.1603257Z   Using cached python_docx-1.2.0-py3-none-any.whl.metadata (2.0 kB)
+2026-11-22T06:43:49.1875104Z Collecting openpyxl==3.1.5 (from -r D:\a\construction-project-coordinator\construction-project-coordinator\requirements.txt (line 3))
+2026-11-22T06:43:49.1889368Z   Using cached openpyxl-3.1.5-py2.py3-none-any.whl.metadata (2.5 kB)
+2026-11-22T06:43:49.2249994Z Collecting pytest==8.3.5 (from -r requirements-dev.txt (line 2))
+2026-11-22T06:43:49.2271441Z   Using cached pytest-8.3.5-py3-none-any.whl.metadata (7.6 kB)
+2026-11-22T06:43:50.4546193Z Collecting pyinstaller==6.12.0 (from -r requirements-dev.txt (line 3))
+2026-11-22T06:43:50.5058830Z   Using cached pyinstaller-6.12.0-py3-none-win_amd64.whl.metadata (8.3 kB)
+2026-11-22T06:43:50.5423820Z Collecting shiboken6==6.8.3 (from PySide6==6.8.3->-r D:\a\construction-project-coordinator\construction-project-coordinator\requirements.txt (line 1))
+2026-11-22T06:43:50.5442811Z   Using cached shiboken6-6.8.3-cp39-abi3-win_amd64.whl.metadata (2.8 kB)
+2026-11-22T06:43:50.5746197Z Collecting PySide6-Essentials==6.8.3 (from PySide6==6.8.3->-r D:\a\construction-project-coordinator\construction-project-coordinator\requirements.txt (line 1))
+2026-11-22T06:43:50.5766098Z   Using cached PySide6_Essentials-6.8.3-cp39-abi3-win_amd64.whl.metadata (4.1 kB)
+2026-11-22T06:43:50.6056137Z Collecting PySide6-Addons==6.8.3 (from PySide6==6.8.3->-r D:\a\construction-project-coordinator\construction-project-coordinator\requirements.txt (line 1))
+2026-11-22T06:43:50.6071486Z   Using cached PySide6_Addons-6.8.3-cp39-abi3-win_amd64.whl.metadata (4.4 kB)
+2026-11-22T06:43:50.7678666Z Collecting lxml>=3.1.0 (from python-docx==1.2.0->-r D:\a\construction-project-coordinator\construction-project-coordinator\requirements.txt (line 2))
+2026-11-22T06:43:50.7699507Z   Using cached lxml-6.1.3-cp312-cp312-win_amd64.whl.metadata (3.4 kB)
+2026-11-22T06:43:50.7975384Z Collecting typing_extensions>=4.9.0 (from python-docx==1.2.0->-r D:\a\construction-project-coordinator\construction-project-coordinator\requirements.txt (line 2))
+2026-11-22T06:43:50.8008470Z   Using cached typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+2026-11-22T06:43:50.8264463Z Collecting et-xmlfile (from openpyxl==3.1.5->-r D:\a\construction-project-coordinator\construction-project-coordinator\requirements.txt (line 3))
+2026-11-22T06:43:50.8311647Z   Using cached et_xmlfile-2.0.0-py3-none-any.whl.metadata (2.7 kB)
+2026-11-22T06:43:50.8338118Z Requirement already satisfied: colorama in C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\site-packages (from pytest==8.3.5->-r requirements-dev.txt (line 2)) (0.4.6)
+2026-11-22T06:43:50.8556945Z Collecting iniconfig (from pytest==8.3.5->-r requirements-dev.txt (line 2))
+2026-11-22T06:43:50.8574705Z   Using cached iniconfig-2.3.1-py3-none-any.whl.metadata (2.8 kB)
+2026-11-22T06:43:50.8596321Z Requirement already satisfied: packaging in C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\site-packages (from pytest==8.3.5->-r requirements-dev.txt (line 2)) (26.3)
+2026-11-22T06:43:50.8903604Z Collecting pluggy<2,>=1.5 (from pytest==8.3.5->-r requirements-dev.txt (line 2))
+2026-11-22T06:43:50.9169356Z   Using cached pluggy-1.7.0-py3-none-any.whl.metadata (5.0 kB)
+2026-11-22T06:43:50.9822317Z Collecting setuptools>=42.0.0 (from pyinstaller==6.12.0->-r requirements-dev.txt (line 3))
+2026-11-22T06:43:50.9841862Z   Using cached setuptools-84.2.1-py3-none-any.whl.metadata (6.6 kB)
+2026-11-22T06:43:51.0121101Z Collecting altgraph (from pyinstaller==6.12.0->-r requirements-dev.txt (line 3))
+2026-11-22T06:43:51.0138578Z   Using cached altgraph-0.17.5-py2.py3-none-any.whl.metadata (7.5 kB)
+2026-11-22T06:43:51.0443273Z Collecting pyinstaller-hooks-contrib>=2025.1 (from pyinstaller==6.12.0->-r requirements-dev.txt (line 3))
+2026-11-22T06:43:51.0471872Z   Using cached pyinstaller_hooks_contrib-2026.10-py3-none-any.whl.metadata (16 kB)
+2026-11-22T06:43:51.0733777Z Collecting pefile!=2024.8.26,>=2022.5.30 (from pyinstaller==6.12.0->-r requirements-dev.txt (line 3))
+2026-11-22T06:43:51.0747978Z   Using cached pefile-2023.2.7-py3-none-any.whl.metadata (1.4 kB)
+2026-11-22T06:43:51.1013225Z Collecting pywin32-ctypes>=0.2.1 (from pyinstaller==6.12.0->-r requirements-dev.txt (line 3))
+2026-11-22T06:43:51.1027658Z   Using cached pywin32_ctypes-0.2.3-py3-none-any.whl.metadata (3.9 kB)
+2026-11-22T06:43:51.1316602Z Using cached PySide6-6.8.3-cp39-abi3-win_amd64.whl (561 kB)
+2026-11-22T06:43:51.1336737Z Using cached python_docx-1.2.0-py3-none-any.whl (252 kB)
+2026-11-22T06:43:51.1369885Z Using cached openpyxl-3.1.5-py2.py3-none-any.whl (250 kB)
+2026-11-22T06:43:51.1382754Z Using cached pytest-8.3.5-py3-none-any.whl (343 kB)
+2026-11-22T06:43:51.1394783Z Using cached pyinstaller-6.12.0-py3-none-win_amd64.whl (1.3 MB)
+2026-11-22T06:43:51.1419338Z Using cached PySide6_Addons-6.8.3-cp39-abi3-win_amd64.whl (127.9 MB)
+2026-11-22T06:43:51.2022180Z Using cached PySide6_Essentials-6.8.3-cp39-abi3-win_amd64.whl (72.2 MB)
+2026-11-22T06:43:51.2378971Z Using cached shiboken6-6.8.3-cp39-abi3-win_amd64.whl (1.2 MB)
+2026-11-22T06:43:51.2400043Z Using cached pluggy-1.7.0-py3-none-any.whl (27 kB)
+2026-11-22T06:43:51.2418547Z Using cached lxml-6.1.3-cp312-cp312-win_amd64.whl (4.0 MB)
+2026-11-22T06:43:51.2449567Z Using cached pefile-2023.2.7-py3-none-any.whl (71 kB)
+2026-11-22T06:43:51.2464088Z Using cached pyinstaller_hooks_contrib-2026.10-py3-none-any.whl (463 kB)
+2026-11-22T06:43:51.2478737Z Using cached pywin32_ctypes-0.2.3-py3-none-any.whl (30 kB)
+2026-11-22T06:43:51.2495293Z Using cached setuptools-84.2.1-py3-none-any.whl (876 kB)
+2026-11-22T06:43:51.2527587Z Using cached typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+2026-11-22T06:43:51.2540626Z Using cached altgraph-0.17.5-py2.py3-none-any.whl (21 kB)
+2026-11-22T06:43:51.2552524Z Using cached et_xmlfile-2.0.0-py3-none-any.whl (18 kB)
+2026-11-22T06:43:51.2567074Z Using cached iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
+2026-11-22T06:43:51.7637627Z Installing collected packages: altgraph, typing_extensions, shiboken6, setuptools, pywin32-ctypes, pyinstaller-hooks-contrib, pluggy, pefile, lxml, iniconfig, et-xmlfile, python-docx, pytest, PySide6-Essentials, pyinstaller, openpyxl, PySide6-Addons, PySide6
+2026-11-22T06:44:04.4803496Z 
+2026-11-22T06:44:04.4822617Z Successfully installed PySide6-6.8.3 PySide6-Addons-6.8.3 PySide6-Essentials-6.8.3 altgraph-0.17.5 et-xmlfile-2.0.0 iniconfig-2.3.1 lxml-6.1.3 openpyxl-3.1.5 pefile-2023.2.7 pluggy-1.7.0 pyinstaller-6.12.0 pyinstaller-hooks-contrib-2026.10 pytest-8.3.5 python-docx-1.2.0 pywin32-ctypes-0.2.3 setuptools-84.2.1 shiboken6-6.8.3 typing_extensions-4.16.0
+2026-11-22T06:44:04.6628246Z ##[group]Run python -m pytest -v --junitxml=test-results.xml
+2026-11-22T06:44:04.6628549Z [36;1mpython -m pytest -v --junitxml=test-results.xml[0m
+2026-11-22T06:44:04.6689919Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-11-22T06:44:04.6690137Z env:
+2026-11-22T06:44:04.6690324Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:44:04.6690595Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-11-22T06:44:04.6690875Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:44:04.6691110Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:44:04.6691339Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:44:04.6691531Z   QT_QPA_PLATFORM: offscreen
+2026-11-22T06:44:04.6691669Z ##[endgroup]
+2026-11-22T06:44:05.9678396Z ============================= test session starts =============================
+2026-11-22T06:44:05.9679137Z platform win32 -- Python 3.12.10, pytest-8.3.5, pluggy-1.7.0 -- C:\hostedtoolcache\windows\Python\3.12.10\x64\python.exe
+2026-11-22T06:44:05.9679611Z cachedir: .pytest_cache
+2026-11-22T06:44:05.9679944Z rootdir: D:\a\construction-project-coordinator\construction-project-coordinator
+2026-11-22T06:44:05.9680357Z plugins: platformdirs-4.14.5
+2026-11-22T06:44:08.0684218Z collecting ... collected 413 items
+2026-11-22T06:44:08.0684476Z 
+2026-11-22T06:44:08.5767904Z tests/test_app.py::test_project_create_update_archive PASSED             [  0%]
+2026-11-22T06:44:08.9987885Z tests/test_app.py::test_required_fields_and_foreign_keys PASSED          [  0%]
+2026-11-22T06:44:09.6963730Z tests/test_app.py::test_task_statuses_and_outstanding PASSED             [  0%]
+2026-11-22T06:44:10.1978735Z tests/test_app.py::test_document_revision_history PASSED                 [  0%]
+2026-11-22T06:44:11.0764002Z tests/test_app.py::test_search_across_records PASSED                     [  1%]
+2026-11-22T06:44:11.6991344Z tests/test_app.py::test_backup_restore_and_safety_copy PASSED            [  1%]
+2026-11-22T06:44:12.9077914Z tests/test_app.py::test_invalid_restore_does_not_replace PASSED          [  1%]
+2026-11-22T06:44:13.7091531Z tests/test_app.py::test_contacts_drafts_reports_exports PASSED           [  1%]
+2026-11-22T06:44:14.2011191Z tests/test_app.py::test_bad_date PASSED                                  [  2%]
+2026-11-22T06:44:17.2974685Z tests/test_app.py::test_desktop_navigation_and_edit PASSED               [  2%]
+2026-11-22T06:44:18.0762718Z tests/test_app.py::test_document_files_preserve_previous_content PASSED  [  2%]
+2026-11-22T06:44:19.5388084Z tests/test_app.py::test_timeline_task_edit_preserves_title PASSED        [  2%]
+2026-11-22T06:44:20.0130200Z tests/test_approvals_parts.py::test_approval_price_and_decisions_preserve_prior_snapshot PASSED [  3%]
+2026-11-22T06:44:20.5532171Z tests/test_approvals_parts.py::test_invalid_approval_prices_and_dates_rejected[values0] PASSED [  3%]
+2026-11-22T06:44:21.0031030Z tests/test_approvals_parts.py::test_invalid_approval_prices_and_dates_rejected[values1] PASSED [  3%]
+2026-11-22T06:44:21.4737043Z tests/test_approvals_parts.py::test_invalid_approval_prices_and_dates_rejected[values2] PASSED [  3%]
+2026-11-22T06:44:22.0393853Z tests/test_approvals_parts.py::test_invalid_approval_prices_and_dates_rejected[values3] PASSED [  4%]
+2026-11-22T06:44:22.5156539Z tests/test_approvals_parts.py::test_invalid_approval_prices_and_dates_rejected[values4] PASSED [  4%]
+2026-11-22T06:44:22.9944355Z tests/test_approvals_parts.py::test_invalid_approval_prices_and_dates_rejected[values5] PASSED [  4%]
+2026-11-22T06:44:23.5782150Z tests/test_approvals_parts.py::test_explicit_zero_can_be_approved_and_draft_price_can_be_unknown PASSED [  4%]
+2026-11-22T06:44:24.1486390Z tests/test_approvals_parts.py::test_approval_contract_matching_and_nonfinancial_tracking PASSED [  5%]
+2026-11-22T06:44:24.8906446Z tests/test_approvals_parts.py::test_approval_files_download_and_changes_reset_review PASSED [  5%]
+2026-11-22T06:44:25.7218527Z tests/test_approvals_parts.py::test_approval_search_reports_exports_and_project_delete_restore PASSED [  5%]
+2026-11-22T06:44:26.5817260Z tests/test_approvals_parts.py::test_approval_ui_price_form_drafts_and_deadline_dashboard PASSED [  5%]
+2026-11-22T06:44:27.0835381Z tests/test_approvals_parts.py::test_reimbursement_is_not_counted_twice_and_contract_material_cost_is_not_extra_commitment PASSED [  6%]
+2026-11-22T06:44:27.6706374Z tests/test_approvals_parts.py::test_parts_budget_inclusion_is_independent_of_source_and_payer[Company Purchase] PASSED [  6%]
+2026-11-22T06:44:28.1448875Z tests/test_approvals_parts.py::test_parts_budget_inclusion_is_independent_of_source_and_payer[Company Stock] PASSED [  6%]
+2026-11-22T06:44:28.5996767Z tests/test_approvals_parts.py::test_parts_budget_inclusion_is_independent_of_source_and_payer[Employee Purchase] PASSED [  6%]
+2026-11-22T06:44:30.9102774Z tests/test_approvals_parts.py::test_parts_budget_inclusion_is_independent_of_source_and_payer[Contractor Purchase] PASSED [  7%]
+2026-11-22T06:44:31.4439196Z tests/test_approvals_parts.py::test_parts_budget_inclusion_is_independent_of_source_and_payer[Owner Supplied] PASSED [  7%]
+2026-11-22T06:44:32.0020698Z tests/test_approvals_parts.py::test_parts_budget_inclusion_is_independent_of_source_and_payer[Other] PASSED [  7%]
+2026-11-22T06:44:32.4833089Z tests/test_approvals_parts.py::test_invalid_reimbursement_values_do_not_create_receipts[values0] PASSED [  7%]
+2026-11-22T06:44:32.9701112Z tests/test_approvals_parts.py::test_invalid_reimbursement_values_do_not_create_receipts[values1] PASSED [  7%]
+2026-11-22T06:44:33.5220574Z tests/test_approvals_parts.py::test_invalid_reimbursement_values_do_not_create_receipts[values2] PASSED [  8%]
+2026-11-22T06:44:33.9651513Z tests/test_approvals_parts.py::test_invalid_reimbursement_values_do_not_create_receipts[values3] PASSED [  8%]
+2026-11-22T06:44:34.4393483Z tests/test_approvals_parts.py::test_invalid_reimbursement_values_do_not_create_receipts[values4] PASSED [  8%]
+2026-11-22T06:44:34.9048647Z tests/test_approvals_parts.py::test_source_and_reimbursement_amount_changes_reset_existing_receipt_approval PASSED [  8%]
+2026-11-22T06:44:35.5820219Z tests/test_approvals_parts.py::test_parts_form_export_includes_source_and_reimbursement_without_extra_budget_cost PASSED [  9%]
+2026-11-22T06:44:36.5523092Z tests/test_approvals_parts.py::test_schema9_upgrade_and_restore_preserve_existing_costs_and_orders PASSED [  9%]
+2026-11-22T06:44:37.0578134Z tests/test_approvals_parts.py::test_parts_outside_labor_only_contract_add_to_budget_as_separate_cost PASSED [  9%]
+2026-11-22T06:44:37.8394784Z tests/test_approvals_parts.py::test_approval_file_button_uploads_and_downloads_original PASSED [  9%]
+2026-11-22T06:44:38.2725980Z tests/test_city_permits.py::test_schema12_only_and_catalog_not_seeded_at_startup PASSED [ 10%]
+2026-11-22T06:44:38.8495892Z tests/test_city_permits.py::test_jurisdiction_isolation_and_other_has_no_imports[Residential-City of Sacramento] PASSED [ 10%]
+2026-11-22T06:44:39.3368312Z tests/test_city_permits.py::test_jurisdiction_isolation_and_other_has_no_imports[Residential-Sacramento County unincorporated] PASSED [ 10%]
+2026-11-22T06:44:39.7944767Z tests/test_city_permits.py::test_jurisdiction_isolation_and_other_has_no_imports[Residential-Other] PASSED [ 10%]
+2026-11-22T06:44:40.2905518Z tests/test_city_permits.py::test_jurisdiction_isolation_and_other_has_no_imports[Commercial-City of Sacramento] PASSED [ 11%]
+2026-11-22T06:44:40.7981853Z tests/test_city_permits.py::test_jurisdiction_isolation_and_other_has_no_imports[Commercial-Sacramento County unincorporated] PASSED [ 11%]
+2026-11-22T06:44:41.2887942Z tests/test_city_permits.py::test_jurisdiction_isolation_and_other_has_no_imports[Commercial-Other] PASSED [ 11%]
+2026-11-22T06:44:41.9558265Z tests/test_city_permits.py::test_add_is_idempotent_keeps_edits_checked_hidden_deleted_and_files PASSED [ 11%]
+2026-11-22T06:44:42.6278922Z tests/test_city_permits.py::test_context_swap_confirmation_keeps_user_items_and_prior_checks PASSED [ 12%]
+2026-11-22T06:44:43.2296696Z tests/test_city_permits.py::test_same_jurisdiction_work_swap_keeps_matching_checked_items PASSED [ 12%]
+2026-11-22T06:44:43.8536702Z tests/test_city_permits.py::test_deleted_tracker_is_not_resurrected_after_swap PASSED [ 12%]
+2026-11-22T06:44:44.3521074Z tests/test_city_permits.py::test_optional_types_have_no_imported_checklist[Engineering] PASSED [ 12%]
+2026-11-22T06:44:44.8026348Z tests/test_city_permits.py::test_optional_types_have_no_imported_checklist[Planning] PASSED [ 13%]
+2026-11-22T06:44:45.2478131Z tests/test_city_permits.py::test_optional_types_have_no_imported_checklist[Operational Permit Inspections] PASSED [ 13%]
+2026-11-22T06:44:45.7177509Z tests/test_city_permits.py::test_optional_types_have_no_imported_checklist[Fire Code Enforcement] PASSED [ 13%]
+2026-11-22T06:44:46.1713388Z tests/test_city_permits.py::test_optional_types_have_no_imported_checklist[Fire (verify district)] PASSED [ 13%]
+2026-11-22T06:44:46.6955698Z tests/test_city_permits.py::test_city_fire_is_separate_from_building_and_county PASSED [ 14%]
+2026-11-22T06:44:47.3185615Z tests/test_city_permits.py::test_city_record_one_to_one_and_cross_permit_rejected PASSED [ 14%]
+2026-11-22T06:44:47.9339288Z tests/test_city_permits.py::test_cycles_disciplines_and_city_warning_logic PASSED [ 14%]
+2026-11-22T06:44:48.5421030Z tests/test_city_permits.py::test_city_file_name_patterns[120 Main-CYC1-APP.pdf-1-Address--True] PASSED [ 14%]
+2026-11-22T06:44:49.1088164Z tests/test_city_permits.py::test_city_file_name_patterns[000-0000-000-0000-CYC1-PLANS.pdf-1-APN--True] PASSED [ 15%]
+2026-11-22T06:44:49.6926852Z tests/test_city_permits.py::test_city_file_name_patterns[000-000-000-CYC1-PLANS.pdf-1-APN--False] PASSED [ 15%]
+2026-11-22T06:44:50.2504319Z tests/test_city_permits.py::test_city_file_name_patterns[Model-Bldg1-CYC1-SUPP.pdf-1-Master Plan-Model-Bldg1-True] PASSED [ 15%]
+2026-11-22T06:44:50.8189310Z tests/test_city_permits.py::test_city_file_name_patterns[COM-1234567-CYC2-REPLY.pdf-2-Address--True] PASSED [ 15%]
+2026-11-22T06:44:51.4132613Z tests/test_city_permits.py::test_city_file_name_patterns[RES-123456-CYC2-PLANS.pdf-2-Address--False] PASSED [ 15%]
+2026-11-22T06:44:51.9655780Z tests/test_city_permits.py::test_city_file_name_patterns[COM-1234567-CYC1-REPLY.pdf-1-Address--False] PASSED [ 16%]
+2026-11-22T06:44:52.5929728Z tests/test_city_permits.py::test_city_file_name_patterns[COM-1234567-CYC3-APP.pdf-2-Address--False] PASSED [ 16%]
+2026-11-22T06:44:53.2454471Z tests/test_city_permits.py::test_city_file_name_patterns[plans.docx-1-Address--False] PASSED [ 16%]
+2026-11-22T06:44:53.8562071Z tests/test_city_permits.py::test_editable_file_limits_are_decimal_warning_only PASSED [ 16%]
+2026-11-22T06:44:54.4626911Z tests/test_city_permits.py::test_revision_helper_never_decides_or_submits PASSED [ 17%]
+2026-11-22T06:44:54.9081015Z tests/test_city_permits.py::test_sources_register_every_item_and_known_conflicts PASSED [ 17%]
+2026-11-22T06:44:55.9942462Z tests/test_city_permits.py::test_ordinary_signed_pdf_word_and_password_mention_pass_files PASSED [ 17%]
+2026-11-22T06:44:57.0788802Z tests/test_city_permits.py::test_ui_city_screens_and_swap_cancel_are_reviewable PASSED [ 17%]
+2026-11-22T06:44:57.5984014Z tests/test_city_permits.py::test_opt_in_existing_legacy_permit_is_explicit_and_synchronizes_jurisdiction PASSED [ 18%]
+2026-11-22T06:44:58.1983717Z tests/test_city_permits.py::test_context_swap_failure_rolls_back_all_original_and_generated_rows PASSED [ 18%]
+2026-11-22T06:44:58.8494702Z tests/test_city_permits.py::test_existing_manual_checklist_hiding_and_sources_are_editable PASSED [ 18%]
+2026-11-22T06:44:58.8501821Z tests/test_city_permits.py::test_ci_test_job_cannot_build_or_publish_release PASSED [ 18%]
+2026-11-22T06:44:59.8278688Z tests/test_city_permits.py::test_city_record_files_warn_about_sub_before_opening_local_manager PASSED [ 19%]
+2026-11-22T06:45:00.5105696Z tests/test_city_permits.py::test_deleted_generated_charge_stays_deleted PASSED [ 19%]
+2026-11-22T06:45:01.1360488Z tests/test_city_permits.py::test_deleted_charge_id_reuse_does_not_hide_new_user_charge_on_county PASSED [ 19%]
+2026-11-22T06:45:02.1745861Z tests/test_city_permits.py::test_city_draft_resume_from_all_projects_preserves_template_step_key PASSED [ 19%]
+2026-11-22T06:45:03.0103291Z tests/test_city_permits.py::test_city_new_config_draft_resume_selects_original_project PASSED [ 20%]
+2026-11-22T06:45:03.5547883Z tests/test_development.py::test_bid_totals_exact_material_labor_tax_and_markup PASSED [ 20%]
+2026-11-22T06:45:04.0557719Z tests/test_development.py::test_area_quantity_and_alternate_exclusion PASSED [ 20%]
+2026-11-22T06:45:04.0569082Z tests/test_development.py::test_money_round_half_up PASSED               [ 20%]
+2026-11-22T06:45:04.5609029Z tests/test_development.py::test_bad_cost_input_rejected_atomically[material_unit_cost--1] PASSED [ 21%]
+2026-11-22T06:45:05.0422667Z tests/test_development.py::test_bad_cost_input_rejected_atomically[quantity-NaN] PASSED [ 21%]
+2026-11-22T06:45:05.5313977Z tests/test_development.py::test_bad_cost_input_rejected_atomically[labor_rate-Infinity] PASSED [ 21%]
+2026-11-22T06:45:06.0178050Z tests/test_development.py::test_bad_cost_input_rejected_atomically[quantity-abc] PASSED [ 21%]
+2026-11-22T06:45:06.4720985Z tests/test_development.py::test_bad_cost_input_rejected_atomically[waste_percent-101] PASSED [ 22%]
+2026-11-22T06:45:06.9614567Z tests/test_development.py::test_bad_cost_input_rejected_atomically[quantity-1.0000001] PASSED [ 22%]
+2026-11-22T06:45:07.4360027Z tests/test_development.py::test_bad_cost_input_rejected_atomically[equipment_unit_cost-1e100] PASSED [ 22%]
+2026-11-22T06:45:07.4366776Z tests/test_development.py::test_oversized_derived_cost_is_rejected PASSED [ 22%]
+2026-11-22T06:45:07.9378320Z tests/test_development.py::test_discount_limits_and_invalid_date PASSED  [ 23%]
+2026-11-22T06:45:08.5274759Z tests/test_development.py::test_awards_and_currency_comparison PASSED    [ 23%]
+2026-11-22T06:45:09.0801884Z tests/test_development.py::test_cannot_move_estimate_parent PASSED       [ 23%]
+2026-11-22T06:45:09.6406685Z tests/test_development.py::test_meetings_action_links_and_validation PASSED [ 23%]
+2026-11-22T06:45:10.3821144Z tests/test_development.py::test_discipline_registers_documents_search_and_report PASSED [ 23%]
+2026-11-22T06:45:10.8980273Z tests/test_development.py::test_v1_upgrade_preserves_records_and_takes_snapshot PASSED [ 24%]
+2026-11-22T06:45:12.1748327Z tests/test_development.py::test_v1_backup_restores_and_upgrades_without_losing_current_safety_copy PASSED [ 24%]
+2026-11-22T06:45:12.9566669Z tests/test_development.py::test_v2_backup_restores_bidding_and_meetings PASSED [ 24%]
+2026-11-22T06:45:13.6870192Z tests/test_development.py::test_bad_backup_schema_preserves_live_data PASSED [ 24%]
+2026-11-22T06:45:14.9256502Z tests/test_development.py::test_new_workspaces_project_filter_and_bid_selection PASSED [ 25%]
+2026-11-22T06:45:15.8904605Z tests/test_development.py::test_meeting_create_task_from_real_form PASSED [ 25%]
+2026-11-22T06:45:16.8554219Z tests/test_development.py::test_new_discipline_form_persists PASSED      [ 25%]
+2026-11-22T06:45:17.9317852Z tests/test_development.py::test_bid_item_dialog_add_edit_and_live_preview PASSED [ 25%]
+2026-11-22T06:45:18.3907947Z tests/test_development.py::test_validation_keeps_cost_form_open PASSED   [ 26%]
+2026-11-22T06:45:18.8822722Z tests/test_development.py::test_later_cad_revisions_keep_resubmission_review_flag PASSED [ 26%]
+2026-11-22T06:45:19.3618888Z tests/test_development.py::test_unpriced_bid_is_identified_separately PASSED [ 26%]
+2026-11-22T06:45:20.4154892Z tests/test_development.py::test_project_filter_keeps_linked_contact_search_and_dashboard_counts PASSED [ 26%]
+2026-11-22T06:45:22.1729455Z tests/test_development.py::test_bid_and_expanded_project_reports_render_to_pdf PASSED [ 27%]
+2026-11-22T06:45:22.7939725Z tests/test_exports.py::test_department_csv_contains_related_records_costs_and_project_scope PASSED [ 27%]
+2026-11-22T06:45:23.4556127Z tests/test_exports.py::test_each_department_exports_valid_word_document[disciplines0] PASSED [ 27%]
+2026-11-22T06:45:24.1294106Z tests/test_exports.py::test_each_department_exports_valid_word_document[disciplines1] PASSED [ 27%]
+2026-11-22T06:45:24.9243319Z tests/test_exports.py::test_each_department_exports_valid_word_document[disciplines2] PASSED [ 28%]
+2026-11-22T06:45:25.6474995Z tests/test_exports.py::test_each_department_exports_valid_word_document[disciplines3] PASSED [ 28%]
+2026-11-22T06:45:26.3301978Z tests/test_exports.py::test_each_department_exports_valid_word_document[disciplines4] PASSED [ 28%]
+2026-11-22T06:45:27.0392444Z tests/test_exports.py::test_each_department_exports_valid_word_document[disciplines5] PASSED [ 28%]
+2026-11-22T06:45:27.7530525Z tests/test_exports.py::test_each_department_exports_valid_word_document[disciplines6] PASSED [ 29%]
+2026-11-22T06:45:28.3940542Z tests/test_exports.py::test_department_export_filters_and_permit_checklist_inclusion PASSED [ 29%]
+2026-11-22T06:45:28.4291200Z tests/test_exports.py::test_word_text_escaping_and_empty_report PASSED   [ 29%]
+2026-11-22T06:45:29.5953765Z tests/test_exports.py::test_section_export_buttons_write_csv_and_docx_with_filters PASSED [ 29%]
+2026-11-22T06:45:29.7887336Z tests/test_file_editor.py::test_text_edit_save_word_pdf_and_original_preserved PASSED [ 30%]
+2026-11-22T06:45:29.9255285Z tests/test_file_editor.py::test_csv_edit_roundtrip_excel_preserves_leading_zeros_and_literal_formulas PASSED [ 30%]
+2026-11-22T06:45:29.9462893Z tests/test_file_editor.py::test_workbook_edit_preserves_sheets_styles_and_formula_with_safe_conversion_gate PASSED [ 30%]
+2026-11-22T06:45:30.0091624Z tests/test_file_editor.py::test_basic_word_edit_preserves_uniform_style_and_converts_simple_text PASSED [ 30%]
+2026-11-22T06:45:30.0492326Z tests/test_file_editor.py::test_complex_word_and_legacy_formats_require_external_editor PASSED [ 30%]
+2026-11-22T06:45:30.1275381Z tests/test_file_editor.py::test_word_table_allows_native_edits_but_not_flat_conversion PASSED [ 31%]
+2026-11-22T06:45:31.2919294Z tests/test_file_editor.py::test_file_editor_saved_version_autosave_and_export_keep_original PASSED [ 31%]
+2026-11-22T06:45:31.3801818Z tests/test_file_editor.py::test_empty_word_can_be_edited_and_excel_date_type_preserved PASSED [ 31%]
+2026-11-22T06:45:32.0592002Z tests/test_file_editor.py::test_editor_close_cancel_does_not_discard_unsaved_work PASSED [ 31%]
+2026-11-22T06:45:32.5253682Z tests/test_finance.py::test_budget_does_not_double_count_contract_receipts PASSED [ 32%]
+2026-11-22T06:45:33.0165049Z tests/test_finance.py::test_approved_changes_and_budget_overrun PASSED   [ 32%]
+2026-11-22T06:45:33.4648448Z tests/test_finance.py::test_actual_over_contract_not_hidden_and_inclusion_explicit PASSED [ 32%]
+2026-11-22T06:45:33.9143372Z tests/test_finance.py::test_project_currency_and_parent_changes_validated PASSED [ 32%]
+2026-11-22T06:45:34.5711437Z tests/test_finance.py::test_awarded_bid_creates_single_snapshot_contract PASSED [ 33%]
+2026-11-22T06:45:35.0428938Z tests/test_finance.py::test_standard_file_upload_download_original_bytes[.pdf] PASSED [ 33%]
+2026-11-22T06:45:35.5484208Z tests/test_finance.py::test_standard_file_upload_download_original_bytes[.doc] PASSED [ 33%]
+2026-11-22T06:45:36.0412500Z tests/test_finance.py::test_standard_file_upload_download_original_bytes[.docx] PASSED [ 33%]
+2026-11-22T06:45:36.5580500Z tests/test_finance.py::test_standard_file_upload_download_original_bytes[.xls] PASSED [ 34%]
+2026-11-22T06:45:37.0968197Z tests/test_finance.py::test_standard_file_upload_download_original_bytes[.xlsx] PASSED [ 34%]
+2026-11-22T06:45:37.6052621Z tests/test_finance.py::test_standard_file_upload_download_original_bytes[.csv] PASSED [ 34%]
+2026-11-22T06:45:38.0929215Z tests/test_finance.py::test_standard_file_upload_download_original_bytes[.txt] PASSED [ 34%]
+2026-11-22T06:45:38.6608572Z tests/test_finance.py::test_standard_file_upload_download_original_bytes[.png] PASSED [ 35%]
+2026-11-22T06:45:39.1230102Z tests/test_finance.py::test_standard_file_upload_download_original_bytes[.jpg] PASSED [ 35%]
+2026-11-22T06:45:39.5703006Z tests/test_finance.py::test_standard_file_upload_download_original_bytes[.dwg] PASSED [ 35%]
+2026-11-22T06:45:40.0591478Z tests/test_finance.py::test_standard_file_upload_download_original_bytes[.dxf] PASSED [ 35%]
+2026-11-22T06:45:40.5458109Z tests/test_finance.py::test_standard_file_upload_download_original_bytes[.zip] PASSED [ 36%]
+2026-11-22T06:45:41.1893545Z tests/test_finance.py::test_budget_files_zip_duplicates_integrity_and_recovery PASSED [ 36%]
+2026-11-22T06:45:41.7142681Z tests/test_finance.py::test_contract_delete_keeps_receipt_actual_budget_allocation PASSED [ 36%]
+2026-11-22T06:45:42.2525726Z tests/test_finance.py::test_project_delete_cascades_finance_and_all_data_reset PASSED [ 36%]
+2026-11-22T06:45:42.9188467Z tests/test_finance.py::test_backup_restores_original_finance_files_and_links PASSED [ 37%]
+2026-11-22T06:45:43.9423011Z tests/test_finance.py::test_v6_upgrade_and_restore_preserve_existing_data PASSED [ 37%]
+2026-11-22T06:45:44.5960176Z tests/test_finance.py::test_finance_ui_forms_and_original_file_download PASSED [ 37%]
+2026-11-22T06:45:45.0371695Z tests/test_finance.py::test_external_working_copy_does_not_overwrite_original PASSED [ 37%]
+2026-11-22T06:45:45.7411547Z tests/test_finance.py::test_contract_budget_forms_and_change_orders_save PASSED [ 38%]
+2026-11-22T06:45:46.1718764Z tests/test_issues.py::test_issue_address_location_required_fix_and_project_log PASSED [ 38%]
+2026-11-22T06:45:46.6700398Z tests/test_issues.py::test_custom_address_preserved_and_corrections_separate PASSED [ 38%]
+2026-11-22T06:45:47.1807968Z tests/test_issues.py::test_resolution_and_reopening_dates PASSED         [ 38%]
+2026-11-22T06:45:47.6471229Z tests/test_issues.py::test_invalid_issue_input_does_not_overwrite[data0] PASSED [ 38%]
+2026-11-22T06:45:48.1311989Z tests/test_issues.py::test_invalid_issue_input_does_not_overwrite[data1] PASSED [ 39%]
+2026-11-22T06:45:48.6029736Z tests/test_issues.py::test_invalid_issue_input_does_not_overwrite[data2] PASSED [ 39%]
+2026-11-22T06:45:49.0441814Z tests/test_issues.py::test_invalid_issue_input_does_not_overwrite[data3] PASSED [ 39%]
+2026-11-22T06:45:49.4995695Z tests/test_issues.py::test_invalid_issue_input_does_not_overwrite[data4] PASSED [ 39%]
+2026-11-22T06:45:49.9663592Z tests/test_issues.py::test_invalid_issue_input_does_not_overwrite[data5] PASSED [ 40%]
+2026-11-22T06:45:50.4022510Z tests/test_issues.py::test_invalid_issue_input_does_not_overwrite[data6] PASSED [ 40%]
+2026-11-22T06:45:50.9427899Z tests/test_issues.py::test_permit_links_validate_project_and_unlink_on_permit_delete PASSED [ 40%]
+2026-11-22T06:45:51.4411193Z tests/test_issues.py::test_evidence_copies_and_preserves_original_files PASSED [ 40%]
+2026-11-22T06:45:52.1800568Z tests/test_issues.py::test_issue_search_exports_report_backup_and_project_delete PASSED [ 41%]
+2026-11-22T06:45:52.4705966Z tests/test_issues.py::test_v5_upgrade_preserves_receipts_and_permits PASSED [ 41%]
+2026-11-22T06:45:53.3249639Z tests/test_issues.py::test_v5_restore_into_current_schema PASSED         [ 41%]
+2026-11-22T06:45:54.1057631Z tests/test_issues.py::test_issue_dashboard_timeline_overdue_and_resolution PASSED [ 41%]
+2026-11-22T06:45:54.7775939Z tests/test_issues.py::test_new_correction_form_autofills_address_and_required_fix PASSED [ 42%]
+2026-11-22T06:45:55.5370222Z tests/test_issues.py::test_edit_keeps_custom_address_and_project_switch_autofills PASSED [ 42%]
+2026-11-22T06:45:56.2767538Z tests/test_issues.py::test_project_shortcut_filter_and_issue_draft_recovery PASSED [ 42%]
+2026-11-22T06:45:57.1099594Z tests/test_issues.py::test_issue_csv_docx_and_attachment_actions PASSED  [ 42%]
+2026-11-22T06:45:57.6109899Z tests/test_permits.py::test_jurisdiction_fields_and_requirement_checkmarks PASSED [ 43%]
+2026-11-22T06:45:58.1099644Z tests/test_permits.py::test_invalid_links_rejected[javascript:alert(1)] PASSED [ 43%]
+2026-11-22T06:45:58.6092446Z tests/test_permits.py::test_invalid_links_rejected[file:///C:/secret] PASSED [ 43%]
+2026-11-22T06:45:59.0755748Z tests/test_permits.py::test_invalid_links_rejected[ftp://example.com/file] PASSED [ 43%]
+2026-11-22T06:45:59.5541675Z tests/test_permits.py::test_invalid_links_rejected[***example.com] PASSED [ 44%]
+2026-11-22T06:46:00.0585511Z tests/test_permits.py::test_invalid_links_rejected[https:///missing-host] PASSED [ 44%]
+2026-11-22T06:46:00.5050504Z tests/test_permits.py::test_invalid_links_rejected[https://example.com/a b] PASSED [ 44%]
+2026-11-22T06:46:00.9352385Z tests/test_permits.py::test_invalid_links_rejected[https://example.com\nnext] PASSED [ 44%]
+2026-11-22T06:46:01.4656502Z tests/test_permits.py::test_invalid_links_rejected[https://example.com:bad] PASSED [ 45%]
+2026-11-22T06:46:01.9057520Z tests/test_permits.py::test_invalid_links_rejected[https://example.com\\folder] PASSED [ 45%]
+2026-11-22T06:46:01.9065206Z tests/test_permits.py::test_valid_optional_web_links[https://example.gov/permit?type=commercial&revision=2#requirements] PASSED [ 45%]
+2026-11-22T06:46:01.9071488Z tests/test_permits.py::test_valid_optional_web_links[http://example.com/checklist] PASSED [ 45%]
+2026-11-22T06:46:01.9078693Z tests/test_permits.py::test_valid_optional_web_links[] PASSED            [ 46%]
+2026-11-22T06:46:02.4010339Z tests/test_permits.py::test_only_permits_accept_checklist_items PASSED   [ 46%]
+2026-11-22T06:46:03.0429552Z tests/test_permits.py::test_requirement_search_report_and_backup_restore PASSED [ 46%]
+2026-11-22T06:46:03.4152082Z tests/test_permits.py::test_v2_upgrade_preserves_permits_and_bids_and_snapshot PASSED [ 46%]
+2026-11-22T06:46:04.5291494Z tests/test_permits.py::test_v2_backup_restore_into_current_schema PASSED [ 46%]
+2026-11-22T06:46:05.2892325Z tests/test_permits.py::test_permit_form_city_county_link_and_reviewed_checkbox PASSED [ 47%]
+2026-11-22T06:46:06.1643797Z tests/test_permits.py::test_checklist_ui_add_and_toggle_persists PASSED  [ 47%]
+2026-11-22T06:46:06.9124849Z tests/test_permits.py::test_open_saved_web_link_uses_only_explicit_action PASSED [ 47%]
+2026-11-22T06:46:07.7025125Z tests/test_permits.py::test_checklist_csv_has_jurisdiction_and_completion PASSED [ 47%]
+2026-11-22T06:46:08.2008815Z tests/test_receipts.py::test_estimated_actual_supplier_and_variance PASSED [ 48%]
+2026-11-22T06:46:08.8059756Z tests/test_receipts.py::test_blank_prices_are_unknown_and_zero_is_real PASSED [ 48%]
+2026-11-22T06:46:09.2904794Z tests/test_receipts.py::test_approval_review_status_and_date[Approved] PASSED [ 48%]
+2026-11-22T06:46:09.8006240Z tests/test_receipts.py::test_approval_review_status_and_date[Rejected] PASSED [ 48%]
+2026-11-22T06:46:10.3836298Z tests/test_receipts.py::test_approval_review_status_and_date[Needs Changes] PASSED [ 49%]
+2026-11-22T06:46:10.8826008Z tests/test_receipts.py::test_changed_approved_price_supplier_or_currency_requires_review[change0] PASSED [ 49%]
+2026-11-22T06:46:11.3827190Z tests/test_receipts.py::test_changed_approved_price_supplier_or_currency_requires_review[change1] PASSED [ 49%]
+2026-11-22T06:46:11.9968060Z tests/test_receipts.py::test_changed_approved_price_supplier_or_currency_requires_review[change2] PASSED [ 49%]
+2026-11-22T06:46:12.4980633Z tests/test_receipts.py::test_changed_approved_price_supplier_or_currency_requires_review[change3] PASSED [ 50%]
+2026-11-22T06:46:13.3204332Z tests/test_receipts.py::test_notes_edit_does_not_invalidate_approval PASSED [ 50%]
+2026-11-22T06:46:13.7926957Z tests/test_receipts.py::test_invalid_receipt_data_rejected[actual_amount--1] PASSED [ 50%]
+2026-11-22T06:46:14.2826073Z tests/test_receipts.py::test_invalid_receipt_data_rejected[estimated_amount-NaN] PASSED [ 50%]
+2026-11-22T06:46:14.7393210Z tests/test_receipts.py::test_invalid_receipt_data_rejected[actual_amount-Infinity] PASSED [ 51%]
+2026-11-22T06:46:15.1922514Z tests/test_receipts.py::test_invalid_receipt_data_rejected[estimated_amount-not a price] PASSED [ 51%]
+2026-11-22T06:46:15.6853057Z tests/test_receipts.py::test_invalid_receipt_data_rejected[status-Invalid] PASSED [ 51%]
+2026-11-22T06:46:16.1502115Z tests/test_receipts.py::test_invalid_receipt_data_rejected[currency-ZZZ] PASSED [ 51%]
+2026-11-22T06:46:16.6333740Z tests/test_receipts.py::test_invalid_receipt_data_rejected[receipt_date-20261201] PASSED [ 52%]
+2026-11-22T06:46:17.1447015Z tests/test_receipts.py::test_supplier_contact_autofill_and_contact_delete_preserve_receipt PASSED [ 52%]
+2026-11-22T06:46:17.5985475Z tests/test_receipts.py::test_supplier_is_required PASSED                 [ 52%]
+2026-11-22T06:46:18.1568255Z tests/test_receipts.py::test_attachments_copy_content_reset_approval_and_remain_after_delete PASSED [ 52%]
+2026-11-22T06:46:18.7673144Z tests/test_receipts.py::test_receipts_search_department_exports_report_and_backup_restore PASSED [ 53%]
+2026-11-22T06:46:19.3631764Z tests/test_receipts.py::test_project_delete_cascades_receipts_and_recovery_restores PASSED [ 53%]
+2026-11-22T06:46:19.6952398Z tests/test_receipts.py::test_v4_upgrade_preserves_existing_data_and_recovery_schema PASSED [ 53%]
+2026-11-22T06:46:20.5474424Z tests/test_receipts.py::test_v4_backup_restore_into_v5 PASSED            [ 53%]
+2026-11-22T06:46:21.3059272Z tests/test_receipts.py::test_receipt_form_actual_price_and_approval PASSED [ 53%]
+2026-11-22T06:46:22.0770997Z tests/test_receipts.py::test_receipt_attachment_ui_and_filtered_export PASSED [ 54%]
+2026-11-22T06:46:22.9062187Z tests/test_receipts.py::test_receipt_project_filter_and_draft_recovery PASSED [ 54%]
+2026-11-22T06:46:23.6233892Z tests/test_recovery.py::test_delete_cascades_only_related_records_and_can_restore[documents-versions] PASSED [ 54%]
+2026-11-22T06:46:24.4539173Z tests/test_recovery.py::test_delete_cascades_only_related_records_and_can_restore[registers-permit_requirements] PASSED [ 54%]
+2026-11-22T06:46:25.2154746Z tests/test_recovery.py::test_delete_cascades_only_related_records_and_can_restore[bid_packages-bids] PASSED [ 55%]
+2026-11-22T06:46:25.9265764Z tests/test_recovery.py::test_delete_cascades_only_related_records_and_can_restore[bids-bid_items] PASSED [ 55%]
+2026-11-22T06:46:26.6387745Z tests/test_recovery.py::test_project_delete_removes_its_children_but_keeps_contacts_and_other_projects PASSED [ 55%]
+2026-11-22T06:46:27.3605582Z tests/test_recovery.py::test_contact_delete_unassigns_without_deleting_work PASSED [ 55%]
+2026-11-22T06:46:28.1187272Z tests/test_recovery.py::test_meeting_delete_unlinks_action_tasks PASSED  [ 56%]
+2026-11-22T06:46:28.7875070Z tests/test_recovery.py::test_deleting_cost_items_rolls_back_when_discount_would_be_invalid PASSED [ 56%]
+2026-11-22T06:46:29.5797791Z tests/test_recovery.py::test_delete_all_data_has_recoverable_snapshot_and_keeps_document_files PASSED [ 56%]
+2026-11-22T06:46:30.1204915Z tests/test_recovery.py::test_delete_snapshot_failure_prevents_deletion PASSED [ 56%]
+2026-11-22T06:46:30.9402170Z tests/test_recovery.py::test_recovery_snapshot_rotation_and_integrity PASSED [ 57%]
+2026-11-22T06:46:31.7382775Z tests/test_recovery.py::test_drafts_survive_backup_and_restore PASSED    [ 57%]
+2026-11-22T06:46:33.9558930Z tests/test_recovery.py::test_abrupt_process_exit_preserves_saved_records_and_form_autosave PASSED [ 57%]
+2026-11-22T06:46:34.3048457Z tests/test_recovery.py::test_v3_upgrade_preserves_permits_and_creates_pre_upgrade_backup PASSED [ 57%]
+2026-11-22T06:46:35.2115640Z tests/test_recovery.py::test_v3_backup_can_be_restored_with_current_recovery_schema PASSED [ 58%]
+2026-11-22T06:46:35.2185576Z tests/test_recovery.py::test_keyboard_cell_copy_select_all_and_checkbox_text PASSED [ 58%]
+2026-11-22T06:46:36.4714674Z tests/test_recovery.py::test_delete_confirmation_cancel_and_cell_selection_deduplicates_records PASSED [ 58%]
+2026-11-22T06:46:37.6932424Z tests/test_recovery.py::test_delete_all_listed_respects_project_and_text_filters PASSED [ 58%]
+2026-11-22T06:46:38.8869004Z tests/test_recovery.py::test_delete_all_application_requires_typed_phrase PASSED [ 59%]
+2026-11-22T06:46:40.1592399Z tests/test_recovery.py::test_refresh_preserves_records_drafts_snapshots_and_filter PASSED [ 59%]
+2026-11-22T06:46:41.4386031Z tests/test_recovery.py::test_resume_draft_saves_record_and_removes_draft PASSED [ 59%]
+2026-11-22T06:46:42.6767578Z tests/test_recovery.py::test_cancel_removes_draft_but_invalid_save_keeps_it PASSED [ 59%]
+2026-11-22T06:46:44.0016029Z tests/test_recovery.py::test_main_window_copy_shortcut_preserves_text_field_behavior PASSED [ 60%]
+2026-11-22T06:46:44.9656754Z tests/test_recovery.py::test_delete_key_and_derived_dashboard_source PASSED [ 60%]
+2026-11-22T06:46:46.0204886Z tests/test_recovery.py::test_checklist_and_version_history_delete_controls PASSED [ 60%]
+2026-11-22T06:46:47.1190301Z tests/test_recovery.py::test_recovery_snapshot_ui_restore PASSED         [ 60%]
+2026-11-22T06:46:49.0750927Z tests/test_recovery.py::test_continuous_typing_has_maximum_autosave_interval PASSED [ 61%]
+2026-11-22T06:46:49.4611055Z tests/test_regulatory.py::test_migration_on_copy_and_rollback[empty] PASSED [ 61%]
+2026-11-22T06:46:49.8694669Z tests/test_regulatory.py::test_migration_on_copy_and_rollback[populated] PASSED [ 61%]
+2026-11-22T06:46:50.3280107Z tests/test_regulatory.py::test_schema_inventory_has_no_original_column_changes PASSED [ 61%]
+2026-11-22T06:46:50.8225896Z tests/test_regulatory.py::test_profile_settings_atomic_and_no_legacy_export_columns PASSED [ 61%]
+2026-11-22T06:46:51.3550948Z tests/test_regulatory.py::test_roles_many_per_contact_and_delete_unassigns PASSED [ 62%]
+2026-11-22T06:46:52.0247589Z tests/test_regulatory.py::test_document_request_statuses_links_deadlines_files_search_recovery PASSED [ 62%]
+2026-11-22T06:46:52.5891556Z tests/test_regulatory.py::test_inspections_reuse_canonical_records_progress_and_corrections PASSED [ 62%]
+2026-11-22T06:46:53.0678785Z tests/test_regulatory.py::test_waiting_on_agency_is_never_overdue_and_closed_items_drop_out PASSED [ 62%]
+2026-11-22T06:46:53.5694870Z tests/test_regulatory.py::test_delete_project_preserves_global_sources_rules_templates PASSED [ 63%]
+2026-11-22T06:46:54.0310113Z tests/test_regulatory.py::test_prohibited_text_never_enters_record_draft_or_log[*** PASSED [ 63%]
+2026-11-22T06:46:54.4848045Z tests/test_regulatory.py::test_prohibited_text_never_enters_record_draft_or_log[portal login: example-user] PASSED [ 63%]
+2026-11-22T06:46:54.9565567Z tests/test_regulatory.py::test_prohibited_text_never_enters_record_draft_or_log[security answer: example-answer] PASSED [ 63%]
+2026-11-22T06:46:55.5040237Z tests/test_regulatory.py::test_prohibited_text_never_enters_record_draft_or_log[https://example.com/?access_token=example-secret] PASSED [ 64%]
+2026-11-22T06:46:55.9973839Z tests/test_regulatory.py::test_prohibited_text_never_enters_record_draft_or_log[-----BEGIN PRIVATE KEY-----] PASSED [ 64%]
+2026-11-22T06:46:56.4872583Z tests/test_regulatory.py::test_prohibited_files_rejected_but_signed_documents_allowed[signature.pfx] PASSED [ 64%]
+2026-11-22T06:46:56.9894936Z tests/test_regulatory.py::test_prohibited_files_rejected_but_signed_documents_allowed[private.key] PASSED [ 64%]
+2026-11-22T06:46:57.4653382Z tests/test_regulatory.py::test_prohibited_files_rejected_but_signed_documents_allowed[eAuthorization form.pdf] PASSED [ 65%]
+2026-11-22T06:46:57.9315135Z tests/test_regulatory.py::test_archive_sensitive_entry_rejected PASSED   [ 65%]
+2026-11-22T06:46:58.4184702Z tests/test_regulatory.py::test_water_board_gated_and_filing_workflow_deferred PASSED [ 65%]
+2026-11-22T06:47:00.3113851Z tests/test_regulatory.py::test_ui_optional_visibility_order_theme_filter_and_warning PASSED [ 65%]
+2026-11-22T06:47:00.8947236Z tests/test_regulatory.py::test_canonical_parent_changes_cannot_break_regulatory_links PASSED [ 66%]
+2026-11-22T06:47:01.4537325Z tests/test_regulatory.py::test_authorization_reset_on_contact_reassignment_and_flag_only PASSED [ 66%]
+2026-11-22T06:47:01.9359047Z tests/test_regulatory.py::test_secret_json_and_export_preflight PASSED   [ 66%]
+2026-11-22T06:47:02.6672633Z tests/test_regulatory.py::test_reference_browser_requires_confirmation PASSED [ 66%]
+2026-11-22T06:47:04.4790602Z tests/test_regulatory.py::test_shared_draft_resume_including_profile_flags PASSED [ 67%]
+2026-11-22T06:47:04.4846035Z tests/test_runtime_packaging.py::test_reported_shiboken_error_matches_missing_package_folder PASSED [ 67%]
+2026-11-22T06:47:04.4901319Z tests/test_runtime_packaging.py::test_runtime_guard_lists_missing_dlls_and_accepts_complete_layout PASSED [ 67%]
+2026-11-22T06:47:04.4933671Z tests/test_runtime_packaging.py::test_runtime_guard_only_applies_to_frozen_windows PASSED [ 67%]
+2026-11-22T06:47:04.4972913Z tests/test_runtime_packaging.py::test_startup_error_records_message_without_creating_project_database PASSED [ 68%]
+2026-11-22T06:47:04.5044315Z tests/test_runtime_packaging.py::test_main_reports_missing_runtime_before_importing_qt PASSED [ 68%]
+2026-11-22T06:47:04.5169471Z tests/test_runtime_packaging.py::test_standalone_manifest_covers_executable_and_docs PASSED [ 68%]
+2026-11-22T06:47:04.5432816Z tests/test_runtime_packaging.py::test_release_has_no_external_runtime_directories PASSED [ 68%]
+2026-11-22T06:47:04.5442058Z tests/test_runtime_packaging.py::test_clean_launch_environment_removes_build_dependencies PASSED [ 69%]
+2026-11-22T06:47:04.5684568Z tests/test_runtime_packaging.py::test_clean_launch_uses_external_cwd_and_verified_executable PASSED [ 69%]
+2026-11-22T06:47:07.1716465Z tests/test_scope.py::test_profile_preserves_unknown_decisions_and_editable_use PASSED [ 69%]
+2026-11-22T06:47:08.0734151Z tests/test_scope.py::test_checkbox_answers_save_no_yes_and_recover_draft PASSED [ 69%]
+2026-11-22T06:47:08.5526025Z tests/test_scope.py::test_standard_prompts_are_opt_in_idempotent_and_project_specific PASSED [ 69%]
+2026-11-22T06:47:09.0141401Z tests/test_scope.py::test_invalid_custom_typed_values_rejected[Number-NaN] PASSED [ 70%]
+2026-11-22T06:47:09.4871494Z tests/test_scope.py::test_invalid_custom_typed_values_rejected[Number-abc] PASSED [ 70%]
+2026-11-22T06:47:14.1380220Z tests/test_scope.py::test_invalid_custom_typed_values_rejected[Yes / No-Maybe] PASSED [ 70%]
+2026-11-22T06:47:17.8389760Z tests/test_scope.py::test_invalid_custom_typed_values_rejected[Date-11/18/2026] PASSED [ 70%]
+2026-11-22T06:47:18.3914547Z tests/test_scope.py::test_invalid_custom_typed_values_rejected[URL-file:///C:/private] PASSED [ 71%]
+2026-11-22T06:47:18.9750929Z tests/test_scope.py::test_custom_field_requirements_keep_blank_information_visible PASSED [ 71%]
+2026-11-22T06:47:19.4835666Z tests/test_scope.py::test_rebates_preserve_amounts_and_never_reduce_budget PASSED [ 71%]
+2026-11-22T06:47:20.4362416Z tests/test_scope.py::test_section_visibility_persists_per_project_without_deleting_data PASSED [ 71%]
+2026-11-22T06:47:21.1894514Z tests/test_scope.py::test_hidden_navigation_returns_to_safe_page_and_restores PASSED [ 72%]
+2026-11-22T06:47:21.7617402Z tests/test_scope.py::test_scope_rebate_and_change_order_reports_include_full_project_data PASSED [ 72%]
+2026-11-22T06:47:22.8172720Z tests/test_scope.py::test_generic_files_can_round_trip_edit_and_delete_with_record PASSED [ 72%]
+2026-11-22T06:47:23.3117523Z tests/test_scope.py::test_attachment_support_across_project_areas[projects] PASSED [ 72%]
+2026-11-22T06:47:23.8077896Z tests/test_scope.py::test_attachment_support_across_project_areas[project_profiles] PASSED [ 73%]
+2026-11-22T06:47:24.3337846Z tests/test_scope.py::test_attachment_support_across_project_areas[rebates] PASSED [ 73%]
+2026-11-22T06:47:24.8774192Z tests/test_scope.py::test_attachment_support_across_project_areas[custom_fields] PASSED [ 73%]
+2026-11-22T06:47:25.3758053Z tests/test_scope.py::test_attachment_support_across_project_areas[tasks] PASSED [ 73%]
+2026-11-22T06:47:25.9152516Z tests/test_scope.py::test_attachment_support_across_project_areas[documents] PASSED [ 74%]
+2026-11-22T06:47:26.4808600Z tests/test_scope.py::test_attachment_support_across_project_areas[meetings] PASSED [ 74%]
+2026-11-22T06:47:27.0084359Z tests/test_scope.py::test_attachment_support_across_project_areas[registers] PASSED [ 74%]
+2026-11-22T06:47:27.5875112Z tests/test_scope.py::test_attachment_support_across_project_areas[contract_changes] PASSED [ 74%]
+2026-11-22T06:47:28.1219807Z tests/test_scope.py::test_attachment_support_across_project_areas[work_packages] PASSED [ 75%]
+2026-11-22T06:47:28.6425104Z tests/test_scope.py::test_attachment_support_across_project_areas[bids] PASSED [ 75%]
+2026-11-22T06:47:29.1769775Z tests/test_scope.py::test_attachment_support_across_project_areas[bid_items] PASSED [ 75%]
+2026-11-22T06:47:29.6907410Z tests/test_scope.py::test_deleting_scope_unlinks_rebate_and_deletes_custom_fields PASSED [ 75%]
+2026-11-22T06:47:30.3735661Z tests/test_scope.py::test_project_delete_removes_visibility_scope_and_files PASSED [ 76%]
+2026-11-22T06:47:31.4196151Z tests/test_scope.py::test_v7_upgrade_retains_attachment_ids_bytes_and_finance PASSED [ 76%]
+2026-11-22T06:47:32.2674792Z tests/test_scope.py::test_generic_file_manager_ui_adds_and_saves_scope_original PASSED [ 76%]
+2026-11-22T06:47:33.0642978Z tests/test_scope.py::test_custom_category_is_filterable_and_custom_choices_save PASSED [ 76%]
+2026-11-22T06:47:33.8449768Z tests/test_scope.py::test_minimal_view_preset_can_be_saved_and_restored PASSED [ 76%]
+2026-11-22T06:47:34.3099829Z tests/test_scope.py::test_legacy_document_revision_original_can_be_saved PASSED [ 77%]
+2026-11-22T06:47:34.8951195Z tests/test_scope.py::test_restore_rejects_orphan_polymorphic_file_link_before_replacing_live_data PASSED [ 77%]
+2026-11-22T06:47:37.8255560Z tests/test_section_colors.py::test_color_survives_hide_restore_reorder_theme_refresh_and_restart PASSED [ 77%]
+2026-11-22T06:47:38.9438727Z tests/test_section_colors.py::test_presets_custom_cancel_reset_and_menu_actions PASSED [ 77%]
+2026-11-22T06:47:39.9263773Z tests/test_section_colors.py::test_invalid_saved_settings_and_values_do_not_change_records PASSED [ 78%]
+2026-11-22T06:47:42.2102066Z tests/test_section_colors.py::test_delegate_renders_marker_in_both_views_and_themes PASSED [ 78%]
+2026-11-22T06:47:43.4599696Z tests/test_section_order.py::test_sidebar_drop_both_directions_preserves_page_and_identity PASSED [ 78%]
+2026-11-22T06:47:44.5985682Z tests/test_section_order.py::test_hidden_order_is_independent_and_restoration_keeps_sidebar_position PASSED [ 78%]
+2026-11-22T06:47:46.2992746Z tests/test_section_order.py::test_orders_persist_separately_for_projects_and_all_projects PASSED [ 79%]
+2026-11-22T06:47:47.3977334Z tests/test_section_order.py::test_cancelled_foreign_and_stale_drags_do_not_save PASSED [ 79%]
+2026-11-22T06:47:49.0359753Z tests/test_section_order.py::test_drop_indicator_has_theme_color_and_clears_on_leave[dark] PASSED [ 79%]
+2026-11-22T06:47:50.7085330Z tests/test_section_order.py::test_drop_indicator_has_theme_color_and_clears_on_leave[light] PASSED [ 79%]
+2026-11-22T06:47:51.9281020Z tests/test_section_order.py::test_drag_auto_scroll_and_alt_keyboard_move PASSED [ 80%]
+2026-11-22T06:47:53.0756656Z tests/test_section_order.py::test_eye_controls_and_shortcuts_work_after_reordering PASSED [ 80%]
+2026-11-22T06:47:54.2131305Z tests/test_section_order.py::test_reset_order_preserves_hidden_flags_and_records PASSED [ 80%]
+2026-11-22T06:47:55.0191045Z tests/test_section_order.py::test_backup_restore_keeps_project_orders_and_delete_cleans_preferences PASSED [ 80%]
+2026-11-22T06:47:56.1232878Z tests/test_section_order.py::test_v8_upgrade_preserves_data_and_visibility_and_old_backup_restore PASSED [ 81%]
+2026-11-22T06:47:56.7675545Z tests/test_section_order.py::test_invalid_order_is_rejected_without_changes_and_new_sections_merge PASSED [ 81%]
+2026-11-22T06:47:57.5189282Z tests/test_section_order.py::test_invalid_backup_order_does_not_replace_live_data PASSED [ 81%]
+2026-11-22T06:48:00.0071884Z tests/test_theme.py::test_dark_default_toggle_persists_without_changing_project_data PASSED [ 81%]
+2026-11-22T06:48:01.5430497Z tests/test_theme.py::test_dark_forms_and_overdue_highlights_switch_readably PASSED [ 82%]
+2026-11-22T06:48:02.6340812Z tests/test_theme.py::test_invalid_saved_theme_falls_back_to_dark_without_database_migration PASSED [ 82%]
+2026-11-22T06:48:02.6351705Z tests/test_theme.py::test_theme_text_and_alert_contrast_meets_wcag_aa PASSED [ 82%]
+2026-11-22T06:48:03.2261546Z tests/test_water_board.py::test_requested_golden_three_periods_and_fraction_total PASSED [ 82%]
+2026-11-22T06:48:03.2269937Z tests/test_water_board.py::test_single_year_golden_and_current_guide_example PASSED [ 83%]
+2026-11-22T06:48:03.2276562Z tests/test_water_board.py::test_period_edge_dates_never_silently_changed[2021-01-01-2021-01-01-1] PASSED [ 83%]
+2026-11-22T06:48:03.2282495Z tests/test_water_board.py::test_period_edge_dates_never_silently_changed[2021-01-01-2021-12-31-1] PASSED [ 83%]
+2026-11-22T06:48:03.2288736Z tests/test_water_board.py::test_period_edge_dates_never_silently_changed[2020-01-01-2020-12-31-1] PASSED [ 83%]
+2026-11-22T06:48:03.2294330Z tests/test_water_board.py::test_period_edge_dates_never_silently_changed[2020-02-29-2020-02-29-1] PASSED [ 84%]
+2026-11-22T06:48:03.2301200Z tests/test_water_board.py::test_feb29_ambiguous_start_requires_manual_dates PASSED [ 84%]
+2026-11-22T06:48:03.3584306Z tests/test_water_board.py::test_property_windows_cover_every_day_exactly_once PASSED [ 84%]
+2026-11-22T06:48:03.3592286Z tests/test_water_board.py::test_decimal_raw_precision_half_up_and_fraction_independence[1.005-1.01] PASSED [ 84%]
+2026-11-22T06:48:03.3600546Z tests/test_water_board.py::test_decimal_raw_precision_half_up_and_fraction_independence[0.0049-0.00] PASSED [ 84%]
+2026-11-22T06:48:03.3607878Z tests/test_water_board.py::test_decimal_raw_precision_half_up_and_fraction_independence[0-0.00] PASSED [ 85%]
+2026-11-22T06:48:03.3615651Z tests/test_water_board.py::test_decimal_raw_precision_half_up_and_fraction_independence[ 45.4900 -45.49] PASSED [ 85%]
+2026-11-22T06:48:03.3623256Z tests/test_water_board.py::test_decimal_raw_precision_half_up_and_fraction_independence[999999999999999999999999999999.995-1000000000000000000000000000000.00] PASSED [ 85%]
+2026-11-22T06:48:03.8645523Z tests/test_water_board.py::test_r_rejects_negative_nonfinite_and_invalid[-1] PASSED [ 85%]
+2026-11-22T06:48:04.3639829Z tests/test_water_board.py::test_r_rejects_negative_nonfinite_and_invalid[NaN] PASSED [ 86%]
+2026-11-22T06:48:04.9053024Z tests/test_water_board.py::test_r_rejects_negative_nonfinite_and_invalid[Infinity] PASSED [ 86%]
+2026-11-22T06:48:05.3671774Z tests/test_water_board.py::test_r_rejects_negative_nonfinite_and_invalid[not a number] PASSED [ 86%]
+2026-11-22T06:48:05.9100949Z tests/test_water_board.py::test_incomplete_gaps_overlaps_order_and_mismatched_end PASSED [ 86%]
+2026-11-22T06:48:06.4435602Z tests/test_water_board.py::test_site_changes_mark_rows_and_total_outdated[location_address-Other location] PASSED [ 87%]
+2026-11-22T06:48:06.9911721Z tests/test_water_board.py::test_site_changes_mark_rows_and_total_outdated[latitude-38.5790] PASSED [ 87%]
+2026-11-22T06:48:07.5348732Z tests/test_water_board.py::test_site_changes_mark_rows_and_total_outdated[longitude--121.4735] PASSED [ 87%]
+2026-11-22T06:48:08.0754884Z tests/test_water_board.py::test_site_changes_mark_rows_and_total_outdated[construction_start-2020-11-02] PASSED [ 87%]
+2026-11-22T06:48:08.5897220Z tests/test_water_board.py::test_site_changes_mark_rows_and_total_outdated[final_stabilization-2022-12-29] PASSED [ 88%]
+2026-11-22T06:48:09.0586562Z tests/test_water_board.py::test_recalculation_is_explicit_and_preserves_raw_text PASSED [ 88%]
+2026-11-22T06:48:10.0057741Z tests/test_water_board.py::test_optional_erosion_and_waiver_hint_are_not_eligibility_decisions PASSED [ 88%]
+2026-11-22T06:48:11.6697958Z tests/test_water_board.py::test_coi_hard_blockers_cannot_be_overridden[DEP-Yes-Update] PASSED [ 88%]
+2026-11-22T06:48:13.3780287Z tests/test_water_board.py::test_coi_hard_blockers_cannot_be_overridden[LRP-No-Update] PASSED [ 89%]
+2026-11-22T06:48:15.1129820Z tests/test_water_board.py::test_coi_hard_blockers_cannot_be_overridden[DAR-Unknown-Update] PASSED [ 89%]
+2026-11-22T06:48:16.3105130Z tests/test_water_board.py::test_coi_hard_blockers_cannot_be_overridden[LRP-Yes-] PASSED [ 89%]
+2026-11-22T06:48:16.8305018Z tests/test_water_board.py::test_coi_valid_certifier_snapshots_and_draft_copy_never_submit PASSED [ 89%]
+2026-11-22T06:48:17.3964405Z tests/test_water_board.py::test_filing_warnings_typed_override_logged_and_files_preserved PASSED [ 90%]
+2026-11-22T06:48:17.8865934Z tests/test_water_board.py::test_annual_dates_next_period_idempotence_and_ceqa_separation PASSED [ 90%]
+2026-11-22T06:48:18.4539664Z tests/test_water_board.py::test_weekly_inspection_uses_performed_date_not_future_or_cancelled PASSED [ 90%]
+2026-11-22T06:48:19.0618480Z tests/test_water_board.py::test_standard_items_keep_edits_hidden_and_deleted_rules_global PASSED [ 90%]
+2026-11-22T06:48:20.7689734Z tests/test_water_board.py::test_compliance_csv_docx_html_seal_name_and_department_integration PASSED [ 91%]
+2026-11-22T06:48:21.5577591Z tests/test_water_board.py::test_water_ui_drafts_r_copy_reports_and_dashboard_links PASSED [ 91%]
+2026-11-22T06:48:22.1112687Z tests/test_water_board.py::test_submitted_history_survives_contact_deletion_and_notes_remain_editable PASSED [ 91%]
+2026-11-22T06:48:22.6203377Z tests/test_water_board.py::test_changing_authorization_revokes_unsubmitted_readiness PASSED [ 91%]
+2026-11-22T06:48:23.5910133Z tests/test_water_board.py::test_per_list_export_shapes_sources_and_site_delete_global_catalog_survives PASSED [ 92%]
+2026-11-22T06:48:24.0790437Z tests/test_water_board.py::test_schema_stays12_and_seal_drafts_preserve_metadata PASSED [ 92%]
+2026-11-22T06:48:24.9109144Z tests/test_water_board.py::test_ceqa_form_does_not_require_a_cgp_site PASSED [ 92%]
+2026-11-22T06:48:25.4831790Z tests/test_water_board.py::test_ceqa_survives_deleting_water_site_and_regenerate_clears_obsolete_row_draft PASSED [ 92%]
+2026-11-22T06:48:26.3676523Z tests/test_water_board.py::test_new_records_have_readable_search_labels_and_weekly_dashboard_warning PASSED [ 92%]
+2026-11-22T06:48:27.0025873Z tests/test_water_board.py::test_shared_list_exports_use_record_ids_when_titles_repeat PASSED [ 93%]
+2026-11-22T06:48:27.5813536Z tests/test_water_board.py::test_historical_notes_exception_cannot_bypass_new_ready_transition PASSED [ 93%]
+2026-11-22T06:48:28.0932518Z tests/test_work_orders.py::test_separate_valuation_fee_rounding_unknown_and_zero PASSED [ 93%]
+2026-11-22T06:48:28.5787458Z tests/test_work_orders.py::test_invalid_amounts_and_dates_do_not_save[values0] PASSED [ 93%]
+2026-11-22T06:48:29.1637814Z tests/test_work_orders.py::test_invalid_amounts_and_dates_do_not_save[values1] PASSED [ 94%]
+2026-11-22T06:48:29.7350819Z tests/test_work_orders.py::test_invalid_amounts_and_dates_do_not_save[values2] PASSED [ 94%]
+2026-11-22T06:48:30.2686115Z tests/test_work_orders.py::test_invalid_amounts_and_dates_do_not_save[values3] PASSED [ 94%]
+2026-11-22T06:48:30.6802039Z tests/test_work_orders.py::test_invalid_amounts_and_dates_do_not_save[values4] PASSED [ 94%]
+2026-11-22T06:48:31.1076690Z tests/test_work_orders.py::test_invalid_amounts_and_dates_do_not_save[values5] PASSED [ 95%]
+2026-11-22T06:48:31.6122398Z tests/test_work_orders.py::test_invalid_amounts_and_dates_do_not_save[values6] PASSED [ 95%]
+2026-11-22T06:48:32.0644226Z tests/test_work_orders.py::test_invalid_amounts_and_dates_do_not_save[values7] PASSED [ 95%]
+2026-11-22T06:48:32.5331929Z tests/test_work_orders.py::test_waiver_and_changed_paid_fee_require_new_confirmation PASSED [ 95%]
+2026-11-22T06:48:33.0893625Z tests/test_work_orders.py::test_permit_and_contract_context_validate_and_survive_unlink_deletion PASSED [ 96%]
+2026-11-22T06:48:33.6150326Z tests/test_work_orders.py::test_valuation_and_fee_are_not_automatic_budget_expenses PASSED [ 96%]
+2026-11-22T06:48:34.6710084Z tests/test_work_orders.py::test_money_fields_are_side_by_side_in_form_and_list PASSED [ 96%]
+2026-11-22T06:48:35.4018860Z tests/test_work_orders.py::test_permit_selection_updates_city_county_fields_and_address PASSED [ 96%]
+2026-11-22T06:48:36.1804475Z tests/test_work_orders.py::test_deadline_search_hidden_section_exports_and_original_files PASSED [ 97%]
+2026-11-22T06:48:36.7677201Z tests/test_work_orders.py::test_work_order_delete_backup_restore_retains_files_and_values PASSED [ 97%]
+2026-11-22T06:48:37.5062777Z tests/test_work_orders.py::test_work_order_recovery_draft_keeps_pair_and_none_permit PASSED [ 97%]
+2026-11-22T06:48:38.2837440Z tests/test_work_orders.py::test_schema10_upgrade_preserves_approvals_parts_and_order PASSED [ 97%]
+2026-11-22T06:48:39.3870983Z tests/test_workspace.py::test_eye_click_hides_without_navigating_and_hidden_eye_restores PASSED [ 98%]
+2026-11-22T06:48:41.0930718Z tests/test_workspace.py::test_sidebar_profile_persistence_and_separate_all_projects_preferences PASSED [ 98%]
+2026-11-22T06:48:45.7590016Z tests/test_workspace.py::test_every_category_can_be_hidden_except_single_hidden_drawer PASSED [ 98%]
+2026-11-22T06:48:46.8200067Z tests/test_workspace.py::test_keyboard_hide_restore_and_sidebar_scroll PASSED [ 98%]
+2026-11-22T06:48:49.0242827Z tests/test_workspace.py::test_theme_switch_text_tracks_both_toolbar_click_directions PASSED [ 99%]
+2026-11-22T06:48:50.0734168Z tests/test_workspace.py::test_compact_primary_commands_and_export_menu_execute_filtered_csv PASSED [ 99%]
+2026-11-22T06:48:51.0997489Z tests/test_workspace.py::test_delete_menu_preserves_confirmation_and_recovery_snapshot PASSED [ 99%]
+2026-11-22T06:48:52.1937141Z tests/test_workspace.py::test_file_dialog_keeps_primary_download_and_moves_secondary_commands PASSED [ 99%]
+2026-11-22T06:48:53.2723391Z tests/test_workspace.py::test_hidden_section_search_and_reports_preserve_files_and_deadlines PASSED [100%]
+2026-11-22T06:48:53.2723689Z 
+2026-11-22T06:48:53.2723930Z - generated xml file: D:\a\construction-project-coordinator\construction-project-coordinator\test-results.xml -
+2026-11-22T06:48:53.2724344Z ======================= 413 passed in 287.31s (0:04:47) =======================
+2026-11-22T06:48:53.5586496Z ##[group]Run actions/upload-artifact@v4
+2026-11-22T06:48:53.5586773Z with:
+2026-11-22T06:48:53.5587032Z   name: Windows-test-results
+2026-11-22T06:48:53.5587316Z   path: test-results.xml
+2026-11-22T06:48:53.5587507Z   if-no-files-found: warn
+2026-11-22T06:48:53.5587697Z   compression-level: 6
+2026-11-22T06:48:53.5587888Z   overwrite: false
+2026-11-22T06:48:53.5682762Z   include-hidden-files: false
+2026-11-22T06:48:53.5683021Z env:
+2026-11-22T06:48:53.5683238Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:48:53.5683562Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-11-22T06:48:53.5683875Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:48:53.5684168Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:48:53.5684804Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:48:53.5685035Z ##[endgroup]
+2026-11-22T06:48:53.7108925Z (node:5728) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-22T06:48:53.7109725Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-22T06:48:53.7149098Z With the provided path, there will be 1 file uploaded
+2026-11-22T06:48:53.7152424Z Artifact name is valid!
+2026-11-22T06:48:53.7153698Z Root directory input is valid!
+2026-11-22T06:48:53.9724413Z Beginning upload of artifact content to blob storage
+2026-11-22T06:48:53.9883922Z (node:5728) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-11-22T06:48:54.1159068Z Uploaded bytes 9532
+2026-11-22T06:48:54.1573244Z Finished uploading artifact content to blob storage!
+2026-11-22T06:48:54.1573841Z SHA256 digest of uploaded artifact zip is 5a6a7ea8dda7dc1efdf6b564c181a7a980c66dd6d9c2370f9976e02bde3fa368
+2026-11-22T06:48:54.1574825Z Finalizing artifact upload
+2026-11-22T06:48:54.4841304Z Artifact Windows-test-results.zip successfully finalized. Artifact ID 14742688947
+2026-11-22T06:48:54.4842100Z Artifact Windows-test-results has been successfully uploaded! Final size is 9532 bytes. Artifact ID is 14742688947
+2026-11-22T06:48:54.4850339Z Artifact download URL: https://github.com/felixzax/construction-project-coordinator/actions/runs/44995013084/artifacts/14742688947
+2026-11-22T06:48:54.5168345Z Post job cleanup.
+2026-11-22T06:48:54.6387639Z Cache hit occurred on the primary key setup-python-Windows-x64-python-3.12.10-pip-f93ef56609866169ea7980bf69ec3db1c7cca70c5eb1bffe30b8360e2219dda7, not saving cache.
+2026-11-22T06:48:54.6388901Z (node:5400) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-22T06:48:54.6389555Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-22T06:48:54.6668750Z Post job cleanup.
+2026-11-22T06:48:54.8023712Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-11-22T06:48:54.8343832Z git version 2.56.1.windows.1
+2026-11-22T06:48:54.8428754Z Temporarily overriding HOME='D:\a\_temp\e9a70213-0ade-4f20-9700-24c5791fdb69' before making global git config changes
+2026-11-22T06:48:54.8429249Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-22T06:48:54.8440344Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\construction-project-coordinator\construction-project-coordinator
+2026-11-22T06:48:54.8835618Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-11-22T06:48:54.9132420Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-11-22T06:48:55.4135855Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-22T06:48:55.4492261Z http.https://github.com/.extraheader
+2026-11-22T06:48:55.4547768Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+2026-11-22T06:48:55.4920613Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-11-22T06:48:56.0151819Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-22T06:48:56.0505621Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-11-22T06:48:56.5814341Z Cleaning up orphan processes
+2026-11-22T06:48:56.6292094Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+
