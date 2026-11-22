@@ -3,6 +3,7 @@ import json
 from PySide6.QtCore import Qt,QEvent,QObject,QRect,QSize,QPointF
 from PySide6.QtGui import QPainter,QPainterPath,QPen,QColor
 from PySide6.QtWidgets import QWidget,QVBoxLayout,QLabel,QListWidget,QListWidgetItem,QStyledItemDelegate,QAbstractItemView,QMenu
+from .section_colors import SectionColorsUI,COLOR_ROLE,valid_color
 from .scope import PROTECTED_SECTIONS
 from .section_list import SectionList
 from .navigation import normalized_order
@@ -23,9 +24,11 @@ class EyeDelegate(QStyledItemDelegate):
   from PySide6.QtWidgets import QStyleOptionViewItem
   copy=QStyleOptionViewItem(option);self.initStyleOption(copy,index)
   title=index.data(Qt.UserRole)
-  if title not in PROTECTED_SECTIONS:
-   copy.rect=option.rect.adjusted(0,0,-31,0);super().paint(painter,copy,index);paint_eye(painter,eye_rect(option.rect),self.restore)
-  else:super().paint(painter,option,index)
+  color=index.data(COLOR_ROLE);left=11 if valid_color(color) else 0
+  copy.rect=option.rect.adjusted(left,0,-31 if title not in PROTECTED_SECTIONS else 0,0);super().paint(painter,copy,index)
+  if valid_color(color):
+   painter.save();painter.setRenderHint(QPainter.Antialiasing);painter.setPen(QPen(QColor('#94a3b8'),.6));painter.setBrush(QColor(color));painter.drawRoundedRect(QRect(option.rect.left()+3,option.rect.top()+7,4,max(4,option.rect.height()-14)),2,2);painter.restore()
+  if title not in PROTECTED_SECTIONS:paint_eye(painter,eye_rect(option.rect),self.restore)
  def sizeHint(self,option,index):return QSize(220,36)
 
 class EyeEvents(QObject):
@@ -44,7 +47,7 @@ class EyeEvents(QObject):
    return True
   return super().eventFilter(obj,event)
 
-class SidebarUI:
+class SidebarUI(SectionColorsUI):
  def __init__(self,*args,**kwargs):
   super().__init__(*args,**kwargs)
   self.nav.setFixedWidth(250);self.nav.setAccessibleName('Project sections; drag or Alt+Up/Down to reorder, Ctrl+H to hide');self.nav.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel);self.nav.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
@@ -135,6 +138,7 @@ class SidebarUI:
      if title==chosen:self.hidden_sections_list.setCurrentItem(item)
    self.hidden_sections_list.set_order_context(context);self.hidden_sections_list.verticalScrollBar().setValue(scroll)
    context_name=self.project_filter.currentText();self.hidden_sections_hint.setText(f'{len(hidden)} hidden section(s) for {context_name}. Hold and drag a category to reorder. Click the eye, double-click or use Ctrl+H to restore. Alt+Up/Down also reorders.' if hidden else f'No hidden sections for {context_name}. Use the eye beside a sidebar category to move it here. Hold and drag categories to reorder the sidebar.')
+  self.apply_section_colors()
  def hide_sidebar_section(self,title):
   def action():
    if title not in self.navigation or title in PROTECTED_SECTIONS:return
@@ -151,9 +155,11 @@ class SidebarUI:
   self.guard(lambda:(self.save_navigation_hidden([]),self.apply_section_visibility()))
  def sidebar_menu(self,point):
   item=self.nav.itemAt(point)
-  if not item or item.data(Qt.UserRole) in PROTECTED_SECTIONS:return
-  menu=QMenu(self.nav);menu.addAction('Hide section\tCtrl+H',lambda:self.hide_sidebar_section(item.data(Qt.UserRole)));menu.exec(self.nav.viewport().mapToGlobal(point))
+  if not item:return
+  title=item.data(Qt.UserRole);menu=QMenu(self.nav)
+  if title not in PROTECTED_SECTIONS:menu.addAction('Hide section\tCtrl+H',lambda:self.hide_sidebar_section(title))
+  self.add_section_color_menu(menu,title);menu.exec(self.nav.viewport().mapToGlobal(point))
  def hidden_menu(self,point):
   item=self.hidden_sections_list.itemAt(point)
   if not item:return
-  title=item.data(Qt.UserRole);menu=QMenu(self.hidden_sections_list);menu.addAction('Restore to sidebar\tCtrl+H',lambda:self.restore_sidebar_section(title));menu.exec(self.hidden_sections_list.viewport().mapToGlobal(point))
+  title=item.data(Qt.UserRole);menu=QMenu(self.hidden_sections_list);menu.addAction('Restore to sidebar\tCtrl+H',lambda:self.restore_sidebar_section(title));self.add_section_color_menu(menu,title);menu.exec(self.hidden_sections_list.viewport().mapToGlobal(point))

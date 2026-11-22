@@ -4,6 +4,8 @@ from pathlib import Path
 
 
 def write_docx(path,title,rows,project='All projects'):
+ from .privacy import check_values
+ check_values([title,rows,project])
  from docx import Document
  from docx.shared import Inches,Pt
  doc=Document(); section=doc.sections[0]; section.top_margin=Inches(.65); section.bottom_margin=Inches(.65)
@@ -81,6 +83,7 @@ def department_rows(store,disciplines,project_id=None,query=''):
   if not links and not project_id: links=[{'project_id':None}]
   for link in links:
    add('Contact',dict(contact,project_id=link['project_id'],contact_id=contact['id']),f'{contact["role"]} | {contact["company"]} | {contact["email"]} | {contact["phone"]}')
+ result+=store.compliance_department_rows(disciplines,project_id,query)
  return result
 
 

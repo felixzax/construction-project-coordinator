@@ -1,0 +1,46 @@
+{
+  "no_schema_change": {
+    "phase2_commit": "fcafec424ae7d0c255b5103825e6567d8b3109af",
+    "schema_version": 12,
+    "all_schema_sql_equal": true,
+    "all_original_rows_equal": true,
+    "tables_added": [],
+    "columns_added": [],
+    "original_database_sha256": "ee6a6b97579ec1ed194e48aa993966a641828e570c3587fe182f2fd671f89bef",
+    "original_hash_unchanged": true,
+    "hidden_settings_preserved": true,
+    "section_order_preserved": true,
+    "foreign_key_check": []
+  },
+  "privacy_file_cases": [
+    {
+      "file": "signed-permit.pdf",
+      "accepted": true,
+      "original_sha256": "0b6689ca75066175d7677fbfe5fb4ad492507c68a0f913fb2743412120430446",
+      "download_sha256": "0b6689ca75066175d7677fbfe5fb4ad492507c68a0f913fb2743412120430446",
+      "bytes_identical": true
+    },
+    {
+      "file": "ordinary-permit-form.docx",
+      "accepted": true,
+      "original_sha256": "8ddc97dd97d9b1411c772858dc8387a33501934deb4c5fc414a365988b00b536",
+      "download_sha256": "8ddc97dd97d9b1411c772858dc8387a33501934deb4c5fc414a365988b00b536",
+      "bytes_identical": true
+    },
+    {
+      "file": "password-mention.txt",
+      "accepted": true,
+      "original_sha256": "30dc97d414c523ee644cf2197dbaaaa9b62c22555f8f77e0aa8950308fe8b1bd",
+      "download_sha256": "30dc97d414c523ee644cf2197dbaaaa9b62c22555f8f77e0aa8950308fe8b1bd",
+      "bytes_identical": true
+    },
+    {
+      "file": "instruction-false-positive.txt",
+      "accepted": false,
+      "legitimate_content": true,
+      "known_false_positive": true,
+      "reason": "Credentials, payment details, certificate/signature files and eAuthorization forms must not be stored. Remove sensitive content before saving."
+    }
+  ],
+  "limits": "Synthetic ordinary files only. No certificate validation or PDF content inspection. Assignment-like harmless text can be blocked. No DLP guarantee."
+}

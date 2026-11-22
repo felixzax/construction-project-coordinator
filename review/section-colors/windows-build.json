@@ -1,0 +1,13 @@
+{
+  "run_url": "https://github.com/felixzax/construction-project-coordinator/actions/runs/44995013084",
+  "tested_commit": "fe4b64a60a225561f242f792cffe958a98eeaf57",
+  "artifact_url": "https://github.com/felixzax/construction-project-coordinator/actions/runs/44995013084/artifacts/14743129576",
+  "artifact_id": 14743129576,
+  "size_in_bytes": 56625856,
+  "sha256": "5bd89d6a563d3381e5bc8ff0be8d2149f91fb7b496605cdf2b5436b87d9a0911",
+  "review_build": "success",
+  "exact_download_verified": true,
+  "native_and_offscreen_smoke": true,
+  "schema": 12,
+  "version": "1.12.1"
+}

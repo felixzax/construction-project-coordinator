@@ -60,6 +60,8 @@ class RecoveryStore:
  def save_draft(self,key,table,row_id,values,extra=None):
   from .store import FIELDS
   if table not in FIELDS and table!='__versions__': raise ValueError('Unknown form type')
+  from .privacy import check_values
+  check_values(values);check_values(extra or {})
   encoded=json.dumps(values,ensure_ascii=False); metadata=json.dumps(extra or {},ensure_ascii=False)
   with self.db:
    self.db.execute('INSERT INTO form_drafts(id,target_table,row_id,payload,extra,updated) VALUES(?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET payload=excluded.payload,extra=excluded.extra,updated=excluded.updated',(key,table,row_id,encoded,metadata,now()))
@@ -80,6 +82,12 @@ class RecoveryStore:
   links=[('approvals','approval_history','approval_id'),('scope_items','custom_fields','scope_item_id'),('contracts','contract_changes','contract_id'),('contracts','finance_files','contract_id'),('budgets','finance_files','budget_id'),('documents','versions','document_id'),('registers','permit_requirements','register_id'),('bid_packages','bids','package_id'),('bids','bid_items','bid_id')]
   for table,fields in FIELDS.items():
    if 'project_id' in fields: links.append(('projects',table,'project_id'))
+  from .regulatory_schema import REG_FIELDS
+  # Include cascading metadata in the plan so polymorphic Files and drafts
+  # are removed and the confirmation lists the actual records affected.
+  for child in REG_FIELDS:
+   for fk in self.db.execute(f'PRAGMA foreign_key_list({child})'):
+    if fk[6]=='CASCADE':links.append((fk[2],child,fk[3]))
   links.append(('projects','activity','project_id'))
   changed=True
   while changed:
@@ -89,6 +97,10 @@ class RecoveryStore:
      ids={r['id'] for r in self.rows(f'SELECT id FROM {child} WHERE {fk} IN ({marks(batch)})',batch)}
      new=ids-plan.get(child,set())
      if new: plan.setdefault(child,set()).update(new); changed=True
+   for sid in plan.get('reg_wb_sites',()):
+    records={r['id'] for r in self.rows("SELECT id FROM reg_tracker_steps WHERE json_extract(details_json,'$.water_site_id')=?",(sid,))}
+    new=records-plan.get('reg_tracker_steps',set())
+    if new:plan.setdefault('reg_tracker_steps',set()).update(new);changed=True
    for parent,ids in list(plan.items()):
     for batch in chunks(ids):
      files={r['id'] for r in self.rows(f'SELECT id FROM finance_files WHERE owner_table=? AND owner_id IN ({marks(batch)})',[parent,*batch])}
@@ -102,6 +114,12 @@ class RecoveryStore:
   plan=self._delete_plan(targets)
   if not plan and not all_data: return None
   backup=self.recovery_snapshot('before-delete')
+  soft_rules=set();soft_steps=set()
+  if not all_data:
+   soft_rules={rid for rid in plan.get('reg_rules',()) if self.rows('SELECT id FROM reg_rules WHERE id=? AND builtin=1',(rid,))}
+   soft_steps={rid for rid in plan.get('reg_tracker_steps',()) if self.rows("SELECT id FROM reg_tracker_steps WHERE id=? AND step_key LIKE 'water.checklist.%'",(rid,)) and self.project_for('reg_tracker_steps',self.rows('SELECT * FROM reg_tracker_steps WHERE id=?',(rid,))[0]) not in plan.get('projects',set()) and json.loads(self.rows('SELECT details_json FROM reg_tracker_steps WHERE id=?',(rid,))[0]['details_json']).get('water_site_id') not in plan.get('reg_wb_sites',set())}
+   for table,ids in [('reg_rules',soft_rules),('reg_tracker_steps',soft_steps)]:
+    if table in plan:plan[table]-=ids
   changed_approvals=set()
   for batch in chunks(plan.get('finance_files',())):
    changed_approvals.update(r['owner_id'] for r in self.rows(f"SELECT owner_id FROM finance_files WHERE owner_table='approvals' AND id IN ({marks(batch)})",batch))
@@ -112,6 +130,29 @@ class RecoveryStore:
      pid=row['id'] if table=='projects' else self.project_for(table,row)
      if pid: affected.add(pid)
   with self.db:
+   for table,ids in [('reg_rules',soft_rules),('reg_tracker_steps',soft_steps)]:
+    for rid in ids:self.db.execute(f'UPDATE {table} SET deleted=1 WHERE id=?',(rid,))
+   # Preserve explicit deletion of generated City/County checklist and tracker
+   # items across idempotent Add and future context switches.
+   for table in ('permit_requirements','reg_tracker_steps'):
+    for rid in plan.get(table,()):
+     if table=='permit_requirements':
+      items=self.rows('SELECT r.register_id,d.template_key AS item_key FROM permit_requirements r JOIN reg_requirement_details d ON d.requirement_id=r.id WHERE r.id=? AND d.origin=\'Template\'',(rid,))
+     else:items=self.rows('SELECT register_id,step_key AS item_key FROM reg_tracker_steps WHERE id=? AND template_item_id IS NOT NULL',(rid,))
+     for item in items:
+      if item['register_id'] in plan.get('registers',()):continue
+      pid=self.rows('SELECT project_id FROM registers WHERE id=?',(item['register_id'],))[0]['project_id']
+      self.db.execute('INSERT OR IGNORE INTO reg_template_tombstones(project_id,register_id,template_item_key,reason,occurred) VALUES(?,?,?,?,?)',(pid,item['register_id'],item['item_key'],'User deletion',now()))
+   for charge_id in plan.get('reg_manual_charges',()):
+    charge=self.rows('SELECT * FROM reg_manual_charges WHERE id=?',(charge_id,))[0]
+    if not charge['register_id'] or charge['register_id'] in plan.get('registers',()):continue
+    details=self.rows('SELECT details_json FROM reg_permit_details WHERE register_id=?',(charge['register_id'],))
+    configuration=json.loads(details[0]['details_json']) if details else {};generated=configuration.get('generated_charges',{})
+    for key,value in list(generated.items()):
+     if value==charge_id:
+      self.db.execute('INSERT OR IGNORE INTO reg_template_tombstones(project_id,register_id,template_item_key,reason,occurred) VALUES(?,?,?,?,?)',(charge['project_id'],charge['register_id'],key,'User deletion',now()))
+      del generated[key]
+    if details:self.db.execute('UPDATE reg_permit_details SET details_json=? WHERE register_id=?',(json.dumps(configuration),charge['register_id']))
    for batch in chunks(plan.get('scope_items',())):self.db.execute(f'UPDATE rebates SET scope_item_id=NULL WHERE scope_item_id IN ({marks(batch)})',batch)
    for batch in chunks(plan.get('bids',())):self.db.execute(f'UPDATE contracts SET bid_id=NULL WHERE bid_id IN ({marks(batch)})',batch)
    for batch in chunks(plan.get('contracts',())):
@@ -122,8 +163,14 @@ class RecoveryStore:
     self.db.execute(f'UPDATE contracts SET budget_id=NULL WHERE budget_id IN ({marks(batch)})',batch)
     self.db.execute(f'UPDATE receipts SET budget_id=NULL WHERE budget_id IN ({marks(batch)})',batch)
    for batch in chunks(plan.get('contacts',())):
+    for detail in self.rows('SELECT id,details_json FROM reg_permit_details'):
+     config=json.loads(detail['details_json'])
+     if config.get('seal_contact_id') in batch:
+      config['seal_contact_id']=None;self.db.execute('UPDATE reg_permit_details SET details_json=? WHERE id=?',(json.dumps(config),detail['id']))
+    self.db.execute(f"UPDATE reg_filings SET readiness_flag='Not Ready' WHERE certifier_role_id IN(SELECT id FROM reg_project_roles WHERE contact_id IN ({marks(batch)})) AND status IN('Draft','Not Submitted','Returned','Remanded')",batch)
+    self.db.execute(f"UPDATE reg_project_roles SET eauthorization_status='Unknown',eauthorization_date='' WHERE contact_id IN ({marks(batch)})",batch)
     for table,fields in FIELDS.items():
-     for fk in ('contact_id','designer_id','reviewer_id'):
+     for fk in ('contact_id','designer_id','reviewer_id','requested_from_contact_id','prepared_by_contact_id'):
       if fk in fields: self.db.execute(f'UPDATE {table} SET {fk}=NULL WHERE {fk} IN ({marks(batch)})',batch)
     self.db.execute(f'DELETE FROM project_contacts WHERE contact_id IN ({marks(batch)})',batch)
    for batch in chunks(plan.get('registers',())):
@@ -135,7 +182,8 @@ class RecoveryStore:
     self.db.execute(f'DELETE FROM project_section_order WHERE project_id IN ({marks(batch)})',batch)
     self.db.execute(f'DELETE FROM project_sections WHERE project_id IN ({marks(batch)})',batch)
     self.db.execute(f'DELETE FROM project_contacts WHERE project_id IN ({marks(batch)})',batch)
-   order=['finance_files','work_orders','approval_history','approvals','custom_fields','rebates','scope_items','project_profiles','contract_changes','issues','receipts','permit_requirements','bid_items','versions','tasks','communications','milestones','work_packages','registers','meetings','bids','bid_packages','documents','contracts','budgets','activity','projects','contacts']
+   from .regulatory_schema import REG_FIELDS
+   order=['finance_files',*reversed(REG_FIELDS),'work_orders','approval_history','approvals','custom_fields','rebates','scope_items','project_profiles','contract_changes','issues','receipts','permit_requirements','bid_items','versions','tasks','communications','milestones','work_packages','registers','meetings','bids','bid_packages','documents','contracts','budgets','activity','projects','contacts']
    for table in order:
     for batch in chunks(plan.get(table,())): self.db.execute(f'DELETE FROM {table} WHERE id IN ({marks(batch)})',batch)
    for approval_id in changed_approvals-plan.get('approvals',set()):self.approval_evidence_changed(approval_id)

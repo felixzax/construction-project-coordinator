@@ -82,6 +82,7 @@ def test_desktop_navigation_and_edit(store,monkeypatch):
  app=QApplication.instance() or QApplication([])
  store.seed(); w=Window(store); w.show(); app.processEvents()
  for i in range(w.nav.count()):
+  if w.nav.item(i).isHidden():continue
   w.nav.setCurrentRow(i); app.processEvents(); assert w.stack.currentIndex()==i
  assert w.tables['Tasks'].rowCount()==2
  w.tables['Tasks'].selectRow(0)

@@ -1,12 +1,36 @@
-# Construction Project Coordinator 1.11.0
+# Construction Project Coordinator 1.12.1
 
 A local Windows desktop workspace for construction and property development coordination, consultant disciplines, drawing registers, meetings and detailed bid estimates. Python 3.12, PySide6 and SQLite. No cloud subscription, email connection or account is required to use the app.
 
 ## Download and run
 
-**[Download Windows 1.11.0](https://github.com/felixzax/construction-project-coordinator/actions/runs/44827044894/artifacts/14674956843)** · [Successful build and test logs](https://github.com/felixzax/construction-project-coordinator/actions/runs/44827044894). All 297 Windows tests passed; the downloaded artifact passed checksum and isolated offscreen/native Windows launch checks.
+[Download the verified 1.12.1 Windows review ZIP](https://github.com/felixzax/construction-project-coordinator/actions/runs/44995013084/artifacts/14743129576). All 413 Windows tests and packaged/downloaded executable checks passed.
 
-Open [GitHub Actions](https://github.com/felixzax/construction-project-coordinator/actions/workflows/windows.yml), select a successful **Test and build Windows** run for version 1.11.0, and download **ConstructionProjectCoordinator-1.11.0-Windows**. GitHub may require sign-in for Actions downloads. Extract the downloaded ZIP **once** into a fresh folder and run `ConstructionProjectCoordinator.exe`. Version 1.11.0 is a standalone, single-file executable: Python and a companion `_internal` folder are not required. The ZIP also contains README, changelog and file checksums. Do not mix its files into an older application folder. The app is unsigned and Windows may show a reputation prompt. Artifacts are retained for 90 days.
+Open [GitHub Actions](https://github.com/felixzax/construction-project-coordinator/actions/workflows/windows.yml) and choose a successful 1.12.1 review build. Download **ConstructionProjectCoordinator-1.12.1-Windows-review** from its artifacts. GitHub may require sign-in. Extract the ZIP once into a fresh folder, then run `ConstructionProjectCoordinator.exe`. Python and a companion `_internal` folder are not required. The artifact contains the executable, README, changelog and SHA-256 checksums; artifacts expire after 90 days. The executable is unsigned, so Windows may show a reputation prompt.
+
+PR #1 remains a draft for review; a downloadable review artifact is not a merged/published GitHub Release. Windows tests must pass before the review packaging job runs. Check its successful smoke/manifest verification steps and VALIDATION.md before using a build. Back up the database and the documents folder before upgrading. Opening schema 11 creates a `.before-v1.12.0.sqlite3` safety copy; schema remains 12 for the regulatory features. Do not open a schema-12 database with an older executable.
+
+## Section color coding
+
+Right-click a section in the sidebar or Hidden sections and choose **Section color**. Pick a preset or **Custom color…**. A narrow color marker identifies the section while keeping its text, selection and hide/restore eye readable in either theme. **No color** resets one section. **Use suggested colors for all sections** colors every category; **Clear all section colors** removes the markers.
+
+Colors stay with each section when dragged, hidden/restored, refreshed or switched between light/dark mode. They apply across projects in this local data folder and are saved in `appearance.ini`, alongside the theme. Database-only backup/restore does not include this file; copy it too when moving appearance preferences. Colors do not change records, reports, deadlines, schema, section order or visibility.
+
+## Regulatory & Permits (optional)
+
+Restore **Regulatory & Permits** from **Hidden sections**, then choose a project. The category is hidden by default and supports the existing drag/reorder and hide controls. All data is local coordination, not a compliance determination; verify with the agency.
+
+- **Project Profile:** choose one regulatory jurisdiction and Subject to CA Construction General Permit (Undecided/Yes/No/Not Applicable). No acreage classification is automatic.
+- **City & County:** set up a permit, then explicitly add the appropriate standard checklist/tracker. City and County stay separate. Changing jurisdiction/use/work/family asks for confirmation and preserves user items, checks and Files. Cycles, City SUB/permit relationships, manual fees, file warnings and revision guidance are provided. All unknown applicability remains editable Verify. **Person Responsible for Seal** selects a contact, with discipline/notes; it does not store a signature or certificate.
+- **Water Board:** set CGP to Yes, then record site coverage, WDID, risk assumptions and dates. Roles reuse Contacts; eAuthorization is flag/date only. Filings remain manual local records; setting Submitted records an action performed elsewhere and never contacts SMARTS.
+- **R-factor:** construction start means first earth disturbance, including vertical build; end means final stabilization. Generate calendar-year windows or enter manual boundaries. Open EPA only after confirmation, enter its results exactly, and mark recalculated after changes. Copy dates uses MM/DD/YYYY. R values are summed with Decimal and half-up rounding. Blank inputs are Incomplete; location/date changes make inputs Outdated. Feb 29, >365-day windows and leap-year Dec 31 endings need manual verification; no dates are silently changed. Ambiguous Feb 29-start anniversaries require manual boundaries. Optional R×K×LS has no risk thresholds. A waiver hint is not an eligibility decision.
+- **Filings:** COI Ready/Submitted requires a reason plus assigned LRP/DAR with eAuthorization Yes; DEP can prepare only. These blockers cannot be overridden. Other warnings require a typed reason to proceed and are logged. Use overall R only in a Not Ready draft Site COI. Annual periods use July 1–June 30 and September 1 due dates; marking one Submitted creates the next once, with Verify applicability.
+- **Shared tracking:** roles, document requests, inspections/corrections, source references, outstanding dates and weekly-inspection coordination flags. Waiting on Agency is never overdue. Site/CGP changes do not erase historical records.
+- **Reports:** per-list CSV/DOCX and the Reports tab provide complete compliance exports with sources, verified dates, raw R inputs and ambiguity flags. The printable project report includes compliance records; appropriately tagged records also appear in department exports. Legacy export layouts remain intact.
+
+The bundled official sources are dated snapshots. The retrieved R guide is February 2024 (different example from the requested 2020 guide); COI/annual guides are April 2026. Month-only revision dates are not assigned invented days. Source conflicts, unknowns and verification limits are documented in `review/phase45/` and VALIDATION.md. The app never calls EPA/SMARTS or submits anything.
+
+**Do not attach files containing logins, passwords or payment details; this app is not encrypted.** Ordinary signed/stamped permits/plans/PDFs are allowed. Never store portal credentials, security answers, digital signature/certificate files or eAuthorization forms/secrets. File guards cannot inspect all binary content; screen files yourself. A harmless assignment-like sentence such as “Password: do not put one in this form” is a known conservative false positive. A plain mention of “password” is allowed.
 
 ## Work Orders — job valuation and permit fee
 
@@ -65,20 +89,20 @@ The setting is remembered in `appearance.ini` beside the database, separately fo
 
 ## Fix for the Shiboken startup error
 
-If an older folder build reports `shiboken6\libshiboken does not exist`, use the new standalone 1.11.0 build above. The published 1.5.0 archive contains `_internal/shiboken6`, but the error occurs if that package folder is missing from the extracted copy. Do not create an empty libshiboken folder or install Python to work around it. The standalone build bundles its Qt/Shiboken runtime and extracts it automatically to a temporary directory when it starts.
+If an older folder build reports `shiboken6\libshiboken does not exist`, use the new standalone 1.12.1 review build above. The published 1.5.0 archive contains `_internal/shiboken6`, but the error occurs if that package folder is missing from the extracted copy. Do not create an empty libshiboken folder or install Python to work around it. The standalone build bundles its Qt/Shiboken runtime and extracts it automatically to a temporary directory when it starts.
 
-Close the old app, extract the new ZIP into a fresh folder and launch the new executable. Project data stays in the same local data directory. Version 1.11.0 adds schema 11 for work orders, job valuations and permit fees. Older databases get a pre-upgrade safety copy. All project features remain available.
+Close the old app, extract the new ZIP into a fresh folder and launch the new executable. Project data stays in the same local data directory. Version 1.12.1 uses schema 12 for regulatory coordination and retains work orders, job valuations and permit fees. Older databases get a pre-upgrade safety copy. All project features remain available.
 
 If a runtime cannot load, the app gives a clear pre-Qt startup message and records `startup-error.txt` under `%LOCALAPPDATA%/Construction Project Coordinator/`. It does not alter project records in that failure path.
 
-## Upgrade from 1.0.0 through 1.10.0
+## Upgrade from 1.0.0 through 1.11.0
 
 1. In the old app, use Backup & Restore to back up your database. Also copy its adjacent `documents` folder to your backup location. Close all old app instances.
 2. Extract the new build into a new application folder. Keep the old executable until you verify the upgrade.
-3. Launch version 1.11.0 from the same Windows account. It uses the same Local AppData location, preserves existing projects, contacts, tasks and approved document revisions, and adds the new tables and fields automatically. It creates a `.before-v1.11.0.sqlite3` safety copy before upgrading a v1–v10 database.
+3. Launch version 1.12.1 from the same Windows account. It uses the same Local AppData location, preserves existing projects, contacts, tasks and approved document revisions, and adds the new tables and fields automatically. It creates a `.before-v1.12.0.sqlite3` safety copy before upgrading a v1–v11 database.
 4. Existing work is not replaced with demonstration data. New sections begin empty for existing users. Fresh workspaces may load fictional examples at the welcome prompt.
 
-The upgrade is one way: the new schema is version 11. To roll back, close the new app and restore the matching pre-upgrade database before running an older app. Do not open the upgraded database with the old app. Version 1.11.0 can restore v1–v11 backups; older backups are upgraded in a temporary copy before replacing live records.
+The upgrade is one way: the new schema is version 12. To roll back, close the new app and restore the matching pre-upgrade database before running an older app. Do not open the upgraded database with the old app. Version 1.12.1 can restore v1–v12 backups; older backups are upgraded in a temporary copy before replacing live records.
 
 ## Project-specific scope and a simpler workspace
 

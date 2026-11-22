@@ -166,6 +166,10 @@ class FinanceStore:
    return self.rows(f'SELECT * FROM finance_files WHERE {key}=? ORDER BY id DESC',(parent_id,))
   return self.rows('SELECT * FROM finance_files WHERE owner_table=? AND owner_id=? ORDER BY id DESC',(table,parent_id))
  def import_finance_files(self,table,parent_id,paths,notes=''):
+  from .privacy import check_values,check_attachment
+  check_values(notes)
+  paths=list(paths)
+  for path in paths:check_attachment(path)
   parent=self.attachment_parent(table,parent_id);pid=self.project_for(table,parent)
   if not pid:raise ValueError('Files must belong to a project record')
   sources=[Path(p) for p in paths]

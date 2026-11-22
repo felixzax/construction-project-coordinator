@@ -6,6 +6,12 @@ import shutil
 import uuid
 import tempfile
 from contextlib import closing
+from .compliance import ComplianceStore
+from .water_board import WaterBoardStore
+from .city_permits import CityPermitStore
+from .regulatory import RegulatoryStore
+from .regulatory_schema import REG_FIELDS
+from .privacy import check_values, check_attachment
 from .work_orders import WorkOrderStore,WORK_ORDER_FIELDS
 from .approvals import ApprovalStore,APPROVAL_FIELDS
 from .navigation import NavigationStore
@@ -40,6 +46,7 @@ FIELDS = {
  'communications': ['project_id','contact_id','occurred','summary','follow_up','status'],
  'milestones': ['project_id','title','phase','deadline','status'],
 }
+FIELDS.update(REG_FIELDS)
 FIELDS.update(NEW_FIELDS)
 FIELDS['receipts']=RECEIPT_FIELDS
 FIELDS['issues']=ISSUE_FIELDS
@@ -54,15 +61,20 @@ FIELDS['permit_requirements']=REQUIREMENT_FIELDS+['completed_on']
 for _table,_columns in ADDED_COLUMNS.items():
  FIELDS[_table].extend(_columns)
 
-class Store(WorkOrderStore,ApprovalStore,NavigationStore,ScopeStore,FinanceStore,IssueStore,ReceiptStore,RecoveryStore,PermitStore,DevelopmentStore):
+class Store(ComplianceStore,WaterBoardStore,CityPermitStore,RegulatoryStore,WorkOrderStore,ApprovalStore,NavigationStore,ScopeStore,FinanceStore,IssueStore,ReceiptStore,RecoveryStore,PermitStore,DevelopmentStore):
  def __init__(self, path):
   self.path=Path(path); self.path.parent.mkdir(parents=True,exist_ok=True)
   self.db=sqlite3.connect(self.path); self.db.row_factory=sqlite3.Row
   version=self.db.execute('PRAGMA user_version').fetchone()[0]
-  if version not in (0,1,2,3,4,5,6,7,8,9,10,11):
+  if version not in (0,1,2,3,4,5,6,7,8,9,10,11,12):
    self.db.close(); raise ValueError('This database requires a newer version of the application')
-  if version in (1,2,3,4,5,6,7,8,9,10):
-   self.backup(str(self.path)+'.before-v1.11.0.sqlite3')
+  if version in range(1,12):
+   safety=Path(str(self.path)+'.before-v1.12.0.sqlite3')
+   # Never overwrite the first rollback copy on a retried migration.
+   if not safety.exists():self.backup(safety)
+  if version in range(1,11):
+   legacy=Path(str(self.path)+'.before-v1.11.0.sqlite3')
+   if not legacy.exists():self.backup(legacy)
   self.db.execute('PRAGMA foreign_keys=ON'); self.db.executescript(SCHEMA)
   self.migrate_development()
   self.migrate_permits()
@@ -74,6 +86,7 @@ class Store(WorkOrderStore,ApprovalStore,NavigationStore,ScopeStore,FinanceStore
   self.migrate_navigation()
   self.migrate_approvals()
   self.migrate_work_orders()
+  self.migrate_regulatory()
   self.db.execute("PRAGMA journal_mode=WAL")
   self.db.execute("PRAGMA synchronous=FULL")
   self.db.execute("PRAGMA busy_timeout=5000")
@@ -82,11 +95,18 @@ class Store(WorkOrderStore,ApprovalStore,NavigationStore,ScopeStore,FinanceStore
   if table not in FIELDS: raise ValueError('Unknown table')
   return self.rows(f'SELECT * FROM {table} ORDER BY id DESC')
  def log(self,pid,message):
+  check_values(message)
   now=datetime.now().isoformat(timespec='seconds')
   self.db.execute('INSERT INTO activity(project_id,occurred,description) VALUES(?,?,?)',(pid,now,message))
   self.db.execute('UPDATE projects SET updated=? WHERE id=?',(now,pid))
  def save(self,table,data,row_id=None):
   if table not in FIELDS: raise ValueError('Unknown table')
+  check_values(data)
+  water_recalculated=bool(data.get('water_recalculated',False))
+  profile_settings={k[4:]:v for k,v in data.items() if k in ('reg_cgp_subject','reg_jurisdiction')} if table=='project_profiles' else {}
+  if profile_settings:
+   from .regulatory import JURISDICTIONS
+   if profile_settings.get('cgp_subject','Undecided') not in ('Undecided','Yes','No','Not Applicable') or profile_settings.get('jurisdiction','Other') not in JURISDICTIONS:raise ValueError('Invalid regulatory profile settings')
   data={k:v for k,v in data.items() if k in FIELDS[table]}
   if row_id:
    previous=self.rows(f'SELECT * FROM {table} WHERE id=?',(row_id,))
@@ -100,6 +120,9 @@ class Store(WorkOrderStore,ApprovalStore,NavigationStore,ScopeStore,FinanceStore
   self.validate_scope(table,data,row_id)
   self.validate_approval(table,data,row_id)
   self.validate_work_order(table,data,row_id)
+  self.validate_regulatory(table,data,row_id)
+  self.validate_city(table,data,row_id)
+  self.validate_water(table,data,row_id,water_recalculated)
   for key in ('name','title','summary'):
    if key in FIELDS[table] and not str(data.get(key,'')).strip(): raise ValueError(f'{key.title()} is required')
   for key in ('deadline','follow_up','occurred'):
@@ -111,6 +134,10 @@ class Store(WorkOrderStore,ApprovalStore,NavigationStore,ScopeStore,FinanceStore
     self.db.execute(f'UPDATE {table} SET '+','.join(f'{k}=?' for k in data)+' WHERE id=?',[*data.values(),row_id])
    else:
     row_id=self.db.execute(f'INSERT INTO {table} ('+','.join(data)+') VALUES ('+','.join('?' for _ in data)+')',list(data.values())).lastrowid
+   self.water_after_save(table,data,row_id)
+   if profile_settings:
+    self.db.execute('INSERT OR IGNORE INTO reg_project_settings(project_id) VALUES(?)',(data['project_id'],))
+    self.db.execute('UPDATE reg_project_settings SET '+','.join(k+'=?' for k in profile_settings)+' WHERE project_id=?', [*profile_settings.values(),data['project_id']])
    if table=='work_orders':self.log(data['project_id'],f'Work order #{row_id}: job valuation {data["job_valuation"] or "unknown"}; permit fee {data["permit_fee"] or "unknown"} {data["currency"]}; fee {data["fee_status"]}')
    if table=='approvals':self.approval_snapshot(row_id,'Record saved')
    pid=row_id if table=='projects' else self.project_for(table,data)
@@ -131,7 +158,9 @@ class Store(WorkOrderStore,ApprovalStore,NavigationStore,ScopeStore,FinanceStore
   if not doc: raise ValueError('Document not found')
   previous=self.rows("SELECT status FROM versions WHERE document_id=? AND status IN ('Approved','Submitted') ORDER BY id DESC LIMIT 1",(did,))
   flag=int(bool(previous and previous[0]['status'] in ('Approved','Submitted')))
+  check_values(dict(revision=revision,requirements=requirements))
   if file_path:
+   check_attachment(file_path)
    source=Path(file_path)
    if not source.is_file(): raise ValueError('Document file does not exist')
    folder=self.path.parent/'documents'; folder.mkdir(exist_ok=True)
@@ -146,7 +175,8 @@ class Store(WorkOrderStore,ApprovalStore,NavigationStore,ScopeStore,FinanceStore
   for table,fields in FIELDS.items():
    cols=[f for f in fields if not f.endswith('_id') and f not in ('archived','included')]
    for row in self.rows(f'SELECT * FROM {table} WHERE '+ ' OR '.join(f'{c} LIKE ?' for c in cols),['%'+query+'%']*len(cols)):
-    result.append({'type':table,'id':row['id'],'project_id':(row['id'] if table=='projects' else self.project_for(table,row)) or '','label':row.get('name',row.get('title',row.get('summary',row.get('original_name',''))))})
+    if row.get('deleted'):continue
+    result.append({'type':table,'id':row['id'],'project_id':(row['id'] if table=='projects' else self.project_for(table,row)) or '','label':row.get('name',row.get('title',row.get('summary',row.get('original_name','')))) or self.regulatory_search_label(table,row)})
   for row in self.rows('SELECT v.*,d.project_id,d.title FROM versions v JOIN documents d ON d.id=v.document_id WHERE v.revision LIKE ? OR v.requirements LIKE ?',('%'+query+'%','%'+query+'%')):
    result.append({'type':'versions','id':row['id'],'project_id':row['project_id'],'label':row['title']+' / '+row['revision']+': '+row['requirements']})
   return result
@@ -163,9 +193,10 @@ class Store(WorkOrderStore,ApprovalStore,NavigationStore,ScopeStore,FinanceStore
    with closing(sqlite3.connect(f'{source.resolve().as_uri()}?mode=ro',uri=True)) as candidate:
     if candidate.execute('PRAGMA integrity_check').fetchone()[0]!='ok': raise ValueError('Invalid backup')
     version=candidate.execute('PRAGMA user_version').fetchone()[0]
-    if version not in (1,2,3,4,5,6,7,8,9,10,11): raise ValueError('Unsupported backup version')
+    if version not in (1,2,3,4,5,6,7,8,9,10,11,12): raise ValueError('Unsupported backup version')
     # Validate the original schema before any CREATE TABLE statement can mask missing tables.
     for table in list(FIELDS)+['versions','activity','project_contacts']+RECOVERY_TABLES+['project_sections','project_section_order','approval_history']:
+     if version<12 and table in REG_FIELDS:continue
      if version<11 and table=='work_orders':continue
      if version<10 and table in ('approvals','approval_history'):continue
      if version<9 and table=='project_section_order':continue
@@ -199,6 +230,7 @@ class Store(WorkOrderStore,ApprovalStore,NavigationStore,ScopeStore,FinanceStore
     restored.db.backup(self.db)
    finally: restored.db.close()
  def export(self,path,rows):
+  check_values(rows)
   with open(path,'w',newline='',encoding='utf-8-sig') as f:
    if not rows: return
    writer=csv.DictWriter(f,fieldnames=list(rows[0])); writer.writeheader()
@@ -210,7 +242,7 @@ class Store(WorkOrderStore,ApprovalStore,NavigationStore,ScopeStore,FinanceStore
   for title,rows in [('Outstanding tasks',self.outstanding(pid)),('Documents',self.rows('SELECT d.title,v.revision,v.status,v.requirements,v.resubmission FROM documents d LEFT JOIN versions v ON v.id=(SELECT MAX(id) FROM versions WHERE document_id=d.id) WHERE d.project_id=?',(pid,))),('Milestones',self.rows('SELECT title,phase,deadline,status FROM milestones WHERE project_id=? ORDER BY deadline',(pid,))),('Communication',self.rows('SELECT occurred,summary,follow_up,status FROM communications WHERE project_id=? ORDER BY occurred DESC',(pid,)))]:
    out+=f'<h2>{title}</h2>'
    for r in rows: out+='<p>'+' | '.join(f'{e(k)}: {e(v)}' for k,v in r.items() if k not in ('id','project_id','contact_id'))+'</p>'
-  return out+self.development_report(pid)+self.permit_checklist_report(pid)+self.receipt_report(pid)+self.issue_report(pid)+self.finance_report(pid)+self.scope_report(pid)+self.approval_report(pid)+self.work_order_report(pid)
+  return out+self.development_report(pid)+self.permit_checklist_report(pid)+self.receipt_report(pid)+self.issue_report(pid)+self.finance_report(pid)+self.scope_report(pid)+self.approval_report(pid)+self.work_order_report(pid)+self.compliance_report(pid)
  def draft(self,comm):
   p=self.rows('SELECT name FROM projects WHERE id=?',(comm['project_id'],))[0]
   c=self.rows('SELECT name,email FROM contacts WHERE id=?',(comm['contact_id'],))

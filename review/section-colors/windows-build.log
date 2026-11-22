@@ -1,0 +1,421 @@
+﻿2026-11-22T06:49:01.0064512Z Current runner version: '2.338.2'
+2026-11-22T06:49:01.0090959Z ##[group]Runner Image Provisioner
+2026-11-22T06:49:01.0091971Z Hosted Compute Agent
+2026-11-22T06:49:01.0092578Z Version: 20261111.635
+2026-11-22T06:49:01.0093238Z Commit: b8a594ea514ff44cadb5342986c68b1eac6e22ed
+2026-11-22T06:49:01.0094229Z Build Date: 2026-11-11T01:49:01Z
+2026-11-22T06:49:01.0095076Z Worker ID: {2ce0191c-ad6d-4c26-b74d-f41609e2a317}
+2026-11-22T06:49:01.0095783Z Region: centralus
+2026-11-22T06:49:01.0096460Z Cloud: Azure
+2026-11-22T06:49:01.0097040Z ##[endgroup]
+2026-11-22T06:49:01.0098740Z ##[group]Operating System
+2026-11-22T06:49:01.0099438Z Microsoft Windows Server 2025
+2026-11-22T06:49:01.0100099Z 10.0.26100
+2026-11-22T06:49:01.0100633Z Datacenter
+2026-11-22T06:49:01.0101176Z ##[endgroup]
+2026-11-22T06:49:01.0101746Z ##[group]Runner Image
+2026-11-22T06:49:01.0102437Z Image: windows-2025-vs2026
+2026-11-22T06:49:01.0103110Z Version: 20261116.315.1
+2026-11-22T06:49:01.0105080Z Included Software: https://github.com/actions/runner-images/blob/win25-vs2026/20261116.315/images/windows/Windows2025-VS2026-Readme.md
+2026-11-22T06:49:01.0107225Z Image Release: https://github.com/actions/runner-images/releases/tag/win25-vs2026%2F20261116.315
+2026-11-22T06:49:01.0108329Z ##[endgroup]
+2026-11-22T06:49:01.0109621Z ##[group]GITHUB_TOKEN Permissions
+2026-11-22T06:49:01.0112114Z Contents: read
+2026-11-22T06:49:01.0112816Z Metadata: read
+2026-11-22T06:49:01.0113455Z ##[endgroup]
+2026-11-22T06:49:01.0115912Z Secret source: Actions
+2026-11-22T06:49:01.0117046Z Cache mode: write
+2026-11-22T06:49:01.0117934Z Prepare workflow directory
+2026-11-22T06:49:01.0432813Z Prepare all required actions
+2026-11-22T06:49:01.0487571Z Getting action download info
+2026-11-22T06:49:01.2965708Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-11-22T06:49:01.4870999Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-11-22T06:49:01.6098921Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-11-22T06:49:01.8052700Z Download action repository 'actions/download-artifact@v4' (SHA:d3f86a106a0bac45b974a628896c90dbdf5c8093)
+2026-11-22T06:49:02.3227826Z Complete job name: review-build
+2026-11-22T06:49:02.4609985Z ##[group]Run actions/checkout@v4
+2026-11-22T06:49:02.4610959Z with:
+2026-11-22T06:49:02.4611334Z   repository: felixzax/construction-project-coordinator
+2026-11-22T06:49:02.4614878Z   token: ***
+2026-11-22T06:49:02.4615179Z   ssh-strict: true
+2026-11-22T06:49:02.4615480Z   ssh-user: git
+2026-11-22T06:49:02.4615785Z   persist-credentials: true
+2026-11-22T06:49:02.4616129Z   clean: true
+2026-11-22T06:49:02.4616614Z   sparse-checkout-cone-mode: true
+2026-11-22T06:49:02.4617010Z   fetch-depth: 1
+2026-11-22T06:49:02.4617307Z   fetch-tags: false
+2026-11-22T06:49:02.4617607Z   show-progress: true
+2026-11-22T06:49:02.4617914Z   lfs: false
+2026-11-22T06:49:02.4618188Z   submodules: false
+2026-11-22T06:49:02.4618528Z   set-safe-directory: true
+2026-11-22T06:49:02.4618874Z   allow-unsafe-pr-checkout: false
+2026-11-22T06:49:02.4619441Z ##[endgroup]
+2026-11-22T06:49:02.5885280Z Syncing repository: felixzax/construction-project-coordinator
+2026-11-22T06:49:02.5886929Z ##[group]Getting Git version info
+2026-11-22T06:49:02.5887622Z Working directory is 'D:\a\construction-project-coordinator\construction-project-coordinator'
+2026-11-22T06:49:02.6519595Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-11-22T06:49:03.7283141Z git version 2.56.1.windows.1
+2026-11-22T06:49:03.7325089Z ##[endgroup]
+2026-11-22T06:49:03.7342730Z Temporarily overriding HOME='D:\a\_temp\92f4fc55-249f-48c2-9387-c845fa908785' before making global git config changes
+2026-11-22T06:49:03.7344115Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-22T06:49:03.7351468Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\construction-project-coordinator\construction-project-coordinator
+2026-11-22T06:49:03.7975340Z Deleting the contents of 'D:\a\construction-project-coordinator\construction-project-coordinator'
+2026-11-22T06:49:03.7980045Z ##[group]Initializing the repository
+2026-11-22T06:49:03.7987767Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\construction-project-coordinator\construction-project-coordinator
+2026-11-22T06:49:03.8864318Z Initialized empty Git repository in D:/a/construction-project-coordinator/construction-project-coordinator/.git/
+2026-11-22T06:49:03.8906253Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/felixzax/construction-project-coordinator
+2026-11-22T06:49:03.9542430Z ##[endgroup]
+2026-11-22T06:49:03.9543649Z ##[group]Disabling automatic garbage collection
+2026-11-22T06:49:03.9550915Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+2026-11-22T06:49:03.9894876Z ##[endgroup]
+2026-11-22T06:49:03.9896891Z ##[group]Setting up auth
+2026-11-22T06:49:03.9910135Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-11-22T06:49:04.0293555Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-11-22T06:49:06.4448807Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-22T06:49:06.4776569Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-11-22T06:49:06.9399730Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-22T06:49:06.9722942Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-11-22T06:49:07.4808583Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+2026-11-22T06:49:07.5130176Z ##[endgroup]
+2026-11-22T06:49:07.5132475Z ##[group]Fetching the repository
+2026-11-22T06:49:07.5140436Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +fe4b64a60a225561f242f792cffe958a98eeaf57:refs/remotes/origin/feature/regulatory-phase-2
+2026-11-22T06:49:08.6375399Z From https://github.com/felixzax/construction-project-coordinator
+2026-11-22T06:49:08.6376597Z  * [new ref]         fe4b64a60a225561f242f792cffe958a98eeaf57 -> origin/feature/regulatory-phase-2
+2026-11-22T06:49:08.6408993Z ##[endgroup]
+2026-11-22T06:49:08.6409373Z ##[group]Determining the checkout info
+2026-11-22T06:49:08.6411486Z ##[endgroup]
+2026-11-22T06:49:08.6427957Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+2026-11-22T06:49:08.6869893Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+2026-11-22T06:49:08.7195987Z ##[group]Checking out the ref
+2026-11-22T06:49:08.7204222Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force -B feature/regulatory-phase-2 refs/remotes/origin/feature/regulatory-phase-2
+2026-11-22T06:49:08.8062061Z Switched to a new branch 'feature/regulatory-phase-2'
+2026-11-22T06:49:08.8082390Z branch 'feature/regulatory-phase-2' set up to track 'origin/feature/regulatory-phase-2'.
+2026-11-22T06:49:08.8121266Z ##[endgroup]
+2026-11-22T06:49:08.8506932Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+2026-11-22T06:49:08.8783507Z fe4b64a60a225561f242f792cffe958a98eeaf57
+2026-11-22T06:49:08.9181692Z ##[group]Run actions/setup-python@v5
+2026-11-22T06:49:08.9181994Z with:
+2026-11-22T06:49:08.9182151Z   python-version: 3.12
+2026-11-22T06:49:08.9182320Z   cache: pip
+2026-11-22T06:49:08.9183070Z   check-latest: false
+2026-11-22T06:49:08.9185302Z   token: ***
+2026-11-22T06:49:08.9185462Z   update-environment: true
+2026-11-22T06:49:08.9185643Z   allow-prereleases: false
+2026-11-22T06:49:08.9185816Z   freethreaded: false
+2026-11-22T06:49:08.9185976Z ##[endgroup]
+2026-11-22T06:49:09.0547207Z ##[group]Installed versions
+2026-11-22T06:49:09.0756855Z (node:6608) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-22T06:49:09.0757792Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-22T06:49:09.0758296Z Successfully set up CPython (3.12.10)
+2026-11-22T06:49:09.0758856Z ##[endgroup]
+2026-11-22T06:49:12.1168023Z Cache hit for: setup-python-Windows-x64-python-3.12.10-pip-f93ef56609866169ea7980bf69ec3db1c7cca70c5eb1bffe30b8360e2219dda7
+2026-11-22T06:49:12.1263349Z (node:6608) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-11-22T06:49:13.6483348Z Received 134217728 of 209371505 (64.1%), 93.0 MBs/sec
+2026-11-22T06:49:14.2923885Z Received 209371505 of 209371505 (100.0%), 98.8 MBs/sec
+2026-11-22T06:49:14.2927868Z Cache Size: ~200 MB (209371505 B)
+2026-11-22T06:49:14.3010855Z [command]"C:\Program Files\Git\usr\bin\tar.exe" -xf D:/a/_temp/b162aaba-b9a7-426f-a8ac-2d5f2ee6adc8/cache.tzst -P -C D:/a/construction-project-coordinator/construction-project-coordinator --force-local --use-compress-program "zstd -d"
+2026-11-22T06:49:14.9006401Z Cache restored successfully
+2026-11-22T06:49:14.9113861Z Cache restored from key: setup-python-Windows-x64-python-3.12.10-pip-f93ef56609866169ea7980bf69ec3db1c7cca70c5eb1bffe30b8360e2219dda7
+2026-11-22T06:49:14.9412554Z ##[group]Run python -m pip install -r requirements-dev.txt
+2026-11-22T06:49:14.9412996Z [36;1mpython -m pip install -r requirements-dev.txt[0m
+2026-11-22T06:49:15.0280540Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-11-22T06:49:15.0280857Z env:
+2026-11-22T06:49:15.0281092Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:49:15.0281474Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-11-22T06:49:15.0281824Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:49:15.0282137Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:49:15.0282434Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:49:15.0282680Z ##[endgroup]
+2026-11-22T06:49:17.9687387Z Collecting PySide6==6.8.3 (from -r D:\a\construction-project-coordinator\construction-project-coordinator\requirements.txt (line 1))
+2026-11-22T06:49:17.9710718Z   Using cached PySide6-6.8.3-cp39-abi3-win_amd64.whl.metadata (5.7 kB)
+2026-11-22T06:49:18.0062164Z Collecting python-docx==1.2.0 (from -r D:\a\construction-project-coordinator\construction-project-coordinator\requirements.txt (line 2))
+2026-11-22T06:49:18.0083674Z   Using cached python_docx-1.2.0-py3-none-any.whl.metadata (2.0 kB)
+2026-11-22T06:49:18.0457430Z Collecting openpyxl==3.1.5 (from -r D:\a\construction-project-coordinator\construction-project-coordinator\requirements.txt (line 3))
+2026-11-22T06:49:18.0477141Z   Using cached openpyxl-3.1.5-py2.py3-none-any.whl.metadata (2.5 kB)
+2026-11-22T06:49:18.0885999Z Collecting pytest==8.3.5 (from -r requirements-dev.txt (line 2))
+2026-11-22T06:49:18.0907914Z   Using cached pytest-8.3.5-py3-none-any.whl.metadata (7.6 kB)
+2026-11-22T06:49:18.1434485Z Collecting pyinstaller==6.12.0 (from -r requirements-dev.txt (line 3))
+2026-11-22T06:49:18.1455192Z   Using cached pyinstaller-6.12.0-py3-none-win_amd64.whl.metadata (8.3 kB)
+2026-11-22T06:49:18.1840119Z Collecting shiboken6==6.8.3 (from PySide6==6.8.3->-r D:\a\construction-project-coordinator\construction-project-coordinator\requirements.txt (line 1))
+2026-11-22T06:49:18.1859421Z   Using cached shiboken6-6.8.3-cp39-abi3-win_amd64.whl.metadata (2.8 kB)
+2026-11-22T06:49:18.2250514Z Collecting PySide6-Essentials==6.8.3 (from PySide6==6.8.3->-r D:\a\construction-project-coordinator\construction-project-coordinator\requirements.txt (line 1))
+2026-11-22T06:49:18.2269991Z   Using cached PySide6_Essentials-6.8.3-cp39-abi3-win_amd64.whl.metadata (4.1 kB)
+2026-11-22T06:49:18.2632246Z Collecting PySide6-Addons==6.8.3 (from PySide6==6.8.3->-r D:\a\construction-project-coordinator\construction-project-coordinator\requirements.txt (line 1))
+2026-11-22T06:49:18.2651985Z   Using cached PySide6_Addons-6.8.3-cp39-abi3-win_amd64.whl.metadata (4.4 kB)
+2026-11-22T06:49:18.4847901Z Collecting lxml>=3.1.0 (from python-docx==1.2.0->-r D:\a\construction-project-coordinator\construction-project-coordinator\requirements.txt (line 2))
+2026-11-22T06:49:18.4869241Z   Using cached lxml-6.1.3-cp312-cp312-win_amd64.whl.metadata (3.4 kB)
+2026-11-22T06:49:18.5202054Z Collecting typing_extensions>=4.9.0 (from python-docx==1.2.0->-r D:\a\construction-project-coordinator\construction-project-coordinator\requirements.txt (line 2))
+2026-11-22T06:49:18.5234307Z   Using cached typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+2026-11-22T06:49:18.5531592Z Collecting et-xmlfile (from openpyxl==3.1.5->-r D:\a\construction-project-coordinator\construction-project-coordinator\requirements.txt (line 3))
+2026-11-22T06:49:18.5549918Z   Using cached et_xmlfile-2.0.0-py3-none-any.whl.metadata (2.7 kB)
+2026-11-22T06:49:18.5585967Z Requirement already satisfied: colorama in C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\site-packages (from pytest==8.3.5->-r requirements-dev.txt (line 2)) (0.4.6)
+2026-11-22T06:49:18.5848788Z Collecting iniconfig (from pytest==8.3.5->-r requirements-dev.txt (line 2))
+2026-11-22T06:49:18.5868599Z   Using cached iniconfig-2.3.1-py3-none-any.whl.metadata (2.8 kB)
+2026-11-22T06:49:18.6046641Z Requirement already satisfied: packaging in C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\site-packages (from pytest==8.3.5->-r requirements-dev.txt (line 2)) (26.3)
+2026-11-22T06:49:18.6356635Z Collecting pluggy<2,>=1.5 (from pytest==8.3.5->-r requirements-dev.txt (line 2))
+2026-11-22T06:49:18.6377092Z   Using cached pluggy-1.7.0-py3-none-any.whl.metadata (5.0 kB)
+2026-11-22T06:49:18.7177919Z Collecting setuptools>=42.0.0 (from pyinstaller==6.12.0->-r requirements-dev.txt (line 3))
+2026-11-22T06:49:18.7200009Z   Using cached setuptools-84.2.1-py3-none-any.whl.metadata (6.6 kB)
+2026-11-22T06:49:18.7552089Z Collecting altgraph (from pyinstaller==6.12.0->-r requirements-dev.txt (line 3))
+2026-11-22T06:49:18.7570174Z   Using cached altgraph-0.17.5-py2.py3-none-any.whl.metadata (7.5 kB)
+2026-11-22T06:49:18.7913733Z Collecting pyinstaller-hooks-contrib>=2025.1 (from pyinstaller==6.12.0->-r requirements-dev.txt (line 3))
+2026-11-22T06:49:18.7946680Z   Using cached pyinstaller_hooks_contrib-2026.10-py3-none-any.whl.metadata (16 kB)
+2026-11-22T06:49:18.8299468Z Collecting pefile!=2024.8.26,>=2022.5.30 (from pyinstaller==6.12.0->-r requirements-dev.txt (line 3))
+2026-11-22T06:49:18.8319673Z   Using cached pefile-2023.2.7-py3-none-any.whl.metadata (1.4 kB)
+2026-11-22T06:49:18.8632695Z Collecting pywin32-ctypes>=0.2.1 (from pyinstaller==6.12.0->-r requirements-dev.txt (line 3))
+2026-11-22T06:49:18.8653606Z   Using cached pywin32_ctypes-0.2.3-py3-none-any.whl.metadata (3.9 kB)
+2026-11-22T06:49:18.8990313Z Using cached PySide6-6.8.3-cp39-abi3-win_amd64.whl (561 kB)
+2026-11-22T06:49:18.9010268Z Using cached python_docx-1.2.0-py3-none-any.whl (252 kB)
+2026-11-22T06:49:18.9041032Z Using cached openpyxl-3.1.5-py2.py3-none-any.whl (250 kB)
+2026-11-22T06:49:18.9056350Z Using cached pytest-8.3.5-py3-none-any.whl (343 kB)
+2026-11-22T06:49:18.9072366Z Using cached pyinstaller-6.12.0-py3-none-win_amd64.whl (1.3 MB)
+2026-11-22T06:49:18.9093169Z Using cached PySide6_Addons-6.8.3-cp39-abi3-win_amd64.whl (127.9 MB)
+2026-11-22T06:49:18.9610627Z Using cached PySide6_Essentials-6.8.3-cp39-abi3-win_amd64.whl (72.2 MB)
+2026-11-22T06:49:18.9922108Z Using cached shiboken6-6.8.3-cp39-abi3-win_amd64.whl (1.2 MB)
+2026-11-22T06:49:18.9944691Z Using cached pluggy-1.7.0-py3-none-any.whl (27 kB)
+2026-11-22T06:49:18.9960365Z Using cached lxml-6.1.3-cp312-cp312-win_amd64.whl (4.0 MB)
+2026-11-22T06:49:18.9995259Z Using cached pefile-2023.2.7-py3-none-any.whl (71 kB)
+2026-11-22T06:49:19.0010200Z Using cached pyinstaller_hooks_contrib-2026.10-py3-none-any.whl (463 kB)
+2026-11-22T06:49:19.0027097Z Using cached pywin32_ctypes-0.2.3-py3-none-any.whl (30 kB)
+2026-11-22T06:49:19.0041271Z Using cached setuptools-84.2.1-py3-none-any.whl (876 kB)
+2026-11-22T06:49:19.0076870Z Using cached typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+2026-11-22T06:49:19.0091260Z Using cached altgraph-0.17.5-py2.py3-none-any.whl (21 kB)
+2026-11-22T06:49:19.0104938Z Using cached et_xmlfile-2.0.0-py3-none-any.whl (18 kB)
+2026-11-22T06:49:19.0119441Z Using cached iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
+2026-11-22T06:49:19.6379450Z Installing collected packages: altgraph, typing_extensions, shiboken6, setuptools, pywin32-ctypes, pyinstaller-hooks-contrib, pluggy, pefile, lxml, iniconfig, et-xmlfile, python-docx, pytest, PySide6-Essentials, pyinstaller, openpyxl, PySide6-Addons, PySide6
+2026-11-22T06:49:33.4519042Z 
+2026-11-22T06:49:33.4543706Z Successfully installed PySide6-6.8.3 PySide6-Addons-6.8.3 PySide6-Essentials-6.8.3 altgraph-0.17.5 et-xmlfile-2.0.0 iniconfig-2.3.1 lxml-6.1.3 openpyxl-3.1.5 pefile-2023.2.7 pluggy-1.7.0 pyinstaller-6.12.0 pyinstaller-hooks-contrib-2026.10 pytest-8.3.5 python-docx-1.2.0 pywin32-ctypes-0.2.3 setuptools-84.2.1 shiboken6-6.8.3 typing_extensions-4.16.0
+2026-11-22T06:49:33.6775591Z ##[group]Run python -m PyInstaller --noconfirm --clean --windowed --onefile --collect-all shiboken6 --add-data "cpc/permit_catalog.json;cpc" --add-data "cpc/water_catalog.json;cpc" --name ConstructionProjectCoordinator main.py
+2026-11-22T06:49:33.6776908Z [36;1mpython -m PyInstaller --noconfirm --clean --windowed --onefile --collect-all shiboken6 --add-data "cpc/permit_catalog.json;cpc" --add-data "cpc/water_catalog.json;cpc" --name ConstructionProjectCoordinator main.py[0m
+2026-11-22T06:49:33.6836887Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-11-22T06:49:33.6837175Z env:
+2026-11-22T06:49:33.6837421Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:49:33.6837775Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-11-22T06:49:33.6838138Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:49:33.6838501Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:49:33.6838805Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:49:33.6839044Z ##[endgroup]
+2026-11-22T06:49:34.7047716Z 306 INFO: PyInstaller: 6.12.0, contrib hooks: 2026.10
+2026-11-22T06:49:34.7049665Z 306 INFO: Python: 3.12.10
+2026-11-22T06:49:34.7241149Z 325 INFO: Platform: Windows-2025Server-10.0.26100-SP0
+2026-11-22T06:49:34.7241598Z 325 INFO: Python environment: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:49:34.7246143Z 325 INFO: wrote D:\a\construction-project-coordinator\construction-project-coordinator\ConstructionProjectCoordinator.spec
+2026-11-22T06:49:34.7315146Z 333 INFO: Removing temporary files and cleaning cache in C:\Users\runneradmin\AppData\Local\pyinstaller
+2026-11-22T06:49:35.6835965Z 1283 INFO: Module search paths (PYTHONPATH):
+2026-11-22T06:49:35.6836380Z ['D:\\a\\construction-project-coordinator\\construction-project-coordinator',
+2026-11-22T06:49:35.6837069Z  'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python312.zip',
+2026-11-22T06:49:35.6837414Z  'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\DLLs',
+2026-11-22T06:49:35.6837719Z  'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib',
+2026-11-22T06:49:35.6837996Z  'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64',
+2026-11-22T06:49:35.6838301Z  'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages',
+2026-11-22T06:49:35.6839608Z  'D:\\a\\construction-project-coordinator\\construction-project-coordinator']
+2026-11-22T06:49:35.8929840Z 1494 INFO: Appending 'binaries' from .spec
+2026-11-22T06:49:35.8934187Z 1494 INFO: Appending 'datas' from .spec
+2026-11-22T06:49:35.8944105Z 1495 INFO: checking Analysis
+2026-11-22T06:49:35.8945054Z 1495 INFO: Building Analysis because Analysis-00.toc is non existent
+2026-11-22T06:49:35.8945532Z 1495 INFO: Running Analysis Analysis-00.toc
+2026-11-22T06:49:35.8946036Z 1495 INFO: Target bytecode optimization level: 0
+2026-11-22T06:49:35.8946454Z 1496 INFO: Initializing module dependency graph...
+2026-11-22T06:49:35.9043197Z 1506 INFO: Initializing module graph hook caches...
+2026-11-22T06:49:35.9159320Z 1517 INFO: Analyzing modules for base_library.zip ...
+2026-11-22T06:49:36.5154641Z 2117 INFO: Processing standard module hook 'hook-encodings.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+2026-11-22T06:49:37.0904501Z 2691 INFO: Processing standard module hook 'hook-heapq.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+2026-11-22T06:49:38.5818061Z 4182 INFO: Processing standard module hook 'hook-pickle.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+2026-11-22T06:49:40.1654757Z 5766 INFO: Caching module dependency graph...
+2026-11-22T06:49:40.1951361Z 5796 INFO: Looking for Python shared library...
+2026-11-22T06:49:40.5746040Z 6174 INFO: Using Python shared library: C:\hostedtoolcache\windows\Python\3.12.10\x64\python312.dll
+2026-11-22T06:49:40.5746852Z 6176 INFO: Analyzing D:\a\construction-project-coordinator\construction-project-coordinator\main.py
+2026-11-22T06:49:40.6046241Z 6205 INFO: Processing standard module hook 'hook-PySide6.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+2026-11-22T06:49:40.7405950Z 6341 INFO: Processing standard module hook 'hook-shiboken6.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+2026-11-22T06:49:40.7419317Z 6342 INFO: Processing standard module hook 'hook-PySide6.QtNetwork.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+2026-11-22T06:49:41.6233374Z 7225 INFO: Processing standard module hook 'hook-PySide6.QtWidgets.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+2026-11-22T06:49:41.7764539Z 7376 INFO: Processing standard module hook 'hook-PySide6.QtCore.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+2026-11-22T06:49:42.0438360Z 7645 INFO: Processing standard module hook 'hook-sqlite3.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+2026-11-22T06:49:42.6519110Z 8252 INFO: Processing standard module hook 'hook-platform.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+2026-11-22T06:49:42.8233124Z 8424 INFO: Processing standard module hook 'hook-PySide6.QtGui.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+2026-11-22T06:49:43.1741087Z 8775 INFO: Processing standard module hook 'hook-PySide6.QtPrintSupport.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+2026-11-22T06:49:43.4000060Z 9001 INFO: Processing standard module hook 'hook-openpyxl.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+2026-11-22T06:49:43.4673989Z 9069 INFO: Processing standard module hook 'hook-lxml.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+2026-11-22T06:49:43.6962518Z 9297 INFO: Processing standard module hook 'hook-lxml.etree.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+2026-11-22T06:49:43.8542163Z 9455 INFO: Processing standard module hook 'hook-xml.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+2026-11-22T06:49:43.8770654Z 9478 INFO: Processing standard module hook 'hook-xml.etree.cElementTree.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+2026-11-22T06:49:44.4733117Z 10073 INFO: Processing standard module hook 'hook-docx.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+2026-11-22T06:49:44.5433647Z 10144 INFO: Processing pre-safe-import-module hook 'hook-typing_extensions.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+2026-11-22T06:49:44.5438834Z 10144 INFO: SetuptoolsInfo: initializing cached setuptools info...
+2026-11-22T06:49:45.3988847Z 10999 INFO: Processing standard module hook 'hook-multiprocessing.util.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+2026-11-22T06:49:46.7185684Z 12319 INFO: Processing standard module hook 'hook-PySide6.QtTest.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+2026-11-22T06:49:46.8433642Z 12444 INFO: Analyzing hidden import 'shiboken6._config'
+2026-11-22T06:49:46.8438776Z 12444 INFO: Analyzing hidden import 'shiboken6._git_shiboken_module_version'
+2026-11-22T06:49:46.8445328Z 12445 INFO: Processing module hooks (post-graph stage)...
+2026-11-22T06:49:47.1030847Z 12704 INFO: Processing standard module hook 'hook-difflib.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+2026-11-22T06:49:47.3119447Z 12912 INFO: Processing standard module hook 'hook-sysconfig.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+2026-11-22T06:49:47.6460521Z 13246 INFO: Processing standard module hook 'hook-lxml.isoschematron.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+2026-11-22T06:49:47.7005612Z 13301 INFO: Processing standard module hook 'hook-lxml.objectify.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+2026-11-22T06:49:47.7069978Z 13307 INFO: Performing binary vs. data reclassification (178 entries)
+2026-11-22T06:49:47.7321550Z 13333 INFO: Looking for ctypes DLLs
+2026-11-22T06:49:47.7373745Z 13339 INFO: Analyzing run-time hooks ...
+2026-11-22T06:49:47.7399035Z 13341 INFO: Including run-time hook 'pyi_rth_inspect.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+2026-11-22T06:49:47.7419474Z 13343 INFO: Including run-time hook 'pyi_rth_pyside6.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+2026-11-22T06:49:47.7433128Z 13345 INFO: Processing pre-find-module-path hook 'hook-_pyi_rth_utils.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks\\pre_find_module_path'
+2026-11-22T06:49:47.7444488Z 13345 INFO: Processing standard module hook 'hook-_pyi_rth_utils.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+2026-11-22T06:49:47.7464092Z 13347 INFO: Including run-time hook 'pyi_rth_pkgutil.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+2026-11-22T06:49:47.7500085Z 13349 INFO: Including run-time hook 'pyi_rth_multiprocessing.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+2026-11-22T06:49:47.7592420Z 13361 INFO: Creating base_library.zip...
+2026-11-22T06:49:47.8035428Z 13404 INFO: Looking for dynamic libraries
+2026-11-22T06:49:48.4851516Z 14085 INFO: Extra DLL search directories (AddDllDirectory): ['C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\shiboken6']
+2026-11-22T06:49:48.4852282Z 14085 INFO: Extra DLL search directories (PATH): ['C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PySide6']
+2026-11-22T06:49:49.8991911Z 15499 WARNING: Library not found: could not resolve 'api-ms-win-core-winrt-l1-1-0.dll', dependency of 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\shiboken6\\vccorlib140.dll'.
+2026-11-22T06:49:49.8993796Z 15499 WARNING: Library not found: could not resolve 'api-ms-win-core-winrt-error-l1-1-0.dll', dependency of 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\shiboken6\\vccorlib140.dll'.
+2026-11-22T06:49:49.8996423Z 15499 WARNING: Library not found: could not resolve 'api-ms-win-core-winrt-string-l1-1-0.dll', dependency of 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\shiboken6\\vccorlib140.dll'.
+2026-11-22T06:49:49.8998862Z 15501 WARNING: Library not found: could not resolve 'api-ms-win-core-path-l1-1-0.dll', dependency of 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python312.dll'.
+2026-11-22T06:49:49.9001973Z 15501 WARNING: Library not found: could not resolve 'api-ms-win-shcore-scaling-l1-1-1.dll', dependency of 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PySide6\\plugins\\platforms\\qdirect2d.dll'.
+2026-11-22T06:49:49.9004642Z 15501 WARNING: Library not found: could not resolve 'api-ms-win-core-winrt-l1-1-0.dll', dependency of 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PySide6\\plugins\\platforms\\qdirect2d.dll'.
+2026-11-22T06:49:49.9006578Z 15501 WARNING: Library not found: could not resolve 'api-ms-win-core-winrt-string-l1-1-0.dll', dependency of 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PySide6\\plugins\\platforms\\qdirect2d.dll'.
+2026-11-22T06:49:49.9008777Z 15501 WARNING: Library not found: could not resolve 'api-ms-win-shcore-scaling-l1-1-1.dll', dependency of 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PySide6\\plugins\\platforms\\qwindows.dll'.
+2026-11-22T06:49:49.9011032Z 15501 WARNING: Library not found: could not resolve 'api-ms-win-core-winrt-l1-1-0.dll', dependency of 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PySide6\\plugins\\platforms\\qwindows.dll'.
+2026-11-22T06:49:49.9013236Z 15501 WARNING: Library not found: could not resolve 'api-ms-win-core-winrt-string-l1-1-0.dll', dependency of 'C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\site-packages\\PySide6\\plugins\\platforms\\qwindows.dll'.
+2026-11-22T06:49:49.9117250Z 15513 INFO: Warnings written to D:\a\construction-project-coordinator\construction-project-coordinator\build\ConstructionProjectCoordinator\warn-ConstructionProjectCoordinator.txt
+2026-11-22T06:49:49.9496979Z 15551 INFO: Graph cross-reference written to D:\a\construction-project-coordinator\construction-project-coordinator\build\ConstructionProjectCoordinator\xref-ConstructionProjectCoordinator.html
+2026-11-22T06:49:49.9722983Z 15572 INFO: checking PYZ
+2026-11-22T06:49:49.9723481Z 15572 INFO: Building PYZ because PYZ-00.toc is non existent
+2026-11-22T06:49:49.9724478Z 15572 INFO: Building PYZ (ZlibArchive) D:\a\construction-project-coordinator\construction-project-coordinator\build\ConstructionProjectCoordinator\PYZ-00.pyz
+2026-11-22T06:49:50.5640223Z 16164 INFO: Building PYZ (ZlibArchive) D:\a\construction-project-coordinator\construction-project-coordinator\build\ConstructionProjectCoordinator\PYZ-00.pyz completed successfully.
+2026-11-22T06:49:50.5942410Z 16195 INFO: checking PKG
+2026-11-22T06:49:50.5942879Z 16195 INFO: Building PKG because PKG-00.toc is non existent
+2026-11-22T06:49:50.5943386Z 16195 INFO: Building PKG (CArchive) ConstructionProjectCoordinator.pkg
+2026-11-22T06:50:05.7890247Z 31390 INFO: Building PKG (CArchive) ConstructionProjectCoordinator.pkg completed successfully.
+2026-11-22T06:50:05.7940535Z 31394 INFO: Bootloader C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\site-packages\PyInstaller\bootloader\Windows-64bit-intel\runw.exe
+2026-11-22T06:50:05.7941023Z 31394 INFO: checking EXE
+2026-11-22T06:50:05.7941369Z 31394 INFO: Building EXE because EXE-00.toc is non existent
+2026-11-22T06:50:05.7941761Z 31394 INFO: Building EXE from EXE-00.toc
+2026-11-22T06:50:05.7943141Z 31394 INFO: Copying bootloader EXE to D:\a\construction-project-coordinator\construction-project-coordinator\dist\ConstructionProjectCoordinator.exe
+2026-11-22T06:50:05.7962557Z 31396 INFO: Copying icon to EXE
+2026-11-22T06:50:05.7979061Z 31398 INFO: Copying 0 resources to EXE
+2026-11-22T06:50:05.7979406Z 31398 INFO: Embedding manifest in EXE
+2026-11-22T06:50:05.7994422Z 31400 INFO: Appending PKG archive to EXE
+2026-11-22T06:50:05.8351362Z 31436 INFO: Fixing EXE headers
+2026-11-22T06:50:06.2559926Z 31857 INFO: Building EXE from EXE-00.toc completed successfully.
+2026-11-22T06:50:06.2611267Z 31862 INFO: Build complete! The results are available in: D:\a\construction-project-coordinator\construction-project-coordinator\dist
+2026-11-22T06:50:06.4596866Z ##[group]Run python scripts/portable_build.py stage release
+2026-11-22T06:50:06.4597371Z [36;1mpython scripts/portable_build.py stage release[0m
+2026-11-22T06:50:06.4656671Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-11-22T06:50:06.4656963Z env:
+2026-11-22T06:50:06.4657211Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:50:06.4657581Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-11-22T06:50:06.4657938Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:50:06.4658256Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:50:06.4658565Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:50:06.4658824Z ##[endgroup]
+2026-11-22T06:50:06.9795157Z ##[group]Run python scripts/portable_build.py zip-check release
+2026-11-22T06:50:06.9795602Z [36;1mpython scripts/portable_build.py zip-check release[0m
+2026-11-22T06:50:06.9853708Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-11-22T06:50:06.9854007Z env:
+2026-11-22T06:50:06.9854235Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:50:06.9854600Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-11-22T06:50:06.9854961Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:50:06.9855286Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:50:06.9855593Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:50:06.9855835Z ##[endgroup]
+2026-11-22T06:50:19.2943875Z ##[group]Run python scripts/portable_build.py verify release
+2026-11-22T06:50:19.2944301Z [36;1mpython scripts/portable_build.py verify release[0m
+2026-11-22T06:50:19.3002970Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-11-22T06:50:19.3003254Z env:
+2026-11-22T06:50:19.3003486Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:50:19.3003847Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-11-22T06:50:19.3004199Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:50:19.3004523Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:50:19.3004829Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:50:19.3005080Z ##[endgroup]
+2026-11-22T06:50:42.4055465Z ##[group]Run actions/upload-artifact@v4
+2026-11-22T06:50:42.4055758Z with:
+2026-11-22T06:50:42.4056012Z   name: ConstructionProjectCoordinator-1.12.1-Windows-review
+2026-11-22T06:50:42.4056296Z   path: release/*
+2026-11-22T06:50:42.4056461Z   retention-days: 90
+2026-11-22T06:50:42.4056629Z   if-no-files-found: error
+2026-11-22T06:50:42.4057851Z   compression-level: 6
+2026-11-22T06:50:42.4058035Z   overwrite: false
+2026-11-22T06:50:42.4058202Z   include-hidden-files: false
+2026-11-22T06:50:42.4058383Z env:
+2026-11-22T06:50:42.4058603Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:50:42.4058965Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-11-22T06:50:42.4059313Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:50:42.4059692Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:50:42.4060045Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:50:42.4060286Z ##[endgroup]
+2026-11-22T06:50:42.5746791Z (node:5180) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-22T06:50:42.5747361Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-22T06:50:42.5806537Z With the provided path, there will be 4 files uploaded
+2026-11-22T06:50:42.5810324Z Artifact name is valid!
+2026-11-22T06:50:42.5811438Z Root directory input is valid!
+2026-11-22T06:50:42.8287277Z Beginning upload of artifact content to blob storage
+2026-11-22T06:50:43.0657198Z (node:5180) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-11-22T06:50:43.6343401Z Uploaded bytes 8388608
+2026-11-22T06:50:43.8194568Z Uploaded bytes 16777216
+2026-11-22T06:50:43.8917966Z Uploaded bytes 25165824
+2026-11-22T06:50:44.1590243Z Uploaded bytes 33554432
+2026-11-22T06:50:44.1933441Z Uploaded bytes 41943040
+2026-11-22T06:50:44.3008475Z Uploaded bytes 50331648
+2026-11-22T06:50:44.4718512Z Uploaded bytes 56625856
+2026-11-22T06:50:44.5123617Z Finished uploading artifact content to blob storage!
+2026-11-22T06:50:44.5126746Z SHA256 digest of uploaded artifact zip is 5bd89d6a563d3381e5bc8ff0be8d2149f91fb7b496605cdf2b5436b87d9a0911
+2026-11-22T06:50:44.5128745Z Finalizing artifact upload
+2026-11-22T06:50:44.8399449Z Artifact ConstructionProjectCoordinator-1.12.1-Windows-review.zip successfully finalized. Artifact ID 14743129576
+2026-11-22T06:50:44.8400444Z Artifact ConstructionProjectCoordinator-1.12.1-Windows-review has been successfully uploaded! Final size is 56625856 bytes. Artifact ID is 14743129576
+2026-11-22T06:50:44.8411370Z Artifact download URL: https://github.com/felixzax/construction-project-coordinator/actions/runs/44995013084/artifacts/14743129576
+2026-11-22T06:50:44.8716771Z ##[group]Run actions/download-artifact@v4
+2026-11-22T06:50:44.8717056Z with:
+2026-11-22T06:50:44.8717216Z   artifact-ids: 14743129576
+2026-11-22T06:50:44.8717424Z   path: downloaded-review
+2026-11-22T06:50:44.8717608Z   merge-multiple: true
+2026-11-22T06:50:44.8717835Z   repository: felixzax/construction-project-coordinator
+2026-11-22T06:50:44.8718086Z   run-id: 44995013084
+2026-11-22T06:50:44.8718264Z env:
+2026-11-22T06:50:44.8718481Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:50:44.8718831Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-11-22T06:50:44.8719198Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:50:44.8719518Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:50:44.8719823Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:50:44.8720075Z ##[endgroup]
+2026-11-22T06:50:45.0222819Z Downloading artifacts by ID
+2026-11-22T06:50:45.0408441Z (node:1648) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-22T06:50:45.0409315Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-22T06:50:45.1879093Z Found 2 artifact(s)
+2026-11-22T06:50:45.1879746Z Preparing to download the following artifacts:
+2026-11-22T06:50:45.1880971Z - ConstructionProjectCoordinator-1.12.1-Windows-review (ID: 14743129576, Size: 56625856, Expected Digest: sha256:5bd89d6a563d3381e5bc8ff0be8d2149f91fb7b496605cdf2b5436b87d9a0911)
+2026-11-22T06:50:45.3416324Z Redirecting to blob download url: https://productionresultssa18.blob.core.windows.net/actions-results/b4ebedfb-5d1e-86aa-af47-7ed793ef773b/workflow-job-run-cee8201d-b5f8-5502-b556-0aab8445dec4/artifacts/e5e941cf812161c15b89ff124c8eb21fb205a751832627924e1b45a272cb044c.zip
+2026-11-22T06:50:45.3418301Z Starting download of artifact to: D:\a\construction-project-coordinator\construction-project-coordinator\downloaded-review
+2026-11-22T06:50:45.4857560Z (node:1648) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+2026-11-22T06:50:46.4024347Z SHA256 digest of downloaded artifact is 5bd89d6a563d3381e5bc8ff0be8d2149f91fb7b496605cdf2b5436b87d9a0911
+2026-11-22T06:50:46.4025045Z Artifact download completed successfully.
+2026-11-22T06:50:46.4025379Z Total of 1 artifact(s) downloaded
+2026-11-22T06:50:46.4033022Z Download artifact has finished successfully
+2026-11-22T06:50:46.4301199Z ##[group]Run python scripts/portable_build.py verify downloaded-review
+2026-11-22T06:50:46.4301712Z [36;1mpython scripts/portable_build.py verify downloaded-review[0m
+2026-11-22T06:50:46.4362318Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-11-22T06:50:46.4362615Z env:
+2026-11-22T06:50:46.4362857Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:50:46.4363225Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-11-22T06:50:46.4363576Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:50:46.4363895Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:50:46.4364199Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-22T06:50:46.4364475Z ##[endgroup]
+2026-11-22T06:51:05.9784218Z Post job cleanup.
+2026-11-22T06:51:06.1010872Z Cache hit occurred on the primary key setup-python-Windows-x64-python-3.12.10-pip-f93ef56609866169ea7980bf69ec3db1c7cca70c5eb1bffe30b8360e2219dda7, not saving cache.
+2026-11-22T06:51:06.1012282Z (node:7976) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-22T06:51:06.1012795Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-22T06:51:06.1267522Z Post job cleanup.
+2026-11-22T06:51:06.2641403Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-11-22T06:51:06.2974080Z git version 2.56.1.windows.1
+2026-11-22T06:51:06.3040409Z Temporarily overriding HOME='D:\a\_temp\471aeacb-7599-42a3-84a7-66c10c0d22f4' before making global git config changes
+2026-11-22T06:51:06.3041387Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-22T06:51:06.3052112Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\construction-project-coordinator\construction-project-coordinator
+2026-11-22T06:51:06.3482140Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-11-22T06:51:06.3839822Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-11-22T06:51:06.9035373Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-22T06:51:06.9314863Z http.https://github.com/.extraheader
+2026-11-22T06:51:06.9353210Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+2026-11-22T06:51:06.9678290Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-11-22T06:51:07.4573787Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-22T06:51:07.4888425Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-11-22T06:51:07.9751730Z Cleaning up orphan processes
+2026-11-22T06:51:07.9915915Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/download-artifact@v4, actions/setup-python@v5, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

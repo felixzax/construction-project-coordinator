@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.12.1 — 2026-11-21 (review build)
+
+- Added per-section sidebar color markers with presets, custom color picker and per-section/all-section reset.
+- Added optional suggested colors for all categories, including hidden categories.
+- Persisted colors across projects in the local appearance settings while retaining theme, hide/restore and drag/reorder behavior. No database/schema changes.
+
+## 1.12.0 — 2026-11-20 (review build)
+
+- Added optional Regulatory & Permits: isolated City/County templates, confirmed context swaps, cycles, checklist provenance, warnings and manual revision guidance.
+- Added Person Responsible for Seal linked to Contacts, with discipline/notes and no signature/certificate storage.
+- Added manual Water Board site coverage, roles, filings, annual periods, inspections and dated rules/checklists.
+- Added manual EPA R-factor period arithmetic, exact Decimal sum, stale-input tracking, leap-year verification flags and optional R×K×LS. No EPA/SMARTS API or submissions.
+- Enforced local COI reason/LRP/DAR/eAuthorization blockers and logged warning overrides; retained historical certifier snapshots.
+- Added per-list/compliance CSV/DOCX, printable project reports and appropriately tagged department/dashboard/timeline integration.
+- Added schema 12 migration with pre-upgrade safety copy; later regulatory work adds no further tables or columns. Existing records and sidebar settings/orders are preserved.
+- Bundled dated official sources; unknown/conflicting requirements remain Verify. Kept originals/working copies, backup/recovery and privacy warnings.
+- Review artifacts build only after Windows tests, with both catalogs and isolated frozen-executable verification. No merge or GitHub Release publication is automatic.
+
 ## 1.11.0 — 2026-11-20
 
 - Added Work Orders with adjacent job valuation and permit-fee entry/list columns, currency, valuation basis and fee status.

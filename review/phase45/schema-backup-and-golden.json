@@ -1,0 +1,41 @@
+{
+  "empty": {
+    "schema": 12,
+    "added_tables": [],
+    "added_columns": [],
+    "all_schema_sql_equal": true,
+    "all_original_rows_equal": true,
+    "hidden_settings_preserved": true,
+    "section_order_preserved": true,
+    "original_file_sha256_before": "bb43fc0897fbc6f4591e72f8a8f5c8866b1268e0addca2b45019edd6c2a9c9f7",
+    "original_file_sha256_after": "bb43fc0897fbc6f4591e72f8a8f5c8866b1268e0addca2b45019edd6c2a9c9f7",
+    "backup_restore_passed": true,
+    "foreign_key_check": []
+  },
+  "populated": {
+    "schema": 12,
+    "added_tables": [],
+    "added_columns": [],
+    "all_schema_sql_equal": true,
+    "all_original_rows_equal": true,
+    "hidden_settings_preserved": true,
+    "section_order_preserved": true,
+    "original_file_sha256_before": "61dd232cc3215c235857fff2bf1e744e9b738ad6c574da8a3ec93520879522d0",
+    "original_file_sha256_after": "61dd232cc3215c235857fff2bf1e744e9b738ad6c574da8a3ec93520879522d0",
+    "backup_restore_passed": true,
+    "foreign_key_check": []
+  },
+  "requested_r_fixture": {
+    "state": "Complete",
+    "total": "105.14",
+    "arithmetic": "45.49 + 45.49 + 14.16 = 105.14",
+    "warnings": [],
+    "erosion_estimate": "",
+    "waiver_hint": false
+  },
+  "seal": {
+    "name": "Fictional Seal Engineer",
+    "appears_in_report": true,
+    "signature_or_certificate_stored": false
+  }
+}
